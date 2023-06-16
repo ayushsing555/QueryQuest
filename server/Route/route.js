@@ -1,0 +1,12 @@
+const express = require("express");
+const router = express.Router();
+const {signIn,signUp,user,data,NewQuery,IndividualData,Home,IndividualUser} = require("../controllers/Path");
+router.route("/signin").post(signIn);
+router.route("/").get(Home);
+router.route("/signup").post(signUp);
+router.route("/user").get(user);
+router.route("/data").get(data);
+router.route("/new").post(NewQuery);
+router.route("/data/:id").get(IndividualData);
+router.route("/user/:id").get(IndividualUser);
+module.exports = router;

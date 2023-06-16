@@ -1,0 +1,63 @@
+const mongoose = require("mongoose");
+const QueryScheme = mongoose.Schema({
+    Question:{
+        type:String
+    },
+    identification:{
+        type:String
+    },
+    postedBy:{
+        type:String,
+        default:"ayush"
+    },
+    postedOn:{
+        type:Date,
+        default:Date.now()
+    },
+    likes:{
+        type:Number,
+        default:0
+    },
+    Priority:{
+        type:Boolean,
+        default:false
+    },
+    identification:{
+        type:String,
+        default:"123ayushsinghal"
+    },
+    answers:[{
+        ansId:{
+            type:String
+        },
+        ans:{
+            type:String
+        },
+        postedBy:{
+            type:String,
+            default:"singhal"
+        },
+        likes:{
+            type:Number,
+            default:0
+        },
+            comments:[{
+                commentId:{
+                    type:String
+                },
+                postedOn:{
+                    type:Date,
+                    default:Date.now()
+                },
+                postedBy:{
+                    type:String,
+                    default:"ayush singhal"
+                },
+                comment:{
+                     type:String,
+                }
+            }]
+    }]
+})
+const Query = new mongoose.model("QUERY",QueryScheme);
+module.exports = Query;
