@@ -1,11 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import BillingDetail from '../Component/BillingDetail';
-import {useGlobalContext} from '../context';
+
 const Pricing = () => {
-  const {state, SetState} = useGlobalContext();
-  useEffect(() => {
-    SetState(!state);
-  }, [1]);
   const [QueryTicket, setQueryTicket] = useState("monthly");
   const [TicketRaised, setTicketRaised] = useState(true);
   const [month, SetMonth] = useState(3);

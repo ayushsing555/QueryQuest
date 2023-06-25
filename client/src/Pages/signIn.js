@@ -1,52 +1,53 @@
 import React, {useState} from 'react';
 import "../App.css";
 import {NavLink, useNavigate} from 'react-router-dom';
-import { useGlobalContext } from '../context';
-const SignIn = () => {
-    const {state,SetState} = useGlobalContext();
-    const navigator = useNavigate();
-    const [UserDetail,setUserDetail] = useState({
-        email:"",password:""
-    })
 
-    const handleChange = (e) =>{
+const SignIn = () => {
+    
+    const navigator = useNavigate();
+    const [UserDetail, setUserDetail] = useState({
+        email: "", password: ""
+    });
+
+    const handleChange = (e) => {
         let name = e.target.name;
         let value = e.target.value;
-        setUserDetail({...UserDetail,[name]:value});
-    }
+        setUserDetail({...UserDetail, [name]: value});
+    };
 
-    const handleSubmit = async(e) =>{
+    const handleSubmit = async (e) => {
         e.preventDefault();
         let headersList = {
             "Accept": "*/*",
             "Content-Type": "application/json"
-        }
-        let bodyContent =JSON.stringify({
-            "email":UserDetail.email,
-            "password":UserDetail.password
-        })
-        let response = await fetch("http://localhost:3000/signin", {
+        };
+        let bodyContent = JSON.stringify({
+            "email": UserDetail.email,
+            "password": UserDetail.password
+        });
+        let response = await fetch("http://localhost:8000/signin", {
             method: "POST",
             body: bodyContent,
             headers: headersList
         });
 
         let data = await response.json();
-        if(response.status!==200){
+        if (response.status !== 200) {
             window.alert(data.error);
         }
 
-        if(response.status===200){
+        if (response.status === 200) {
             window.alert("successfully logged in");
-            const LoggedInDetails={
-                "UserName":data.userName,
-                "token":data.token
-            }
-            localStorage.setItem("Details",JSON.stringify(LoggedInDetails));
-            SetState(!state);
+            const LoggedInDetails = {
+                "UserName": data.userName,
+                "token": data.token,
+                "identification": data.identification,
+                "id":data.id
+            };
+            localStorage.setItem("Details", JSON.stringify(LoggedInDetails));
             navigator("/");
         }
-    }
+    };
     return (
         <>
             <section class="vh-90">

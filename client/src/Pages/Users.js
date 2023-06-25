@@ -4,7 +4,7 @@ import {NavLink} from 'react-router-dom';
 const Users = () => {
     const [Users, setUsers] = useState([]);
     const getUsers = async () => {
-        const res = await fetch("http://localhost:3000/user");
+        const res = await fetch("http://localhost:8000/user");
         const data = await res.json();
         setUsers(data);
     };

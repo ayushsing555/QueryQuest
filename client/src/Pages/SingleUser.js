@@ -5,7 +5,7 @@ const SingleUser = () => {
     const [singleUserDetail, setSingleUserDetail] = useState([]);
     const {id} = useParams();
     const getSingleData = async () => {
-        const res = await fetch(`http://localhost:3000/user/${id}`);
+        const res = await fetch(`http://localhost:8000/user/${id}`);
         const data = await res.json();
         setSingleUserDetail([data]);
         console.log(data);

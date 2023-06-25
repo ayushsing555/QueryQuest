@@ -1,14 +1,32 @@
 
 import {NavLink, useNavigate} from 'react-router-dom';
-import {useGlobalContext} from '../context';
 import UserProfile from './UserProfile';
+import {useEffect, useState} from 'react';
 const Navbar = () => {
-    console.log("ayush");
     const navigator = useNavigate();
+    const [data, setData] = useState([]);
+    const getUserDetail = async (Details) => {
+        Details = JSON.parse(Details);
+        const url = `http://localhost:8000/user/${Details.identification}`;
+        console.log(url);
+        const res = await fetch(url);
+        const data = await res.json();
+        setData([data]);
+        console.log(data);
+
+    };
     const changeRoute = () => {
         navigator("/signup");
     };
-    const Details = (localStorage.getItem("Details"));
+
+    let Details = localStorage.getItem("Details");
+
+    useEffect(() => {
+        if (Details != null) {
+            console.log(Details);
+            getUserDetail(Details);
+        }
+    }, []);
     const Logout = () => {
         localStorage.removeItem("Details");
     };
@@ -61,15 +79,20 @@ const Navbar = () => {
                                         <NavLink to="/users" className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Users</NavLink>
                                     </li>
                                     <li>
-                                        <NavLink onClick={Logout} className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Logout</NavLink>
+                                        <NavLink to="/signin" onClick={Logout} className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Logout</NavLink>
                                     </li>
                                 </> : ""
                         }
                     </ul>
                 </div>
-                <b>
-                    <NavLink to="/pricing" className="block py-2 pl-3 pr-4 text-black border-2 p-2  shadow-xl shadow-red-500 bg-blue-700 rounded md:bg-transparent text-xl  md:text-blue-700 md:p-0 md:dark:text-blue-500" aria-current="page">Upgrade</NavLink>
-                </b>
+                {
+                    Details !== null && data[0]!==undefined  ? <>
+                        <b>
+                            <NavLink to="/pricing" className="block py-2 pl-3 pr-4 text-black border-2 p-2  shadow-xl shadow-red-500 bg-blue-700 rounded md:bg-transparent text-xl  md:text-blue-700 md:p-0 md:dark:text-blue-500" aria-current="page">{data[0].ticket}</NavLink>
+                        </b>
+                    </> : ""
+                }
+
             </div>
         </nav>
     );

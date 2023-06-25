@@ -1,29 +1,44 @@
-import React, {useState} from 'react';
-import {NavLink} from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import {NavLink, useNavigate} from 'react-router-dom';
 
 const MyQuery = () => {
-  let a = [12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 1, 2, 12, 1, 2, 3, 1, 3, 33];
-  const [publisherName, SetPublisherName] = useState("Ayush singhal");
-  const date = new Date();
-  let right = date.getDate() + "-" + (eval(date.getMonth() + 1)) + "-" + date.getFullYear() + "  " + "At  " + date.getHours() + ":" + date.getMinutes();
+  const [AllQuery, setAllQuery] = useState([]);
+  const navigator = useNavigate();
+  
+  let UserDetail = localStorage.getItem("Details");
+  if(UserDetail===null){
+    window.alert("please sign in");
+     navigator("/signin");
+  }
+  UserDetail = JSON.parse(UserDetail);
+  
+  const getData = async () => {
+    const res = await fetch(`http://localhost:8000/user/Queries/${UserDetail.id}`);
+    const data = await res.json();
+    setAllQuery(data);
+    console.log(AllQuery);
+  };
+  useEffect(() => {
+    getData();
+  }, [1]);
   return (
     <>
       <section class="text-gray-600 body-font">
         <div class="container px-5 py-24 mx-auto">
           <div class="flex flex-wrap -m-4">
             {
-              a.map((elem) => {
+              AllQuery.map((elem) => {
                 return (
                   <>
                     <div class="p-3    lg:w-1/2 hover:bg-red-900  bg-red-300 shadow-lg ">
                       <div class="h-full bg-red-200 bg-opacity-75 px-8 pt-16 pb-24 m-2 rounded-lg overflow-hidden text-center relative">
                         <h2 class="tracking-widest text-xl title-font font-large text-red-900 mb-1">1910</h2>
-                        <h1 class="title-font sm:text-2xl text-xl font-medium text-gray-900 mb-3">Query 1910</h1>
+                        <h1 class="title-font sm:text-2xl text-xl font-medium text-gray-900 mb-3">{elem.Question}</h1>
                         <p class="leading-relaxed mb-3">Photo booth fam kinfolk cold-pressed sriracha leggings jianbing microdosing tousled waistcoatacha leggings jianbing microdosing tousled waistcoatvacha leggings jianbing microdosing tousled waistcoat.</p>
-                        <b className='text-bold'>Query posted By <NavLink style={{color: "blue"}} to="/Users/:id" >{publisherName}</NavLink> On {right} </b>
+                        <b className='text-bold'>Query posted By <NavLink style={{color: "blue"}} to={`/Users/${elem._id}`} >{elem.postedBy}</NavLink> On {elem.postedOn} </b>
                         <br />
                         <br />
-                        <NavLink to="/Queries/:id" class="text-indigo-500 inline-flex items-center">
+                        <NavLink to={`/query/${elem._id}`} class="text-indigo-500 inline-flex items-center">
                           <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                             Solutions <svg class="w-4 h-4 ml-2" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
                               <path d="M5 12h14"></path>
@@ -55,6 +70,7 @@ const MyQuery = () => {
                 );
               })
             }
+
           </div>
         </div>
       </section>

@@ -34,7 +34,7 @@ const SignUp = () => {
             "gender":UserDetail.Gender
         });
 
-        let response = await fetch("http://localhost:3000/signup", {
+        let response = await fetch("http://localhost:8000/signup", {
             method: "POST",
             body: bodyContent,
             headers: headersList

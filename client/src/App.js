@@ -31,7 +31,7 @@ function App() {
         <Route path='/users' element={<Users/>}/>
         <Route path='/pricing' element={<Pricing/>}/>
         <Route path='/user/:id' element={<SingleUser/>}/>
-        <Route path='/queries/:id' element={<SingleQuery/>}/>
+        <Route path='/query/:id' element={<SingleQuery/>}/>
       </Routes>
       <Footer/>
       </BrowserRouter>

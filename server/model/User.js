@@ -73,7 +73,6 @@ userstructure.methods.generateToken = async function (next) {
     } catch (error) {
         console.log(error);
     }
-
 };
 
 const User = mongoose.model("User", userstructure);
