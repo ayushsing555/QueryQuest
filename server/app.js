@@ -14,6 +14,7 @@ app.use(express.urlencoded({
 
 const Query = require("./model/Query");
 const User = require("./model/User");
+const Comment = require("./model/Comment")
 const cors=require("cors");
 const corsOptions ={
    origin:'*', 

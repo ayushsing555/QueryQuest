@@ -1,0 +1,64 @@
+import React from 'react';
+
+const Analytic = () => {
+    let a = [1, 2, 3, 4, 2, 1, 3, 2, 2, 1, 3];
+    return (
+        <>
+            <div class="relative overflow-x-auto shadow-md h-96 overflow-auto  m-5 sm:rounded-lg">
+                <table class="w-full text-sm  text-center text-black text-xl dark:text-gray-400">
+                    <thead class="text-xs text-gray-700  bg-gray-50 dark:bg-red-900 dark:text-gray-400">
+                        <tr className='text-xl'>
+                            <th scope="col" class="px-6 py-3">
+                                Query
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                PostedBy
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                PostedOn
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Reputation
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                <span class="sr-only"></span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            a.map((elem) => {
+                                return (
+                                    <>
+
+                                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                            <td scope="row" class=" px-6 py-4">
+                                                Apple MacBook Pro 17"
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                Silver
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                Laptop
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                $2999
+                                            </td>
+                                            <td class="px-6 py-4 text-right">
+                                                <a href="a" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Solutions</a>
+                                            </td>
+                                        </tr></>
+                                );
+                            })
+                        }
+
+
+                    </tbody>
+                </table>
+            </div>
+
+        </>
+    );
+};
+
+export default Analytic;

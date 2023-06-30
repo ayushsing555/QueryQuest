@@ -28,10 +28,14 @@ const QueryScheme = mongoose.Schema({
         ansId:{
             type:String
         },
+
         postedOn:{
             type:Date,
             default:Date.now()
         },
+        likedBy:[
+            String
+        ],
         ans:{
             type:String
         },
@@ -43,26 +47,10 @@ const QueryScheme = mongoose.Schema({
             type:Number,
             default:0
         },
-            comments:[{
-                commentId:{
-                    type:String
-                },
-                postedOn:{
-                    type:Date,
-                    default:Date.now()
-                },
-                postedBy:{
-                    type:String,
-                    default:"ayush singhal"
-                },
-                comment:{
-                     type:String,
-                }
-            }]
     }]
 })
 QueryScheme.methods.addData = async function(Answer,a,postedBy){
-    this.answers = this.answers.concat({ans:Answer,ansId:a,postedBy:postedBy,commentId:a});
+    this.answers = this.answers.concat({ans:Answer,ansId:a,postedBy:postedBy,commentId:a,postedOn:Date.now()});
     await this.save();
     return this.answers;
 }

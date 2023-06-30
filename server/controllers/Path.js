@@ -1,6 +1,7 @@
 const Query = require("../model/Query");
 const User = require("../model/User");
 const auth = require("../Authentication/auth");
+const comment = require("../model/Comment");
 const user = async (req, res) => {
     const allUser = await User.find();
     res.send(allUser);
@@ -23,9 +24,18 @@ const IndividualData = async (req, res) => {
 
 };
 
+const GetAllComment = async (req, res) => {
+    try {
+        const data = await comment.find();
+        res.send(data);
+    } catch (e) {
+        console.log(e);
+    }
+};
+
 const IndividualUser = async (req, res) => {
     const _id = req.params.id;
-    const data = await User.findOne({_id: _id});
+    const data = await User.findOne({userName: _id});
     res.send(data);
 };
 
@@ -134,9 +144,11 @@ const AnswerDelete = async (req, res) => {
         {_id: QuesId},
         {$pull: {answers: {_id: ansId}}} // Specify the object to remove
     );
-    if (ans) {
+    let deleteComments = await comment.deleteMany({AnsId: ansId}, {
+        new: true
+    });
+    if (ans && deleteComments) {
         return res.status(200).send({message: "ans deleted"});
-        console.log(ans);
     }
     else {
         console.log("wome t");
@@ -144,28 +156,139 @@ const AnswerDelete = async (req, res) => {
 };
 
 const CommentDelete = async (req, res) => {
-    const QuesID = req.params.QuesID;
-    const commentId = req.params.commentId;
-    const ansId = req.params.ansId;
-    console.log(QuesID + " " + commentId + " " + ansId);
-    const update = Query.findByIdAndUpdate(
-        {_id: QuesID, 
-       " answers._id": ansId}
-    ,
-    {
-        $pull: {
-            comments: {
-                _id: commentId
-            }
-        }
+    const _id = req.params.id;
+    let updateComment = await comment.findByIdAndDelete({_id}, {
+        new: true
+    });
+    if (updateComment) {
+        return res.status(200).send({message: "Comment Deleted"});
     }
-);
-if (update) {
-    return res.status(200);
-}
+    else {
+        return res.status(400).send({error: "something went wrong"});
+    }
 
 };
 
+const updateLiked = async (req, res) => {
+    try {
+        const {name} = req.body;
+        const QuesId = req.params.QuesId;
+        const AnsId = req.params.AnsId;
+        console.log(name);
+        const result = await Query.updateOne(
+            {"_id": QuesId, "answers._id": AnsId}, // Filter to match the document and specific answer
+            {$addToSet: {"answers.$[elem].likedBy": name}}, // Update operation
+            {arrayFilters: [{"elem._id": AnsId}], upsert: true}
+        );
+        await Query.updateOne({_id: QuesId},
+            {$inc: {likes: 1}},
+            {new: true});
+        if (result) {
+            console.log(result);
+            return res.status(200).send({message: "AddedLiked"});
+        }
+        else {
+            return res.status(400).send({error: "something went error"});
+        }
+    } catch (e) {
+        console.log(e);
+    }
+
+};
+const deleteLike = async (req, res) => {
+    try {
+        const {name} = req.body;
+        const QuesId = req.params.QuesId;
+        const AnsId = req.params.AnsId;
+        console.log(name);
+        const result = await Query.updateOne(
+            {"_id": QuesId, "answers._id": AnsId}, // Filter to match the document and specific answer
+            {$pull: {"answers.$[elem].likedBy": name}}, // Update operation
+            {arrayFilters: [{"elem._id": AnsId}], upsert: true}
+        );
+        await Query.updateOne({_id: QuesId},
+            {$inc: {likes: -1}},
+            {new: true});
+        if (result) {
+            console.log(result);
+            return res.status(200).send({message: "AddedLiked"});
+        }
+        else {
+            return res.status(400).send({error: "something went error"});
+        }
+    } catch (e) {
+        console.log(e);
+    }
+};
+const commentLike = async (req, res) => {
+    const {name} = req.body;
+    console.log(name);
+    const id = req.params.id;
+    const update = await comment.updateOne({
+        _id: id
+    },
+        {$push: {likedBy: name}},
+        {new: true}
+    );
+    if (update) {
+        console.log(update);
+        return res.status(200).send({message: "liked"});
+    }
+    else {
+        return res.status(400).send({error: "something went wrong"});
+    }
+};
 
 
-module.exports = {user, data, signIn, AnswerDelete, CommentDelete, updateQueryNum, GetUserQuery, AnswerAdd, signUp, IndividualData, Home, IndividualUser};
+const deleteCommentLike = async (req, res) => {
+    const {name} = req.body;
+    console.log(name);
+    const id = req.params.id;
+    const update = await comment.updateOne({
+        _id: id
+    },
+        {$pull: {likedBy: name}},
+        {new: true}
+    );
+    if (update) {
+        console.log(update);
+        return res.status(200).send({message: "liked"});
+    }
+    else {
+        return res.status(400).send({error: "something went wrong"});
+    }
+};
+
+const answerUpdate = async (req,res) => {
+    const {QuesId,AnsId,Answer} = req.body;
+    const updateAns = await Query.updateOne(
+        {_id: QuesId, 'answers._id': AnsId},
+        {$set: {'answers.$.ans': Answer}}, {
+        new: true
+    });
+    if (updateAns) {
+        return res.status(200).send({message: "successfully updated"});
+    }
+    else {
+        return res.status(400).send({error: "something went wrong"});
+    }
+};
+
+const commentUpdate = async(req,res) =>{
+    const {CommentId,Comment} = req.body;
+    const updateComment  = await comment.updateOne({
+        _id:CommentId
+    },{
+        $set:{
+             comment:Comment
+        }
+    })
+    if (updateComment) {
+        return res.status(200).send({message: "successfully updated"});
+    }
+    else {
+        return res.status(400).send({error: "something went wrong"});
+    }
+
+}
+module.exports = {user, data, signIn,commentUpdate, deleteCommentLike,answerUpdate, commentLike, deleteLike, updateLiked, AnswerDelete, GetAllComment, CommentDelete, updateQueryNum, GetUserQuery, AnswerAdd, signUp, IndividualData, Home, IndividualUser};

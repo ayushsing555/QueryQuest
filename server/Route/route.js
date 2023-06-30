@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const {signIn, signUp, user, data, IndividualData,CommentDelete, AnswerDelete,GetUserQuery,CommentAdd, updateQueryNum, AnswerAdd, Home, IndividualUser} = require("../controllers/Path");
+const {signIn, signUp, user, data, commentLike,commentUpdate,answerUpdate,deleteCommentLike,CommentDelete,deleteLike,updateLiked,IndividualData, GetAllComment,AnswerDelete,GetUserQuery,CommentAdd, updateQueryNum, AnswerAdd, Home, IndividualUser} = require("../controllers/Path");
 const auth = require("../Authentication/auth");
 const Query = require("../model/Query");
+const Comment = require("../model/Comment");
 router.route("/signin").post(signIn);
 router.route("/").get(Home);
 router.route("/signup").post(signUp);
@@ -10,6 +11,18 @@ router.route("/user").get(user);
 router.route("/data").get(data);
 router.route("/updateQueryNumber/:userName").put(updateQueryNum);
 router.route("/Ques/answer").post(AnswerAdd);
+router.route("/data/:_id").get(IndividualData);
+router.route("/user/:id").get(IndividualUser);
+router.route("/user/Queries/:id").get(GetUserQuery);
+router.route("/Query/answer/delete/:QuesId/:AnsId").delete(AnswerDelete);
+router.route("/Query/answer/likes/:QuesId/:AnsId").put(updateLiked);
+router.route("/Query/answer/likes/delete/:QuesId/:AnsId").put(deleteLike);
+router.route("/comment").get(GetAllComment);
+router.route("/comment/delete/:id").delete(CommentDelete);
+router.route("/comment/like/:id").put(commentLike);
+router.route("/comment/like/delete/:id").put(deleteCommentLike);
+router.route("/Answers/update").put(answerUpdate);
+router.route("/Answers/Comment/update").put(commentUpdate);
 router.post("/new", auth, async (req, res) => {
     try {
         const {Question, Answer, postedBy} = req.body;
@@ -42,28 +55,24 @@ router.post("/new", auth, async (req, res) => {
         console.log(e);
     }
 });
-router.put("/Answers/comment", async (req, res) => {
-    for(i = 0;i<4;i++){
-        a+=Math.floor(Math.random()*100);
-    }
-    const {QuestionId, AnswerId, Comment, postedBy} = req.body;
-    console.log(QuestionId + " " + AnswerId + " " + Comment + ' ' + postedBy);
-    const newComment = await Query.updateOne({_id: QuestionId, "answers._id": AnswerId}, {
-        $push: {
-            "answers.$.comments": {commentId: a, comment: Comment, postedBy: postedBy}
-        }
-    });
-    if(newComment) {
-        return res.status(200).send({message:"Commented"})
+router.post("/Answers/comment", async (req, res) => {
+    const { AnswerId, comment,QuesId, postedBy} = req.body;
+    console.log(comment)
+    const newComment = new Comment({
+        AnsId:AnswerId,
+        comment:comment,
+        postedBy:postedBy,
+        QuesId:QuesId,
+        postedOn:Date.now()
+    })
+    const newcomment = await newComment.save();
+    if(newcomment){
+        return res.status(200).send({message:"Commented"});
     }
     else{
-        return res.status(300).status({error:"this is server error"})
+        return res.status(400).send({message:"Something wrong"})
     }
 });
 
-router.route("/data/:_id").get(IndividualData);
-router.route("/user/:id").get(IndividualUser);
-router.route("/user/Queries/:id").get(GetUserQuery);
-router.route("/Query/answer/delete/:QuesId/:AnsId").delete(AnswerDelete);
-router.route("/Query/answer/comment/delete/:QuesID/:ansId/:commentId").delete(CommentDelete);
+
 module.exports = router;

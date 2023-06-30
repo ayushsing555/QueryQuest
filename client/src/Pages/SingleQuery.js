@@ -4,24 +4,33 @@ import {FcLike} from 'react-icons/fc';
 import {AiFillDelete} from 'react-icons/ai';
 import Prism from '../Component/Prism';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import Comment from '../Component/Comment';
+import CommentBox from '../Component/CommentBox';
+import UpdateAnswerBox from '../Component/UpdateAnswerBox';
 import {useNavigate} from 'react-router-dom';
+import Comment from '../Component/Comment';
+import { TimeChange } from '../Component/TimeSettings';
 const SingleQuery = () => {
     const {id} = useParams();
     const navigator = useNavigate();
     const [AllQuery, setAllQuery] = useState([]);
+    const [AllComment, setAllComment] = useState([]);
     const [ans, setAns] = useState("");
     let userDetail = localStorage.getItem("Details");
-    userDetail = JSON.parse(userDetail);
+    
     if (userDetail == null) {
         window.alert("please login first to see Query");
         navigator("/signin");
+    } else {
+        userDetail = JSON.parse(userDetail);
     }
+    let liked = false;
     let ansNO = 1;
-    let commentNo;
     const getAllData = async () => {
         try {
             const res = await fetch(`http://localhost:8000/data/${id}`);
+            const resComment = await fetch(`http://localhost:8000/comment`);
+            let dataComment = await resComment.json();
+            setAllComment([dataComment]);
             let data = await res.json();
             var reversedData = [...data.answers].reverse();
             data.answers = reversedData;
@@ -57,56 +66,84 @@ const SingleQuery = () => {
             window.alert("Answer added");
             setAns("");
         }
-        console.log(data);
     };
     useEffect(() => {
         getAllData();
     }, [1]);
 
-    const DeleteAnswer = async(QuesId,AnsId) => {
+    const DeleteAnswer = async (QuesId, AnsId) => {
         let headersList = {
             "Accept": "*/*"
         };
         let bodyContent = JSON.stringify({
             identification: userDetail.id,
         });
-
         let response = await fetch(`http://localhost:8000/Query/answer/delete/${QuesId}/${AnsId}`, {
             method: "DELETE",
             body: bodyContent,
             headers: headersList
         });
-        const data =await response.json();
-        if(response.status===200)
-          getAllData();
-        else{
+        const data = await response.json();
+        if (response.status === 200){
+            getAllData();
+            window.alert("Answer Deleted")
+        }
+        else {
             window.alert(data.error);
         }
     };
-    
-    const CommentDelete = async(QuesId,ansId,commentId)=>{
+
+    const addLike = async (QuesId, AnsId) => {
         let headersList = {
-            "Accept": "*/*"
+            "Accept": "*/*",
+            "Content-Type": "application/json"
         };
         let bodyContent = JSON.stringify({
-            identification: userDetail.id,
+            name: userDetail.UserName
         });
 
-        let response = await fetch(`http://localhost:8000/Query/answer/comment/delete/${QuesId}/${ansId}/${commentId}`, {
-            method: "DELETE",
+        let response = await fetch(`http://localhost:8000/Query/answer/likes/${QuesId}/${AnsId}`, {
+            method: "PUT",
             body: bodyContent,
             headers: headersList
         });
-        const data =await response.json();
-        if(response.status===200){
+        const data = await response.json();
+        if (response.status === 200) {
             getAllData();
-            window.alert("Comment Deleted");
+            window.alert("Liked");
         }
-          
-        else{
+        else {
             window.alert(data.error);
         }
-    }
+    };
+    const dislike = async (QuesId, AnsId) => {
+        let headersList = {
+            "Accept": "*/*",
+            "Content-Type": "application/json"
+        };
+        let bodyContent = JSON.stringify({
+            name: userDetail.UserName
+        });
+
+        let response = await fetch(`http://localhost:8000/Query/answer/likes/delete/${QuesId}/${AnsId}`, {
+            method: "PUT",
+            body: bodyContent,
+            headers: headersList
+        });
+        const data = await response.json();
+        if (response.status === 200) {
+            getAllData();
+            window.alert("Disliked");
+        }
+        else {
+            window.alert(data.error);
+        }
+    };
+
+    
+
+    
+
 
     return (
         <>
@@ -127,13 +164,15 @@ const SingleQuery = () => {
                                         }
                                         {
                                             elem.answers.map((ans) => {
-                                                let Dates = new Date(ans.postedOn);
-                                                console.log(Dates);
-                                                const Time = Dates.getHours() + ":" + Dates.getMinutes();
-                                                commentNo = 1;
+                                                
+                                                if (ans.likedBy.includes(userDetail.UserName)) {
+                                                    liked = true;
+                                                }
+                                                else {
+                                                    liked = false;
+                                                }
                                                 return (
                                                     <>
-
                                                         <div className='border h-auto overflow-y-auto bg-blue-300 border-3 m-3 pt-2 pl-2 pb-4 shadow-2xl shadow-rose-600 text-start'>
                                                             <h1 className=''>
                                                                 <span className='text-red-900 '>Ans{ansNO++}. </span>
@@ -141,41 +180,24 @@ const SingleQuery = () => {
                                                                     <Prism code={ans.ans} />
                                                                 </b>
                                                                 <span className=' pl-3 pr-4 text-center'>Published by <NavLink to={`/user/${ans.postedBy}`} className='underline'>{ans.postedBy}</NavLink> </span>
-                                                                <span className='text-end'>on <NavLink>{Time}</NavLink></span>
+                                                                <span className='text-end'>on <NavLink>{TimeChange(ans.postedOn)}</NavLink></span>
                                                             </h1>
+                                                            <Comment Comments={AllComment} AnsID={ans._id} AnsPostedBy={ans.postedBy} QuesPostedBy={elem.postedBy} getAllData={getAllData} />
                                                             {
-                                                                ans.comments.map((comment) => {
-                                                                    var Dates = new Date(comment.postedOn);
-                                                                    const Time = Dates.getHours() + ":" + Dates.getMinutes();
-                                                                    return (
-                                                                        <>
-                                                                            <div className='align-middle border border-1 m-2 shadow-md  p-4 shadow-blue-400'>
-                                                                                <h1>
-                                                                                    <span className='text-red-900'>Comment{commentNo++}. </span>
-                                                                                    <b>
-                                                                                        <Prism code={comment.comment} />
-                                                                                    </b>
-                                                                                    <span className=' pl-3 pr-4 text-center'>Published by <NavLink to={`/user/ayush`} className='underline'>{comment.postedBy}</NavLink> </span>
-                                                                                    <span className='text-end'>on <NavLink>{Time}</NavLink></span>
-                                                                                    <button className='btn text-center ml-5 pl-2 pr-2 m-2  text-white  bg-red-900'><FcLike style={{fontSize: 18}} /></button>
-                                                                                    {
-                                                                                        (comment.postedBy === userDetail.UserName || (userDetail.UserName === ans.postedBy) || (userDetail.UserName === elem.postedBy)) ? <button className='btn text-center m-2 text-white  bg-red-900' onClick={(e)=>CommentDelete(elem._id,ans._id,comment._id)}  ><AiFillDelete style={{fontSize: 18}} /></button> : ""
-                                                                                    }
-                                                                                </h1>
-                                                                            </div>
-                                                                        </>
-                                                                    );
-                                                                })
+                                                                userDetail !== null ? <CommentBox AnsId={ans._id} QuestionId={elem._id} postedBy={userDetail.UserName} Token={userDetail.token} getAllData={getAllData} /> : ""
                                                             }
                                                             {
-                                                                userDetail !== null ? <Comment AnsId={ans._id} QuestionId={elem._id} postedBy={userDetail.UserName} Token={userDetail.token} getAllData={getAllData} /> : ""
+                                                                liked ? <button className='btn text-center m-2 text-white ' onClick={(e) => dislike(elem._id, ans._id)}><FcLike style={{fontSize: 18}} /></button> :
+                                                                    <button className='btn text-center m-2 text-white bg-red-400 ' onClick={(e) => addLike(elem._id, ans._id)}><FcLike style={{fontSize: 18}} /></button>
                                                             }
-
-                                                            <button className='btn text-center m-2 text-white  bg-red-900'><FcLike style={{fontSize: 18}} /></button>
                                                             {
-                                                                ((ans.postedBy === userDetail.UserName) || (userDetail.UserName === elem.postedBy)) ? <button className='btn text-center m-2 text-white  bg-red-900' onClick={(e) => DeleteAnswer(elem._id,ans._id)}  ><AiFillDelete style={{fontSize: 18}} /></button> : ""
+                                                                ((ans.postedBy === userDetail.UserName) || (userDetail.UserName === elem.postedBy)) ? <button className='btn text-center m-2 text-white  bg-red-900' onClick={(e) => DeleteAnswer(elem._id, ans._id)}  ><AiFillDelete style={{fontSize: 18}} /></button>
+                                                                    : ""
                                                             }
-
+                                                            {
+                                                                (ans.postedBy===userDetail.UserName)?
+                                                                <UpdateAnswerBox answer = {ans} QuesId = {elem._id} getAllData ={getAllData}/>:""
+                                                            }
                                                         </div>
                                                     </>
                                                 );

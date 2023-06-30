@@ -7,12 +7,10 @@ const Navbar = () => {
     const [data, setData] = useState([]);
     const getUserDetail = async (Details) => {
         Details = JSON.parse(Details);
-        const url = `http://localhost:8000/user/${Details.identification}`;
-        console.log(url);
+        const url = `http://localhost:8000/user/${Details.UserName}`;
         const res = await fetch(url);
         const data = await res.json();
         setData([data]);
-        console.log(data);
 
     };
     const changeRoute = () => {
@@ -23,7 +21,6 @@ const Navbar = () => {
 
     useEffect(() => {
         if (Details != null) {
-            console.log(Details);
             getUserDetail(Details);
         }
     }, []);
@@ -77,6 +74,9 @@ const Navbar = () => {
                                     </li>
                                     <li>
                                         <NavLink to="/users" className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Users</NavLink>
+                                    </li>
+                                    <li>
+                                        <NavLink to="/analysis" className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Analytic</NavLink>
                                     </li>
                                     <li>
                                         <NavLink to="/signin" onClick={Logout} className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Logout</NavLink>
