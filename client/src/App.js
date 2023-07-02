@@ -15,6 +15,7 @@ import SingleUser from './Pages/SingleUser';
 import Pricing from './Pages/Pricing';
 import Footer from './Component/Footer';
 import Analytic from './Pages/Analytic';
+import SinghalAnalytics from './Pages/SinghalAnalytics';
 function App() {
   return (
     <>
@@ -34,7 +35,7 @@ function App() {
         <Route path='/user/:id' element={<SingleUser/>}/>
         <Route path='/query/:id' element={<SingleQuery/>}/>
         <Route path='/analysis' element={<Analytic/>}/>
-      </Routes>
+        <Route path='/myAnalytic' element={<SinghalAnalytics/>}/>      </Routes>
       <Footer/>
       </BrowserRouter>
     </>
