@@ -1,19 +1,18 @@
 import { React, useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { GetCompleteUderData } from "../Component/GetCompleteUserData";
 
 
-const Profile = () => {
+const EditProfile = () => {
     const [singleUserDetail, setSingleUserDetail] = useState([]);
-    const { id } = useParams();
-    const getSingleData = async () => {
-        const res = await fetch(`http://localhost:8000/user/${id}`);
-        const data = await res.json();
-        setSingleUserDetail([data]);
-    };
 
+    const getSingleData = async () => {
+        const user= await GetCompleteUderData();
+        setSingleUserDetail([user]);
+    }
+    
     useEffect(() => {
         getSingleData();
-    }, [1]);
+    }, 1);
 
     return (
         <>
@@ -23,8 +22,8 @@ const Profile = () => {
                         <>
                             <div class="bg-black-900 overflow-hidden shadow rounded-lg ">
                                 <div class="px-4 py-5 sm:px-6">
-                                    <h3 class=" text-center -mt-3 mb-2 leading-6 font-bold text-gray-900  text-uppercase font-bold text-lg text-decoration-underline ">
-                                        <button className="mt-2 ml-10 bg-red-900 text-white rounded-lg px-10 py-2 ">User Profile</button>
+                                    <h3 class=" text-center -mt-3 mb-2 leading-6 font-weight-bold text-gray-900  text-uppercase font-bold text-lg text-decoration-underline ">
+                                        <button className="mt-2 ml-10 bg-red-900 text-white rounded-lg px-10 py-2 ">Edit Profile</button>
                                     </h3>
                                 </div>
                                 <div class="flex flex-row">
@@ -35,8 +34,8 @@ const Profile = () => {
                                                     <img class="object-cover object-center w-auto h-auto " src="/image/boy1.jpg" alt="stats" />
                                             }
                                         </div>
-                                        <div><button className="mt-2 ml-10 bg-red-900 text-white rounded-lg px-10 py-2 ">Edit Profile
-                                            <svg viewBox="0 0 1024 1024" fill="currentColor" height="1em" width="1em" className="ml-28 -mt-5">
+                                        <div><button className="mt-2 ml-10 bg-red-900 text-white rounded-lg px-2 py-2">Change Profile photo
+                                            <svg viewBox="0 0 1024 1024" fill="currentColor" height="1em" width="1em" className="ml-44 -mt-5">
                                                 <path d="M880 836H144c-17.7 0-32 14.3-32 32v36c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-36c0-17.7-14.3-32-32-32zm-622.3-84c2 0 4-.2 6-.5L431.9 722c2-.4 3.9-1.3 5.3-2.8l423.9-423.9a9.96 9.96 0 000-14.1L694.9 114.9c-1.9-1.9-4.4-2.9-7.1-2.9s-5.2 1-7.1 2.9L256.8 538.8c-1.5 1.5-2.4 3.3-2.8 5.3l-29.5 168.2a33.5 33.5 0 009.4 29.8c6.6 6.4 14.9 9.9 23.8 9.9z" />
                                             </svg></button></div>
                                     </div>
@@ -44,79 +43,87 @@ const Profile = () => {
                                     <div class="border-t border-gray-400 px-4 sm:p-0 w-full -mt-8 -ml-40">
                                         <dl class="sm:divide-y sm:divide-gray-400 border-2 ml-40 mt-10 rounded-lg">
                                             <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                                <dt class="text-sm font-medium text-gray-500">
+                                                <dt class="text-md font-lg text-gray-500 py-2">
                                                     Username:
                                                 </dt>
                                                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                                    {ele.userName}
+                                                    <input type="text" className="border-lg border-2 rounded-md
+                                                     px-2 py-1 border-slate-600 w-full" value= {ele.userName} />
                                                 </dd>
                                             </div>
                                             <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                                <dt class="text-sm font-medium text-gray-500">
+                                                <dt class="text-md font-lg text-gray-500 py-2">
                                                     Fullname:
                                                 </dt>
                                                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                                    {ele.fullName}
+                                                    <input type="text" className="border-lg border-2 rounded-md
+                                                     px-2 py-1 border-slate-600 w-full" value={"Asifa"}/>
                                                 </dd>
                                             </div>
                                             <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                                <dt class="text-sm font-medium text-gray-500">
+                                                <dt class="text-md font-lg text-gray-500 py-2">
                                                     Email address:
                                                 </dt>
                                                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                                    {ele.email}
+                                                <input type="text" className="border-lg border-2 rounded-md
+                                                     px-2 py-1 border-slate-600 w-full" value= {ele.email}/>
                                                 </dd>
                                             </div>
                                             <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                                <dt class="text-sm font-medium text-gray-500">
+                                                <dt class="text-md font-lg text-gray-500 py-2">
                                                     Instagram URL:
                                                 </dt>
                                                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                                    {ele.instagram}
+                                                <input type="text" className="border-lg border-2 rounded-md
+                                                     px-2 py-1 border-slate-600 w-full" value= {ele.instagramLink}/>
                                                 </dd>
                                             </div>
                                             <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                                <dt class="text-sm font-medium text-gray-500">
+                                                <dt class="text-md font-lg text-gray-500 py-2">
                                                     Linkdin URL:
                                                 </dt>
                                                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                                    {ele.linkdin}
+                                                <input type="text" className="border-lg border-2 rounded-md
+                                                     px-2 py-1 border-slate-600 w-full" value= {ele.linkdinLink}/>
                                                 </dd>
                                             </div>
                                             <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                                <dt class="text-sm font-medium text-gray-500">
+                                                <dt class="text-md font-lg text-gray-500 py-2">
                                                     GitHub URL:
                                                 </dt>
                                                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                                    {ele.github}
+                                                <input type="text" className="border-lg border-2 rounded-md
+                                                     px-2 py-1 border-slate-600 w-full" value= {ele.gitHubLink}/>
                                                 </dd>
                                             </div>
                                             <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                                <dt class="text-sm font-medium text-gray-500">
+                                                <dt class="text-md font-lg text-gray-500 py-2">
                                                     Description:
                                                 </dt>
                                                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                                    {ele.detail}
+                                                <input type="text" className="border-lg border-2 rounded-md
+                                                     px-2 py-1 border-slate-600 w-full" value= {ele.detail}/>
                                                 </dd>
                                             </div>
                                             <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                                <dt class="text-sm font-medium text-gray-500">
+                                                <dt class="text-md font-lg text-gray-500 py-2">
                                                     Gender:
                                                 </dt>
                                                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                                    {ele.gender}
+                                                <input type="text" className="border-lg border-2 rounded-md
+                                                     px-2 py-1 border-slate-600 w-full" value= {ele.gender}/>
                                                 </dd>
                                             </div>
                                             <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                                <dt class="text-sm font-medium text-gray-500">
+                                                <dt class="text-md font-lg text-gray-500 py-2">
                                                     Query Posted:
                                                 </dt>
                                                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                                    {ele.QueryPosted}
+                                                    {ele.queryPosted}
                                                 </dd>
                                             </div>
                                             <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                                <dt class="text-sm font-medium text-gray-500">
+                                                <dt class="text-md font-lg text-gray-500 py-2">
                                                     License:
                                                 </dt>
                                                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
@@ -124,7 +131,7 @@ const Profile = () => {
                                                 </dd>
                                             </div>
                                             <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                                <dt class="text-sm font-medium text-gray-500">
+                                                <dt class="text-md font-lg text-gray-500 py-2">
                                                     Created Date:
                                                 </dt>
                                                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
@@ -146,4 +153,4 @@ const Profile = () => {
     )
 }
 
-export default Profile;
+export default EditProfile;

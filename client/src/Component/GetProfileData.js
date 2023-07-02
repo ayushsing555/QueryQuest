@@ -2,8 +2,7 @@ import { json } from "react-router-dom";
 
 export function GetProfileData() {
     let user={
-        username:"",
-        id:"",
+        username:""
 
     }
     let userDetail = localStorage.getItem('Details');

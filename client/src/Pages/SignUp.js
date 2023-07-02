@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 const SignUp = () => {
     const navigator = useNavigate();
     const [UserDetail, setUserDetail] = useState({
-        userName: "", email: "", InstagramLink: "", LinkdinLink: "",
+        userName: "",fullName:"", email: "", InstagramLink: "", LinkdinLink: "",
         Password: "", Gender: "female","identification":new Date().getTime().toString(), detail: "", GitHubLink: ""
     });
 
@@ -23,6 +23,7 @@ const SignUp = () => {
         };
 
         let bodyContent = JSON.stringify({
+            "fullName":UserDetail.fullName,
             "userName": UserDetail.userName,
             "email": UserDetail.email,
             "instagram": UserDetail.InstagramLink,
@@ -64,6 +65,10 @@ const SignUp = () => {
                                     <div class=" mb-3">
                                         <input value={UserDetail.userName} name='userName' onChange={handleChange} type="name" id="form2Example18" class="form-control text-red-900 form-control-lg" required />
                                         <label class="form-label" for="form2Example18">User Name</label>
+                                    </div>
+                                    <div class=" mb-3">
+                                        <input value={UserDetail.fullName} name='fullName' onChange={handleChange} type="name" id="form2Example18" class="form-control text-red-900 form-control-lg" required />
+                                        <label class="form-label" for="form2Example18">Full Name</label>
                                     </div>
                                     <div class=" mb-3">
                                         <input value={UserDetail.email} name='email' onChange={handleChange} type="email" id="form2Example18" class="form-control text-red-900 form-control-lg" required />

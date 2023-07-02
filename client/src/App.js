@@ -16,6 +16,7 @@ import Pricing from './Pages/Pricing';
 import Footer from './Component/Footer';
 import Analytic from './Pages/Analytic';
 import Profile from './Pages/Profile';
+import EditProfile from './Pages/EditProfile';
 function App() {
   return (
     <>
@@ -36,6 +37,7 @@ function App() {
         <Route path='/query/:id' element={<SingleQuery/>}/>
         <Route path='/analysis' element={<Analytic/>}/>
         <Route path='/profile/:id' element={<Profile/>}/>
+        <Route path='/profile/edit/:id' element={<EditProfile/>}/>
       </Routes>
       <Footer/>
       </BrowserRouter>
