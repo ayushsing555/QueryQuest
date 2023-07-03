@@ -1,6 +1,46 @@
 import React from 'react';
+import {Bar} from "react-chartjs-2";
+import {Chart} from 'chart.js';
+import {LinearScale} from 'chart.js';
+import {CategoryScale} from 'chart.js';
+import {BarElement} from 'chart.js';
+Chart.register(BarElement);
+Chart.register(CategoryScale);
+Chart.register(LinearScale);
 
 const Analytic = () => {
+    const data = {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        datasets: [
+            {
+                label: 'QueryPosted',
+                data: [100, 98, 23, 11, 2, 12, 12, 12, 11, 45, 35, 12],
+                backgroundColor: 'rgba(127, 29, 29)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1,
+            },
+        ],
+    };
+
+    // Configuration options for the chart
+    const options = {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true,
+                title: {
+                    display: true,
+                    text: 'Queries',
+                },
+            },
+            x: {
+                title: {
+                    display: true,
+                    text: 'Month',
+                },
+            },
+        },
+    };
     let a = [1, 2, 3, 4, 2, 1, 3, 2, 2, 1, 3];
     return (
         <>
@@ -51,10 +91,12 @@ const Analytic = () => {
                                 );
                             })
                         }
-
-
                     </tbody>
                 </table>
+            </div>
+            <div style={{width: '900px', height: '500px'}} className='m-auto block'>
+                <h2>Bar Chart Example</h2>
+                <Bar data={data} options={options} />
             </div>
 
         </>

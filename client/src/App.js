@@ -17,6 +17,8 @@ import Footer from './Component/Footer';
 import Analytic from './Pages/Analytic';
 import Profile from './Pages/Profile';
 import EditProfile from './Pages/EditProfile';
+
+import SinghalAnalytics from './Pages/SinghalAnalytics';
 function App() {
   return (
     <>
@@ -39,6 +41,7 @@ function App() {
         <Route path='/profile/:id' element={<Profile/>}/>
         <Route path='/profile/edit/:id' element={<EditProfile/>}/>
       </Routes>
+        <Route path='/myAnalytic' element={<SinghalAnalytics/>}/>      </Routes>
       <Footer/>
       </BrowserRouter>
     </>

@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const {signIn, signUp, user, data, commentLike,commentUpdate,answerUpdate,deleteCommentLike,CommentDelete,deleteLike,updateLiked,IndividualData, GetAllComment,AnswerDelete,GetUserQuery,CommentAdd, updateQueryNum, AnswerAdd, Home, IndividualUser} = require("../controllers/Path");
+const {signIn, signUp, user, data, commentLike,generateOtp,commentUpdate,answerUpdate,deleteCommentLike,CommentDelete,deleteLike,updateLiked,IndividualData, GetAllComment,AnswerDelete,GetUserQuery,CommentAdd, updateQueryNum, AnswerAdd, Home, IndividualUser} = require("../controllers/Path");
 const auth = require("../Authentication/auth");
 const Query = require("../model/Query");
 const Comment = require("../model/Comment");
@@ -23,6 +23,7 @@ router.route("/comment/like/:id").put(commentLike);
 router.route("/comment/like/delete/:id").put(deleteCommentLike);
 router.route("/Answers/update").put(answerUpdate);
 router.route("/Answers/Comment/update").put(commentUpdate);
+router.route("/verify").post(generateOtp);
 router.post("/new", auth, async (req, res) => {
     try {
         const {Question, Answer, postedBy} = req.body;
