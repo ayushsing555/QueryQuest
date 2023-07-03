@@ -24,25 +24,25 @@ function App() {
     <>
       <BrowserRouter>
         <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/new" element={<NewCard />} />
-        <Route path='/signin' element={<SignIn />} />
-        <Route path='/contact' element={<Contact />} />
-        <Route path='/signup' element={<SignUp />} />
-        <Route path='/newQuery' element={<NewQuery />} />
-        <Route path='/allQuery' element={<AllQuery/>}/>
-        <Route path='/myQuery' element={<MyQuery/>}/>
-        <Route path='/users' element={<Users/>}/>
-        <Route path='/pricing' element={<Pricing/>}/>
-        <Route path='/user/:id' element={<SingleUser/>}/>
-        <Route path='/query/:id' element={<SingleQuery/>}/>
-        <Route path='/analysis' element={<Analytic/>}/>
-        <Route path='/profile/:id' element={<Profile/>}/>
-        <Route path='/profile/edit/:id' element={<EditProfile/>}/>
-      </Routes>
-        <Route path='/myAnalytic' element={<SinghalAnalytics/>}/>      </Routes>
-      <Footer/>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/new" element={<NewCard />} />
+          <Route path='/signin' element={<SignIn />} />
+          <Route path='/contact' element={<Contact />} />
+          <Route path='/signup' element={<SignUp />} />
+          <Route path='/newQuery' element={<NewQuery />} />
+          <Route path='/allQuery' element={<AllQuery />} />
+          <Route path='/myQuery' element={<MyQuery />} />
+          <Route path='/users' element={<Users />} />
+          <Route path='/pricing' element={<Pricing />} />
+          <Route path='/user/:id' element={<SingleUser />} />
+          <Route path='/query/:id' element={<SingleQuery />} />
+          <Route path='/analysis' element={<Analytic />} />
+          <Route path='/profile/:id' element={<Profile />} />
+          <Route path='/profile/edit/:id' element={<EditProfile />} />
+          <Route path='/myAnalytic' element={<SinghalAnalytics />} />
+        </Routes>
+        <Footer />
       </BrowserRouter>
     </>
   );

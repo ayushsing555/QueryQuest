@@ -13,9 +13,6 @@ const SignUp = () => {
  
         userName: "",fullName:"", email: "", InstagramLink: "", LinkdinLink: "",
         Password: "", Gender: "female","identification":new Date().getTime().toString(), detail: "", GitHubLink: ""
-
-        userName: "", email: "", InstagramLink: "", LinkdinLink: "",
-        Password: "", Gender: "female", "identification": new Date().getTime().toString(), detail: "", GitHubLink: ""
  
     });
 

@@ -9,11 +9,6 @@ const UserProfile = () => {
     const Logout = () => {
         localStorage.removeItem("Details");
     };
-
-import {NavLink} from 'react-router-dom';
-
-const UserProfile = () => {
-    
  
     return (
         <div class="dropdown">
@@ -34,19 +29,11 @@ const UserProfile = () => {
                     <NavLink to={`/signin`}>
                     <button className='dropdown-item py-1 font-bold' onClick={Logout}>Logout</button></NavLink>
                 </li>
-                
-
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <li>
-                    <NavLink className="dropdown-item" to="/profile">profile</NavLink>
+                    <NavLink to='/myanalytic'>
+                       <button className='dropdown-item py-1 font-bold'>myAnalytic</button>
+                    </NavLink>
                 </li>
-                <li>
-                    <NavLink to='/edit' className="dropdown-item" href="a">Edit </NavLink>
-                </li>
-                <li>
-                    <NavLink to={`/myAnalytic/@ayush`} className="dropdown-item" href="a">MyAnalysis</NavLink>
-                </li>
- 
             </ul>
         </div>
     );
