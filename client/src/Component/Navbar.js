@@ -29,7 +29,7 @@ const Navbar = () => {
         <nav className="bg-red-900  w-full  border-b border-black-800 dark:border-slate-600">
             <div className="max-w-screen-2xl flex flex-wrap  items-center justify-between mx-auto p-2">
                 <a href="website" className="flex items-center -mt-10 ml-2 h-25 w-40">
-                    <img src='\image\Screenshot 2023-07-03 105005.png' className='object-scale-down w-full rounded-xl mt-5' alt='logo'  />
+                    <img src='\image\QueryQuest.png' className='object-scale-down w-full rounded-xl mt-5' alt='logo'  />
                 </a>
                 {
                     Details !== null && data[0]!==undefined  ? <>
