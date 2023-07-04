@@ -50,26 +50,27 @@ const SignIn = () => {
     };
     return (
         <>
-            <section class="vh-90">
+            <section class="vh-90  bg-orange-200">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-sm-6 text-black">
+                        <div class="col-sm-6 mt-10">
                             <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-2 pt-5 pt-xl-0 mt-xl-n5">
                                 <form style={{width: "23rem"}}>
-                                    <h3 class="fw-normal mb-3 pb-3" style={{letterSpacing: "1px;"}}>Log in</h3>
-                                    <div class=" mb-4">
-                                        <input type="email" name='email' value={UserDetail.email} onChange={handleChange} id="form2Example18" class="form-control text-red-900 form-control-lg" />
-                                        <label class="form-label" for="form2Example18">Email address</label>
+                                <h3 class="text-center text-black text-3xl font-bold pt-3 mt-5" style={{letterSpacing: "1px;"}}>Log in</h3>
+                                    <p className='text-center text-red-600 text-sm font-bold font-serif mb-3'>Welcome back, log in and let the journey continue!</p>
+                                    <div class="mt-4 font-bold mb-4">
+                                    <label class="form-label text-black" for="form2Example18">Email address</label>
+                                        <input type="email" name='email' value={UserDetail.email} onChange={handleChange} id="form2Example18" class="form-control border-2 border-red-900 hover:border-4 hover:border-red-900 focus:border-4  font-bold focus:border-red-900 form-control-lg" />
                                     </div>
-                                    <div class=" mb-4">
-                                        <input name='password' value={UserDetail.password} onChange={handleChange} type="password" id="form2Example28" class="form-control text-red-900 form-control-lg" />
-                                        <label class="form-label" for="form2Example28">Password</label>
+                                    <div class=" mt-4 font-bold mb-4">
+                                    <label class="form-label text-black" for="form2Example28">Password</label>
+                                        <input name='password' value={UserDetail.password} onChange={handleChange} type="password" id="form2Example28" class="form-control border-2 border-red-900 hover:border-4 hover:border-red-900 focus:border-4 font-bold  focus:border-red-900 form-control-lg" />
                                     </div>
-                                    <div class="pt-1 mb-4">
-                                        <button onClick={handleSubmit} className="btn  border-red-900 border-2 btn-lg hover:bg-red-900 " >Login</button>
+                                    <div class="pt-1 mb-2">
+                                        <button onClick={handleSubmit} className="btn btn-lg hover:bg-green-800 bg-red-900 text-white font-bold" >Login</button>
                                     </div>
-                                    <p class="small mb-5 pb-lg-2"><a class="text-muted" href="#!">Forgot password?</a></p>
-                                    <p>Don't have an account? <NavLink to="/signup" class="text-red-900">Register here</NavLink></p>
+                                    <p class="small mb-3 pb-lg-2"><a class="text-red-600" href="#!">Forgot password?</a></p>
+                                    <p className='text-md font-semibold'>Don't have an account? <NavLink to="/signup" class="text-blue-700 hover:underline">Register here</NavLink></p>
                                 </form>
                             </div>
                         </div>
