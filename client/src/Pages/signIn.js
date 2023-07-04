@@ -50,7 +50,7 @@ const SignIn = () => {
     };
     return (
         <>
-            <section class="vh-90  bg-orange-200">
+            <section class="vh-90  bg-orange-100">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-sm-6 mt-10">
