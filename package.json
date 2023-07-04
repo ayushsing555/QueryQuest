@@ -1,8 +1,0 @@
-{
-  "dependencies": {
-    "email-validator": "^2.0.4",
-    "ifvisible": "^1.1.0",
-    "ifvisible.js": "^1.0.6",
-    "timeme": "^1.0.0"
-  }
-}

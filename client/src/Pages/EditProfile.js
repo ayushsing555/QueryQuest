@@ -1,24 +1,37 @@
-import { React, useState, useEffect } from "react";
-import { GetCompleteUderData } from "../Component/GetCompleteUserData";
-
+import {React, useState, useEffect} from "react";
+import {GetCompleteUserData} from "../Component/GetCompleteUserData";
+import {GetProfileData} from "../Component/GetProfileData";
 
 const EditProfile = () => {
     const [singleUserDetail, setSingleUserDetail] = useState([]);
-
     const getSingleData = async () => {
-        const user= await GetCompleteUderData();
-        setSingleUserDetail([user]);
-    }
-    
+        const user = GetProfileData();
+        const res = await fetch(`http://localhost:8000/user/${user.username}`);
+        const data = await res.json();
+        setSingleUserDetail([data]);
+    };
     useEffect(() => {
         getSingleData();
-    }, 1);
+    }, [1]);
+    useEffect(() => {
+        
+    }, [singleUserDetail]);
+        const [UserDetail, setUserDetail] = useState({
+        userName: singleUserDetail.length > 0 ? singleUserDetail[0].userName : "",
+        fullName: singleUserDetail.length > 0 ? singleUserDetail[0].userName:"",
+        instagram: singleUserDetail.length > 0 ? singleUserDetail[0].userName : "",
+        linkdin: singleUserDetail.length > 0 ? singleUserDetail[0].userName : "",
+        Password: singleUserDetail.length > 0 ? singleUserDetail[0].userName : "",
+        gender: singleUserDetail.length > 0 ? singleUserDetail[0].gender : "",
+        detail: singleUserDetail.length > 0 ? singleUserDetail[0].userName : "",
+        github: singleUserDetail.length > 0 ? singleUserDetail[0].userName : "",
+    })
+    
+    console.log(UserDetail)
+
 
     return (
         <>
-            {
-                singleUserDetail.map((ele) => {
-                    return (
                         <>
                             <div class="bg-black-900 overflow-hidden shadow rounded-lg ">
                                 <div class="px-4 py-5 sm:px-6">
@@ -28,10 +41,10 @@ const EditProfile = () => {
                                 </div>
                                 <div class="flex flex-row">
                                     <div>
-                                        <div class="mt-2 rounded-lg overflow-hidden border-2 ml-10 h-44">
+                                        <div class="mt-2 rounded-lg overflow-hidden border-2 ml-10 h-22">
                                             {
-                                                ele.gender === "female" ? <img class="object-cover object-center w-full h-full" src="/image/girl1.jpg" alt="stats" /> :
-                                                    <img class="object-cover object-center w-auto h-auto " src="/image/boy1.jpg" alt="stats" />
+                                                UserDetail.gender === "female" ? <img class="object-cover object-center w-full h-full" src="/image/girl1.jpg" alt="stats" /> :
+                                                    <img class="object-cover object-center " src="/image/boy1.jpg" alt="stats" />
                                             }
                                         </div>
                                         <div><button className="mt-2 ml-10 bg-red-900 text-white rounded-lg px-2 py-2">Change Profile photo
@@ -47,8 +60,8 @@ const EditProfile = () => {
                                                     Username:
                                                 </dt>
                                                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                                    <input type="text" className="border-lg border-2 rounded-md
-                                                     px-2 py-1 border-slate-600 w-full" value= {ele.userName} />
+                                                    <input type="text" name="userName" className="border-lg border-2 rounded-md
+                                                     px-2 py-1 border-slate-600 w-full" value= {UserDetail.userName} />
                                                 </dd>
                                             </div>
                                             <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -60,22 +73,14 @@ const EditProfile = () => {
                                                      px-2 py-1 border-slate-600 w-full" value={"Asifa"}/>
                                                 </dd>
                                             </div>
-                                            <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                                <dt class="text-md font-lg text-gray-500 py-2">
-                                                    Email address:
-                                                </dt>
-                                                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                                <input type="text" className="border-lg border-2 rounded-md
-                                                     px-2 py-1 border-slate-600 w-full" value= {ele.email}/>
-                                                </dd>
-                                            </div>
+                                            
                                             <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                                 <dt class="text-md font-lg text-gray-500 py-2">
                                                     Instagram URL:
                                                 </dt>
                                                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                                <input type="text" className="border-lg border-2 rounded-md
-                                                     px-2 py-1 border-slate-600 w-full" value= {ele.instagramLink}/>
+                                                <input type="text" name="instagram" className="border-lg border-2 rounded-md
+                                                     px-2 py-1 border-slate-600 w-full" value= {UserDetail.instagram}/>
                                                 </dd>
                                             </div>
                                             <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -83,8 +88,8 @@ const EditProfile = () => {
                                                     Linkdin URL:
                                                 </dt>
                                                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                                <input type="text" className="border-lg border-2 rounded-md
-                                                     px-2 py-1 border-slate-600 w-full" value= {ele.linkdinLink}/>
+                                                <input type="text" name="linkdin" className="border-lg border-2 rounded-md
+                                                     px-2 py-1 border-slate-600 w-full" value= {UserDetail.linkdin}/>
                                                 </dd>
                                             </div>
                                             <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -92,8 +97,8 @@ const EditProfile = () => {
                                                     GitHub URL:
                                                 </dt>
                                                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                                <input type="text" className="border-lg border-2 rounded-md
-                                                     px-2 py-1 border-slate-600 w-full" value= {ele.gitHubLink}/>
+                                                <input type="text" name="github" className="border-lg border-2 rounded-md
+                                                     px-2 py-1 border-slate-600 w-full" value= {UserDetail.github}/>
                                                 </dd>
                                             </div>
                                             <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -101,41 +106,8 @@ const EditProfile = () => {
                                                     Description:
                                                 </dt>
                                                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                                <input type="text" className="border-lg border-2 rounded-md
-                                                     px-2 py-1 border-slate-600 w-full" value= {ele.detail}/>
-                                                </dd>
-                                            </div>
-                                            <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                                <dt class="text-md font-lg text-gray-500 py-2">
-                                                    Gender:
-                                                </dt>
-                                                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                                <input type="text" className="border-lg border-2 rounded-md
-                                                     px-2 py-1 border-slate-600 w-full" value= {ele.gender}/>
-                                                </dd>
-                                            </div>
-                                            <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                                <dt class="text-md font-lg text-gray-500 py-2">
-                                                    Query Posted:
-                                                </dt>
-                                                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                                    {ele.queryPosted}
-                                                </dd>
-                                            </div>
-                                            <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                                <dt class="text-md font-lg text-gray-500 py-2">
-                                                    License:
-                                                </dt>
-                                                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                                    {ele.ticket}
-                                                </dd>
-                                            </div>
-                                            <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                                <dt class="text-md font-lg text-gray-500 py-2">
-                                                    Created Date:
-                                                </dt>
-                                                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                                    {ele.createdDate}
+                                                <input type="text" name="detail" className="border-lg border-2 rounded-md
+                                                     px-2 py-1 border-slate-600 w-full" value= {UserDetail.detail}/>
                                                 </dd>
                                             </div>
                                         </dl>
@@ -145,12 +117,11 @@ const EditProfile = () => {
                             </div>
                         </>
                     )
-                })
-            }
+                
 
 
         </>
-    )
-}
+    );
+};
 
 export default EditProfile;

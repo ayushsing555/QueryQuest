@@ -7,30 +7,30 @@ const SignUp = () => {
     const [verified, setVerified] = useState(false);
     const [email, setEmail] = useState(true);
     const [verfiyInput, setVerifyInput] = useState(false);
-    const [EnterOtp,SetEnterOtp] = useState();
-    const [getOtp,setOtp] = useState();
+    const [EnterOtp, SetEnterOtp] = useState();
+    const [getOtp, setOtp] = useState();
     const [UserDetail, setUserDetail] = useState({
- 
-        userName: "",fullName:"", email: "", InstagramLink: "", LinkdinLink: "",
-        Password: "", Gender: "female","identification":new Date().getTime().toString(), detail: "", GitHubLink: ""
- 
+
+        userName: "", fullName: "", email: "", InstagramLink: "", LinkdinLink: "",
+        Password: "", Gender: "female", "identification": new Date().getTime().toString(), detail: "", GitHubLink: "",
+        Image: ""
     });
 
-    const sendOtp = async() =>{
-        if(UserDetail.email===""){
-            return window.alert("please provied an email")
+    const sendOtp = async () => {
+        if (UserDetail.email === "") {
+            return window.alert("please provied an email");
         }
-         if(!EmailValidator.validate(UserDetail.email)){
+        if (!EmailValidator.validate(UserDetail.email)) {
             return window.alert("please provide an valid email");
         }
         setEmail(false);
-         setVerifyInput(true);
+        setVerifyInput(true);
         let headersList = {
             "Accept": "*/*",
             "Content-Type": "application/json"
         };
         let bodyContent = JSON.stringify({
-            "Email":UserDetail.email
+            "Email": UserDetail.email
         });
         let response = await fetch("http://localhost:8000/verify", {
             method: "POST",
@@ -42,26 +42,26 @@ const SignUp = () => {
             window.alert("something went wrong");
         }
         if (response.status === 200) {
-            setOtp(data.otp)
+            setOtp(data.otp);
         }
-    }
-    const changeEmail=() =>{
+    };
+    const changeEmail = () => {
         setEmail(true);
-        setVerifyInput(false)
-    }
+        setVerifyInput(false);
+    };
 
-    const verify=(e) =>{
+    const verify = (e) => {
         e.preventDefault();
         console.log(EnterOtp);
         console.log(getOtp);
-        if(EnterOtp===getOtp) {
+        if (EnterOtp === getOtp) {
             setVerified(true);
             setVerifyInput(false);
         }
-        else{
-            window.alert("Invalid Otp")
+        else {
+            window.alert("Invalid Otp");
         }
-    }
+    };
     const handleChange = (e) => {
         console.log(e.target.name);
         let name = e.target.name;
@@ -77,7 +77,7 @@ const SignUp = () => {
         };
 
         let bodyContent = JSON.stringify({
-            "fullName":UserDetail.fullName,
+            "fullName": UserDetail.fullName,
             "userName": UserDetail.userName,
             "email": UserDetail.email,
             "instagram": UserDetail.InstagramLink,
@@ -116,7 +116,6 @@ const SignUp = () => {
                             <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-3 pt-5 pt-xl-0 ">
                                 <form style={{width: "23rem"}}>
                                     <h3 class="fw-normal mb-3 pb-3" style={{letterSpacing: "1px;"}}>New User</h3>
- 
                                     <div class=" mb-3">
                                         <input value={UserDetail.userName} name='userName' onChange={handleChange} type="name" id="form2Example18" class="form-control text-red-900 form-control-lg" required />
                                         <label class="form-label" for="form2Example18">User Name</label>
@@ -125,23 +124,16 @@ const SignUp = () => {
                                         <input value={UserDetail.fullName} name='fullName' onChange={handleChange} type="name" id="form2Example18" class="form-control text-red-900 form-control-lg" required />
                                         <label class="form-label" for="form2Example18">Full Name</label>
                                     </div>
-                                    <div class=" mb-3">
-                                        <input value={UserDetail.email} name='email' onChange={handleChange} type="email" id="form2Example18" class="form-control text-red-900 form-control-lg" required />
-                                        <label class="form-label" for="form2Example18">Email address</label>
-                                    </div>
-                                    <div class=" mb-3">
-                                        <input value={UserDetail.InstagramLink} name='InstagramLink' onChange={handleChange} type="url" id="form2Example18" class="form-control text-red-900 form-control-lg" required />
-                                        <label class="form-label" for="form2Example18">Instagram</label>
-                                    </div>
+
 
                                     {
                                         verfiyInput ? <>
                                             <b>We have sent a otp to your  <b className='text-xl text-red-900'>{UserDetail.email}</b>  if you want to change email <button className="btn border-red-900 border-2 btn-sm hover:bg-red-900" onClick={changeEmail} >change</button></b>
                                             <div class="mt-2 mb-3">
-                                                <input value={EnterOtp} name='otp' onChange={(e)=>SetEnterOtp(e.target.value)} type="name" id="form2Example18" class="form-control text-red-900 form-control-lg" required />
+                                                <input value={EnterOtp} name='otp' onChange={(e) => SetEnterOtp(e.target.value)} type="name" id="form2Example18" class="form-control text-red-900 form-control-lg" required />
                                                 <label class="form-label" for="form2Example18">Enter Otp:</label>
                                             </div>
-                                        <button className="btn border-red-900 border-2 btn-lg hover:bg-red-900" onClick={verify}>Verify</button>
+                                            <button className="btn border-red-900 border-2 btn-lg hover:bg-red-900" onClick={verify}>Verify</button>
                                         </> : ""
                                     }
                                     {
@@ -150,19 +142,17 @@ const SignUp = () => {
                                                 <input value={UserDetail.email} name='email' onChange={handleChange} type="email" id="form2Example18" class="form-control text-red-900 form-control-lg" required />
                                                 <label class="form-label" for="form2Example18">Email address</label>
                                             </div>
-                                        <button className="btn border-red-900 border-2 btn-lg hover:bg-red-900" onClick={sendOtp} >SendOtp</button>
+                                            <button className="btn border-red-900 border-2 btn-lg hover:bg-red-900" onClick={sendOtp} >SendOtp</button>
                                         </> : ""
                                     }
                                     {
                                         verified ? <>
-                                           <div class=" mb-3">
-                                                <input value={UserDetail.userName} name='userName' onChange={handleChange} type="email" id="form2Example18" class="form-control text-red-900 form-control-lg" required />
-                                                <label class="form-label" for="form2Example18">UserName</label>
-                                            </div>
                                             <div class=" mb-3">
                                                 <input value={UserDetail.InstagramLink} name='InstagramLink' onChange={handleChange} type="url" id="form2Example18" class="form-control text-red-900 form-control-lg" required />
                                                 <label class="form-label" for="form2Example18">Instagram</label>
                                             </div>
+
+
                                             <div class=" mb-3">
                                                 <input value={UserDetail.LinkdinLink} name='LinkdinLink' onChange={handleChange} type="url" id="form2Example18" class="form-control text-red-900 form-control-lg" required />
                                                 <label class="form-label" for="form2Example18">Linkdin</label>
@@ -185,13 +175,10 @@ const SignUp = () => {
                                             <div class="mb-3">
                                                 <textarea className='focused border-2' name='detail' value={UserDetail.detail} onChange={handleChange} placeholder='Tell us About yourself...' col="16" rows={3} required></textarea>
                                             </div>
-                                        <button className="btn  border-red-900 border-2 btn-lg hover:bg-red-900" onClick={handleSubmit} >SignUp</button>
+                                            <button className="btn  border-red-900 border-2 btn-lg hover:bg-red-900" onClick={handleSubmit} >SignUp</button>
 
                                         </> : ""
                                     }
-
- 
-
                                     <div class="pt-1 mb-3">
                                         <p> have an account? <NavLink to="/signin" class="text-red-900">Login here</NavLink></p>
                                     </div>

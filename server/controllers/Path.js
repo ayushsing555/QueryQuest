@@ -84,6 +84,7 @@ const signUp = async (req, res) => {
         const {
             userName,
             email,
+            fullName,
             instagram,
             linkdin,
             github,
@@ -99,6 +100,7 @@ const signUp = async (req, res) => {
             linkdin == '' ||
             github == '' ||
             password == '' ||
+            fullName == '' ||
             identification == '' ||
             detail == '' ||
             gender == ''
@@ -116,6 +118,7 @@ const signUp = async (req, res) => {
         }
         const newUser = new User({
             userName,
+            fullName,
             email,
             instagram,
             linkdin,
@@ -126,7 +129,76 @@ const signUp = async (req, res) => {
             detail,
         });
         const newUserData = await newUser.save();
-        return res.status(200).send({Message: 'Successfully registered'});
+        res.status(200).send({Message: 'Successfully registered'});
+        if (newUserData) {
+            const transporter = Transporter();
+            const emailContent = `
+    <div  style="background-color: #f9f9f9; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+        <h1 class="heading" style="color: #333; text-align: center; margin-bottom: 30px;">Welcome to Community Solutions!</h1>
+        <p style="font-size: 18px;">Dear ${userName},</p>
+        <p style="font-size: 16px;">We are delighted to welcome you to <strong style="color:red;">Community Solutions</strong>! This email is to confirm that your account has been successfully created.</p>
+        <h2 style="color: #333; margin-top: 30px;">Account Details:</h2>
+        <ul style="list-style-type: none; padding-left: 0;">
+          <li style="font-size: 16px; margin-bottom: 10px;"><strong>Username:</strong> ${userName}</li>
+          <li style="font-size: 16px; margin-bottom: 10px;"><strong>Email address:</strong> ${email}</li>
+          <li style="font-size: 16px; margin-bottom: 10px;"><strong>Password:</strong>${password}</li>
+        </ul>
+        <p style="font-size: 16px;">Your account grants you access to a wide range of features and services, designed to enhance your <strong style="color:red;">Community Solutions</strong> experience.</p>
+        <p style="font-size: 16px;">To get started, we recommend logging in to your account and exploring the various sections. If you have any questions or need assistance, our support team is here to help.</p>
+        <p style="font-size: 16px;">Thank you for choosing <a href="http://localhost:3001/"><strong style="color:red;">Community Solutions</strong></a> . We look forward to serving you!</p>
+        <p  style="font-size: 16px; margin-top: 30px; text-align: center; color: #555;">Best regards,</p>
+        <p  style="font-size: 16px; margin-top: 5px; text-align: center; color: #555;">Asifa Khan<br>Community Solutions</p>
+</div>
+  `;
+            const mailOptions = {
+                from: 'solutionscommunity190@gmail.com',
+                to: email,
+                subject: 'Account Created',
+                html: emailContent,
+            };
+            await transporter.sendMail(mailOptions);
+        }
+
+        if (newUserData) {
+            const transporter = Transporter();
+            const emailContent = `
+    <html>
+      <head>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            color: #333;
+          }
+
+          h1 {
+            color: #007bff;
+          }
+
+          p {
+            margin-bottom: 16px;
+          }
+        </style>
+      </head>
+      <body>
+        <h1>Welcome to Our Platform!</h1>
+        <p>Congratulations on creating your new account!</p>
+        <p>As a new user, we are pleased to offer you a free license for our platform. With this license, you can explore and utilize essential features for your email communication needs.</p>
+        <p>If you find our platform beneficial and wish to unlock more advanced features, we encourage you to check out our range of premium licenses. These licenses provide access to additional powerful features such as advanced analytics, personalized templates, and priority support.</p>
+        <p>Visit our website to learn more about our license options and find the perfect fit for your requirements.</p>
+        <p>We're excited to have you on board and look forward to assisting you with your email communication goals!</p>
+        <p>Best regards,</p>
+        <p>Your Team</p>
+      </body>
+    </html>
+  `;
+            const mailOptions = {
+                from: 'solutionscommunity190@gmail.com',
+                to: email,
+                subject: 'Welcome to Our Platform!',
+                html: emailContent,
+            };
+            await transporter.sendMail(mailOptions);
+        }
     } catch (e) {
         console.log(e + 'ayush');
     }

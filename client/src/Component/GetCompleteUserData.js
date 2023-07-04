@@ -1,14 +1,13 @@
 import { GetProfileData } from "./GetProfileData";
 
-export async function GetCompleteUderData() {
-    
+export  function GetCompleteUserData() {
     let userData={
         userName: "", email: "", instagramLink: "", linkdinLink: "",
         password: "", gender: "", identification:"", detail: "", 
         gitHubLink: "", ticket: "", queryPosted:"", createdDate:""
     }
-
-    const user=GetProfileData();
+    const fetchData=async()=>{
+        const user=GetProfileData();
 
         const res =  await fetch(`http://localhost:8000/user/${user.username}`);
         const data = await res.json();
@@ -27,5 +26,10 @@ export async function GetCompleteUderData() {
         userData.ticket=data.ticket;
     
     return userData;
+    }
+    
+    userData =  fetchData();
+    console.log(userData)
+    return userData
     
 }

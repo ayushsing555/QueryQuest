@@ -1,5 +1,3 @@
-import { json } from "react-router-dom";
-
 export function GetProfileData() {
     let user={
         username:""

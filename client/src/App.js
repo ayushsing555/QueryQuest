@@ -38,8 +38,8 @@ function App() {
           <Route path='/user/:id' element={<SingleUser />} />
           <Route path='/query/:id' element={<SingleQuery />} />
           <Route path='/analysis' element={<Analytic />} />
-          <Route path='/profile/:id' element={<Profile />} />
-          <Route path='/profile/edit/:id' element={<EditProfile />} />
+          <Route path='/profile' element={<Profile />} />
+          <Route path='/profile/edit' element={<EditProfile />} />
           <Route path='/myAnalytic' element={<SinghalAnalytics />} />
         </Routes>
         <Footer />

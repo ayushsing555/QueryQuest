@@ -30,7 +30,7 @@ app.delete("/delete/:id", async (req, res) => {
     const id = req.params.id;
    
     try {
-        const deletes = await User.deleteMany({});
+        const deletes = await User.findByIdAndDelete({_id:id});
         console.log(deletes);
         res.send(deletes);
     }
