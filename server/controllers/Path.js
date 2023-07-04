@@ -418,7 +418,7 @@ const generateOtp = async (req, res) => {
         const transporter = Transporter();
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
         const emailContent = `<div style="background-color: #f9f9f9; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
-        <p style="font-size: 18px;">Hello <span style="color:rgb(126, 25, 25); font-weight: bold;"> ${userName}</span>,</p>
+        <p style="font-size: 18px;">Hello <span style="color:rgb(126, 25, 25); font-weight: bold;"></span>,</p>
         <p style="margin-top: 20px; margin-left: 20px;">Your OTP for registration is: <span style="font-size: larger; color: red; font-weight: bold;">${otp}</span> </p>
         <p  style="font-size: 16px; margin-top: 30px;color: #555;">Best regards,</p>
               <p  style="font-size: 16px; margin-top: 5px;color: #555;">The <strong style="color:rgb(126, 25, 25);">𝐐𝐮𝐞𝐫𝐲𝐐𝐮𝐞𝐬𝐭</strong> Team</p>
