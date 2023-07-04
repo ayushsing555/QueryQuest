@@ -4,7 +4,7 @@ const Transporter = require('../controllers/TransporterFun');
 const {signIn, signUp, user, data, commentLike, generateOtp, commentUpdate, answerUpdate, deleteCommentLike, CommentDelete, deleteLike, updateLiked, IndividualData, GetAllComment, AnswerDelete, GetUserQuery, CommentAdd, updateQueryNum, AnswerAdd, Home, IndividualUser} = require("../controllers/Path");
 const auth = require("../Authentication/auth");
 const Query = require("../model/Query");
-const User = require("../model/User")
+const User = require("../model/User");
 const Comment = require("../model/Comment");
 router.route("/signin").post(signIn);
 router.route("/").get(Home);
@@ -27,53 +27,53 @@ router.route("/Answers/update").put(answerUpdate);
 router.route("/Answers/Comment/update").put(commentUpdate);
 router.route("/verify").post(generateOtp);
 router.post("/new", auth, async (req, res) => {
-    try {
-        const {Question, Answer, postedBy} = req.body;
-        const identification = req.identification;
-        console.log(Answer + " sinh");
-        let a = "";
-        for (i = 0; i < 5; i++) {
-            a += Math.floor((Math.random() * 100));
-        }
-        if (Question == "") {
-            return res.status(400).send({error: "please fill Question"});
-        }
-        const newQuery = new Query({
-            Question, postedBy, identification
-        });
-        await newQuery.save();
-        if (Answer != "") {
-            const ExistingQuery = await Query.findOne({_id: newQuery._id});
-            const QueryAns = await ExistingQuery.addData(Answer, a, postedBy);
-            if (QueryAns && newQuery) {
-                return res.status(200).send({message: "Query posted Successfully"});
-            }
-        } else {
-            if (newQuery) {
-                return res.status(200).send({message: "Query posted successfully"});
-            }
-        }
+  try {
+    const {Question, Answer, postedBy} = req.body;
+    const identification = req.identification;
+    console.log(Answer + " sinh");
+    let a = "";
+    for (i = 0; i < 5; i++) {
+      a += Math.floor((Math.random() * 100));
     }
-    catch (e) {
-        console.log(e);
+    if (Question == "") {
+      return res.status(400).send({error: "please fill Question"});
     }
+    const newQuery = new Query({
+      Question, postedBy, identification
+    });
+    await newQuery.save();
+    if (Answer != "") {
+      const ExistingQuery = await Query.findOne({_id: newQuery._id});
+      const QueryAns = await ExistingQuery.addData(Answer, a, postedBy);
+      if (QueryAns && newQuery) {
+        return res.status(200).send({message: "Query posted Successfully"});
+      }
+    } else {
+      if (newQuery) {
+        return res.status(200).send({message: "Query posted successfully"});
+      }
+    }
+  }
+  catch (e) {
+    console.log(e);
+  }
 });
 router.post("/Answers/comment", async (req, res) => {
-    const {AnswerId, comment, QuesId, postedBy,ansPostedBy,ans} = req.body;
-    const Question = await Query.findOne({_id:QuesId});
-    const AnswerUser = await User.findOne({userName:ansPostedBy});
-    const newComment = new Comment({
-        AnsId: AnswerId,
-        comment: comment,
-        postedBy: postedBy,
-        QuesId: QuesId,
-        postedOn: Date.now()
-    });
-    const newcomment = await newComment.save();
-    if (newcomment) {
-        res.status(200).send({message: "Commented"});
-        const transporter = Transporter();
-        const emailContent = `
+  const {AnswerId, comment, QuesId, postedBy, ansPostedBy, ans} = req.body;
+  const Question = await Query.findOne({_id: QuesId});
+  const AnswerUser = await User.findOne({userName: ansPostedBy});
+  const newComment = new Comment({
+    AnsId: AnswerId,
+    comment: comment,
+    postedBy: postedBy,
+    QuesId: QuesId,
+    postedOn: Date.now()
+  });
+  const newcomment = await newComment.save();
+  if (newcomment) {
+    res.status(200).send({message: "Commented"});
+    const transporter = Transporter();
+    const emailContent = `
     <html>
       <head>
         <style>
@@ -122,18 +122,57 @@ router.post("/Answers/comment", async (req, res) => {
       </body>
     </html>
   `;
-        const mailOptions = {
-            from: 'solutionscommunity190@gmail.com',
-            to: AnswerUser.email,
-            subject: 'New Comment Notification',
-            html: emailContent,
-        };
-        await transporter.sendMail(mailOptions);
-    }
-    else {
-        return res.status(400).send({message: "Something wrong"});
-    }
+    const mailOptions = {
+      from: 'solutionscommunity190@gmail.com',
+      to: AnswerUser.email,
+      subject: 'New Comment Notification',
+      html: emailContent,
+    };
+    await transporter.sendMail(mailOptions);
+  }
+  else {
+    return res.status(400).send({message: "Something wrong"});
+  }
 });
-
+router.delete("/delete/:id", async (req, res) => {
+  const id = req.params.id;
+  try {
+    const user = await User.findOne({_id: id});
+    const deletes = await User.findByIdAndDelete({_id: id});
+    const answerDelete = await Query.deleteOne({identification: user.identification});
+    if (deletes && answerDelete) {
+      res.status(200).send({message: "Account Successfully deleted"});
+      const transporter = Transporter();
+      const emailContent = `
+    <html>
+      <head>
+      </head>
+      <body>
+      <div style="background-color: #f9f9f9; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+        <h1 style="color: #333; text-align: center; margin-bottom: 30px;">Account Deletion Confirmation</h1>
+        <p style="font-size: 18px;">Dear ${user.name},</p>
+        <p style="font-size: 16px;">We want to inform you that your account has been successfully deleted.</p>
+        <p style="font-size: 16px;">We appreciate the time you spent with us, and we're sorry to see you go. If you have any feedback or suggestions regarding our services, please feel free to share them with us.</p>
+        <p style="font-size: 16px;">If you did not initiate this account deletion, please contact our support team immediately.</p>
+        <p style="font-size: 16px;">Thank you for being a part of our community. We wish you all the best in your future endeavors.</p>
+        <p style="font-size: 16px; margin-top: 30px; text-align: center;">Best regards,</p>
+        <p style="font-size: 16px; margin-top: 5px; text-align: center;">Your Name<br>[Company Name]</p>
+      </div>
+      </body>
+    </html>
+  `;
+      const mailOptions = {
+        from: 'solutionscommunity190@gmail.com',
+        to: user.email,
+        subject: 'Account Deletion Message',
+        html: emailContent,
+      };
+      await transporter.sendMail(mailOptions);
+    }
+  }
+  catch (e) {
+    console.log(e);
+  }
+});
 
 module.exports = router;
