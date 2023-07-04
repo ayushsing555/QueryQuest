@@ -34,7 +34,7 @@ const UserProfile = () => {
                  </NavLink>
                  </li>
                 <li>
-                 <NavLink  to="/signin" class="dropdown-item" href="a">
+                 <NavLink  to="/signup" class="dropdown-item" href="a">
                      <button className='py-2 hover:text-red-600' onClick={DeleteAcc}>Delete Account</button>
                  </NavLink>
                  </li>
