@@ -198,7 +198,7 @@ return (
                                                         </h1>
                                                         <Comment Comments={AllComment} AnsID={ans._id} AnsPostedBy={ans.postedBy} QuesPostedBy={elem.postedBy} getAllData={getAllData} />
                                                         {
-                                                            userDetail !== null ? <CommentBox AnsId={ans._id} QuestionId={elem._id} postedBy={userDetail.UserName} Token={userDetail.token} getAllData={getAllData} /> : ""
+                                                            userDetail !== null ? <CommentBox AnsId={ans._id} QuestionId={elem._id} postedBy={userDetail.UserName} ansPostedBy={ans.postedBy} ans = {ans.ans} Token={userDetail.token} getAllData={getAllData} /> : ""
                                                         }
                                                         {
                                                             liked ? <button className='btn text-center m-2 text-white ' onClick={(e) => dislike(elem._id, ans._id)}><FcLike style={{fontSize: 18}} /></button> :

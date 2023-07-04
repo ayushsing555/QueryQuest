@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 
-const Comment = ({AnsId,QuestionId,postedBy,Token,getAllData}) => {
+const Comment = ({AnsId,QuestionId,postedBy,Token,getAllData,ansPostedBy,ans}) => {
     const [haveAns, setHaveAns] = useState(false);
     const [comment, setComment] = useState("");
     const [CommentStatus, setCommentStatus] = useState("Have An comment about this Query?");
@@ -25,7 +25,9 @@ const Comment = ({AnsId,QuestionId,postedBy,Token,getAllData}) => {
       "QuesId":QuestionId,
       "AnswerId": AnsId,
       "token": Token,
-      "comment":comment
+      "comment":comment,
+      "ansPostedBy":ansPostedBy,
+      "ans":ans
     });
 
     let response = await fetch("http://localhost:8000/Answers/comment", {
