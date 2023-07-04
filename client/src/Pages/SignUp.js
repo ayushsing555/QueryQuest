@@ -109,84 +109,86 @@ const SignUp = () => {
     };
     return (
         <>
-            <section class="vh-90">
+            <section class="vh-90 ">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-sm-6 text-black">
+                        <div class="col-sm-6 -mt-10">
                             <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-3 pt-5 pt-xl-0 ">
-                                <form style={{width: "23rem"}}>
-                                    <h3 class="fw-normal mb-3 pb-3" style={{letterSpacing: "1px;"}}>New User</h3>
-                                    <div class=" mb-3">
-                                        <input value={UserDetail.userName} name='userName' onChange={handleChange} type="name" id="form2Example18" class="form-control text-red-900 form-control-lg" required />
-                                        <label class="form-label" for="form2Example18">User Name</label>
+                                <form style={{width: "25rem"}}>
+                                    <h3 class="text-center text-black text-3xl font-bold pt-3 mt-4" style={{letterSpacing: "1px;"}}>Sign Up</h3>
+                                    <p className='text-center text-red-600 font-bold text-sm font-serif mb-3'>Unlock a world of possibilities, sign up and explore!</p>
+
+                                    <div class="mt-4 font-bold mb-4">
+                                    <label class="form-label text-black" for="form2Example18">User Name</label>
+                                        <input value={UserDetail.userName} name='userName' onChange={handleChange} type="name" id="form2Example18" class="form-control border-2 border-red-900 hover:border-4 hover:border-red-900 focus:border-4  font-bold focus:border-red-900 form-control-lg" required />
                                     </div>
-                                    <div class=" mb-3">
-                                        <input value={UserDetail.fullName} name='fullName' onChange={handleChange} type="name" id="form2Example18" class="form-control text-red-900 form-control-lg" required />
-                                        <label class="form-label" for="form2Example18">Full Name</label>
+                                    <div class="mt-4 font-bold mb-4">
+                                    <label class="form-label text-black" for="form2Example18">Full Name</label>
+                                        <input value={UserDetail.fullName} name='fullName' onChange={handleChange} type="name" id="form2Example18" class="form-control border-2 border-red-900 hover:border-4 hover:border-red-900 focus:border-4  font-bold focus:border-red-900 form-control-lg" required />
                                     </div>
 
 
                                     {
                                         verfiyInput ? <>
-                                            <b>We have sent a otp to your  <b className='text-xl text-red-900'>{UserDetail.email}</b>  if you want to change email <button className="btn border-red-900 border-2 btn-sm hover:bg-red-900" onClick={changeEmail} >change</button></b>
-                                            <div class="mt-2 mb-3">
-                                                <input value={EnterOtp} name='otp' onChange={(e) => SetEnterOtp(e.target.value)} type="name" id="form2Example18" class="form-control text-red-900 form-control-lg" required />
-                                                <label class="form-label" for="form2Example18">Enter Otp:</label>
+                                            <p className='text-md font-semibold mt-2 text-black'>We have sent an OTP to your <b className='text-lg text-red-900'>{UserDetail.email}</b> if you want to change email <button className="btn btn-sm hover:bg-green-800 bg-red-900 text-white font-bold" onClick={changeEmail} >change</button></p>
+                                            <div class="mt-4 font-bold mb-4">
+                                            <label class="form-label text-black" for="form2Example18">Enter Otp:</label>
+                                                <input value={EnterOtp} name='otp' onChange={(e) => SetEnterOtp(e.target.value)} type="name" id="form2Example18" class="form-control border-2 border-red-900 hover:border-4 hover:border-red-900 focus:border-4  font-bold focus:border-red-900 form-control-lg" required />
                                             </div>
-                                            <button className="btn border-red-900 border-2 btn-lg hover:bg-red-900" onClick={verify}>Verify</button>
+                                            <button className="btn btn-lg hover:bg-green-800 focus:bg-green-800 bg-red-900 text-white font-bold" onClick={verify}>Verify</button>
                                         </> : ""
                                     }
                                     {
                                         email ? <>
-                                            <div class=" mb-3">
-                                                <input value={UserDetail.email} name='email' onChange={handleChange} type="email" id="form2Example18" class="form-control text-red-900 form-control-lg" required />
-                                                <label class="form-label" for="form2Example18">Email address</label>
+                                            <div class="mt-4 font-bold mb-4">
+                                            <label class="form-label text-black" for="form2Example18">Email address</label>
+                                                <input value={UserDetail.email} name='email' onChange={handleChange} type="email" id="form2Example18" class="form-control border-2 border-red-900 hover:border-4 hover:border-red-900 focus:border-4  font-bold focus:border-red-900 form-control-lg" required />
                                             </div>
-                                            <button className="btn border-red-900 border-2 btn-lg hover:bg-red-900" onClick={sendOtp} >SendOtp</button>
+                                            <button className="btn btn-lg focus:bg-green-800 hover:bg-green-800 bg-red-900 text-white font-bold" onClick={sendOtp} >Send OTP</button>
                                         </> : ""
                                     }
                                     {
                                         verified ? <>
-                                            <div class=" mb-3">
-                                                <input value={UserDetail.InstagramLink} name='InstagramLink' onChange={handleChange} type="url" id="form2Example18" class="form-control text-red-900 form-control-lg" required />
-                                                <label class="form-label" for="form2Example18">Instagram</label>
+                                            <div class="mt-4 font-bold mb-4">
+                                            <label class="form-label text-black" for="form2Example18">Instagram</label>
+                                                <input value={UserDetail.InstagramLink} name='InstagramLink' onChange={handleChange} type="url" id="form2Example18" class="form-control border-2 border-red-900 hover:border-4 hover:border-red-900 focus:border-4  font-bold focus:border-red-900 form-control-lg" required />
                                             </div>
 
 
-                                            <div class=" mb-3">
-                                                <input value={UserDetail.LinkdinLink} name='LinkdinLink' onChange={handleChange} type="url" id="form2Example18" class="form-control text-red-900 form-control-lg" required />
-                                                <label class="form-label" for="form2Example18">Linkdin</label>
+                                            <div class="mt-4 font-bold mb-4">
+                                            <label class="form-label text-black" for="form2Example18">Linkdin</label>
+                                                <input value={UserDetail.LinkdinLink} name='LinkdinLink' onChange={handleChange} type="url" id="form2Example18" class="form-control border-2 border-red-900 hover:border-4 hover:border-red-900 focus:border-4  font-bold focus:border-red-900 form-control-lg" required />
                                             </div>
-                                            <div class=" mb-3">
-                                                <input value={UserDetail.GitHubLink} name='GitHubLink' onChange={handleChange} type="url" id="form2Example18" class="form-control text-red-900 form-control-lg" required />
-                                                <label class="form-label" for="form2Example18">GitHub</label>
+                                            <div class="mt-4 font-bold mb-4">
+                                            <label class="form-label text-black" for="form2Example18">GitHub</label>
+                                                <input value={UserDetail.GitHubLink} name='GitHubLink' onChange={handleChange} type="url" id="form2Example18" class="form-control border-2 border-red-900 hover:border-4 hover:border-red-900 focus:border-4  font-bold focus:border-red-900 form-control-lg" required />
                                             </div>
-                                            <div class=" mb-3">
-                                                <input value={UserDetail.Password} name='Password' onChange={handleChange} type="password" id="form2Example28" class="form-control text-red-900 form-control-lg" required />
-                                                <label class="form-label" for="form2Example28">Password</label>
+                                            <div class="mt-4 font-bold mb-4">
+                                            <label class="form-label text-black" for="form2Example28">Password</label>
+                                                <input value={UserDetail.Password} name='Password' onChange={handleChange} type="password" id="form2Example28" class="form-control border-2 border-red-900 hover:border-4 hover:border-red-900 focus:border-4  font-bold focus:border-red-900 form-control-lg" required />
                                             </div>
-                                            <div class="mb-3">
-                                                <label for="name" className='text-gry-500  mr-2'>Gender</label>
-                                                <select value={UserDetail.Gender} onChange={handleChange} name="Gender" class=" underline text-red-900" id="gender" required>
+                                            <div class="mt-4 font-bold mb-4">
+                                                <label for="name" className='text-black mr-2'>Gender</label>
+                                                <select value={UserDetail.Gender} onChange={handleChange} name="Gender" class="text-red-900 rounded-lg border-2 border-red-900 hover:cursor-pointer" id="gender" required>
                                                     <option value="female">Female</option>
                                                     <option value="male">Male</option>
                                                 </select>
                                             </div>
-                                            <div class="mb-3">
-                                                <textarea className='focused border-2' name='detail' value={UserDetail.detail} onChange={handleChange} placeholder='Tell us About yourself...' col="16" rows={3} required></textarea>
+                                            <div class="mt-4 font-bold mb-4">
+                                                <textarea className='focused  text-black border-2 border-red-900 rounded-lg hover:border-4 hover:border-red-900 focus:border-4 focus:border-red-900 px-2' name='detail' value={UserDetail.detail} onChange={handleChange} placeholder='Tell us About yourself...' col="16" rows={3} required></textarea>
                                             </div>
-                                            <button className="btn  border-red-900 border-2 btn-lg hover:bg-red-900" onClick={handleSubmit} >SignUp</button>
+                                            <button className="btn btn-lg focus:bg-green-800 hover:bg-green-800 bg-red-900 text-white font-bold" onClick={handleSubmit} >SignUp</button>
 
                                         </> : ""
                                     }
-                                    <div class="pt-1 mb-3">
-                                        <p> have an account? <NavLink to="/signin" class="text-red-900">Login here</NavLink></p>
+                                    <div class="mb-3 pt-2">
+                                        <p className='text-md font-semibold'>Already have an account? <NavLink to="/signin" className="text-blue-700 hover:underline">Login here</NavLink></p>
                                     </div>
                                 </form>
                             </div>
                         </div>
                         <div class="col-sm-6 px-0 d-none d-sm-block">
-                            <img src="\image\solutions-community-logo.png"
+                            <img src="\image\logosignup.png"
                                 alt="" class="w-100 h-100" />
                         </div>
                     </div>
