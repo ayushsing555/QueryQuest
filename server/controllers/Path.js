@@ -151,7 +151,7 @@ const signUp = async (req, res) => {
     </div>
   `;
             const mailOptions = {
-                from: 'solutionscommunity190@gmail.com',
+                from: 'queryquest750@gmail.com',
                 to: email,
                 subject: 'Account Created',
                 html: emailContent,
@@ -182,7 +182,7 @@ const signUp = async (req, res) => {
     </html>
   `;
             const mailOptions = {
-                from: 'solutionscommunity190@gmail.com',
+                from: 'queryquest750@gmail.com',
                 to: email,
                 subject: 'Welcome to Our Platform!',
                 html: emailContent,
@@ -231,7 +231,7 @@ const AnswerAdd = async (req, res) => {
     </div>
   `;
         const mailOptions = {
-            from: 'solutionscommunity190@gmail.com',
+            from: 'queryquest750@gmail.com',
             to: email,
             subject: 'New Answer Notification',
             html: emailContent,
@@ -424,7 +424,7 @@ const generateOtp = async (req, res) => {
               <p  style="font-size: 16px; margin-top: 5px;color: #555;">The <strong style="color:rgb(126, 25, 25);">𝐐𝐮𝐞𝐫𝐲𝐐𝐮𝐞𝐬𝐭</strong> Team</p>
     </div>`;
         const mailOptions = {
-            from: 'solutionscommunity190@gmail.com',
+            from: 'queryquest750@gmail.com',
             to: Email,
             subject: 'Account Verification - OTP',
             html: emailContent,

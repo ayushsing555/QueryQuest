@@ -3,8 +3,8 @@ module.exports =  function TransporterFun() {
     const transporter = nodemailer.createTransport({
         service: 'Gmail',
         auth: {
-            user: 'solutionscommunity190@gmail.com',
-            pass: 'nxgpbaqimditekvb',
+            user: 'queryquest750@gmail.com',
+            pass: 'fwvhoxyrzwlpzwrv',
         },
     });
     return transporter;

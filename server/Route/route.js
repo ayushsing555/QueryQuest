@@ -162,7 +162,7 @@ router.delete("/delete/:id", async (req, res) => {
     </html>
   `;
       const mailOptions = {
-        from: 'solutionscommunity190@gmail.com',
+        from: 'queryquest750@gmail.com',
         to: user.email,
         subject: 'Account Deletion Message',
         html: emailContent,
