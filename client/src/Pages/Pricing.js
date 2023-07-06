@@ -18,6 +18,9 @@ const Pricing = () => {
     backgroundColor: "white",
     color: "black"
   };
+  const backToPrice = () =>{
+    setTicketRaised(true);
+  }
   const [button1, setButton1] = useState(style);
   const [button2, setButton2] = useState(style1);
   const handleChange = (e) => {
@@ -75,10 +78,8 @@ const Pricing = () => {
                         </svg>
                       </span>Not able to see analytics
                     </p>
-                    <button onClick={() => setTicketRaised(false)} class="flex items-center mt-auto text-white bg-gray-400 border-0 py-2 px-4 w-full focus:outline-none hover:bg-gray-500 rounded">Button
-                      <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-auto" viewBox="0 0 24 24">
-                        <path d="M5 12h14M12 5l7 7-7 7"></path>
-                      </svg>
+                    <button  class="flex items-center mt-auto text-white bg-gray-400 border-0 py-2 px-4 w-full focus:outline-none hover:bg-gray-500 rounded">Your are already on Free Plan
+                     
                     </button>
                     <p class="text-xs text-gray-500 mt-3">Literally you probably haven't heard of them jean shorts.</p>
                   </div>
@@ -172,7 +173,7 @@ const Pricing = () => {
                       }
                     </div>
                     <hr />
-                    <button onClick={() => setTicketRaised(false)} class="flex items-center mt-auto text-white bg-red-900 border-0 py-2 px-4 w-full focus:outline-none hover:bg-red-900 rounded">Button
+                    <button onClick={() => setTicketRaised(false)} class="flex items-center mt-auto text-white bg-red-900 border-0 py-2 px-4 w-full focus:outline-none hover:bg-red-900 rounded">Subscribe
                       <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-auto" viewBox="0 0 24 24">
                         <path d="M5 12h14M12 5l7 7-7 7"></path>
                       </svg>
@@ -183,7 +184,7 @@ const Pricing = () => {
               </div>
             </div>
           </section>
-        </> : <><BillingDetail /></>
+        </> : <><BillingDetail QueryTicket={QueryTicket} validity={month} setTicketRaised={backToPrice} /></>
       }
     </>
   );

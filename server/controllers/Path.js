@@ -435,9 +435,32 @@ const generateOtp = async (req, res) => {
         console.log('error', e);
     }
 };
+
+const payment = async (req, res) => {
+    let {Price,Validity,Ticket,_id} = req.body;
+    if(Ticket=='year'){
+        Validity = 12;
+    }
+    const user = await User.findByIdAndUpdate({_id:_id},{
+    $set: {
+      validUpTo: new Date(Date.now() + (Validity * 30 * 24 * 60 * 60 * 1000)),
+      ticket: Ticket,
+      CurrentQueryPosted:0
+    }
+  })
+  const transporter = Transporter();
+  const mailOptions = {
+            from: 'queryquest750@gmail.com',
+            to: Email,
+            subject: 'Account Verification - OTP',
+            html: emailContent,
+        };
+        await transporter.sendMail(mailOptions);
+};
 module.exports = {
     user,
     data,
+    payment,
     generateOtp,
     signIn,
     commentUpdate,

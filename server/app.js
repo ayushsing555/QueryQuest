@@ -26,18 +26,7 @@ app.use(cors(corsOptions))
 
 
 app.use("/",routerPath);
-app.delete("/delete/:id", async (req, res) => {
-    const id = req.params.id;
-   
-    try {
-        const deletes = await User.findByIdAndDelete({_id:id});
-        console.log(deletes);
-        res.send(deletes);
-    }
-    catch (e) {
-        console.log(e);
-    }
-});
+
 
 app.delete("/delete/Ques/:id",async(req,res)=>{
     const deletes = await Query.deleteMany({});

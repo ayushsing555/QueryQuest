@@ -1,7 +1,91 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import {GetProfileData} from './GetProfileData';
 
-const BillingDetail = () => {
+const BillingDetail = ({QueryTicket,validity,setTicketRaised}) => {
+  const [showDialog, setShowDialog] = useState(false);
+  const handleClose = () => {
+    setShowDialog(false);
+  };
+  const choosePlan = () => {
+    setTicketRaised()
+  }
+  const [price,setPrice] = useState(0);
+  useEffect(()=>{
+    if(QueryTicket==="year"){
+      setPrice(84);
+    }
+    else{
+      setPrice(10*(parseInt(validity)))
+    }
+  },[1]);
+  const setTicket = () =>{
+    setShowDialog(true);
+  }
+  const BuyTicket = async() =>{
+    const user = GetProfileData();
+     let headersList = {
+            "Accept": "*/*",
+            "Content-Type": "application/json"
+        };
+
+        let bodyContent = JSON.stringify({
+            Price:price,
+            Ticket:QueryTicket,
+            Validity:validity,
+            _id:user._id
+        });
+        let response = await fetch(`http://localhost:8000/payment`, {
+            method: "post",
+            body: bodyContent,
+            headers: headersList
+        });
+        const data = await response.json();
+        if (response.status === 200) {
+            window.alert("Disliked");
+            
+        }
+        else {
+            window.alert(data.error);
+        } 
+  }
+  
   return (
+    <>
+
+   
+     {showDialog && (
+        <div className="fixed inset-0 flex items-center justify-center">
+          <div className="bg-white p-8 rounded shadow">
+            <div className="flex justify-end">
+              <button
+                className="text-gray-500 hover:text-gray-700"
+                onClick={handleClose}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
+            <h2 className="text-xl font-bold mb-4">Dialogue Box</h2>
+            
+               <button className='btn bg-red-900 text-black' onClick={BuyTicket}>
+                 Confirm
+               </button> 
+            
+          </div>
+        </div>
+      )}
     <div>
       <section class="py-4 bg-white">
         <div class="max-w-7xl mx-auto py-1  bg-red-500">
@@ -102,7 +186,8 @@ const BillingDetail = () => {
                   </table>
                 </div>
               </div>
-                  <button className='btn btn-info ml-12 mt-1'>Make Payment Rs 1267 </button>
+                  <button className='btn btn-info ml-12 mt-1' onClick={choosePlan}>back to Price </button>
+                  <button className='btn btn-info ml-12 mt-1' onClick={setTicket}>Make Payment Rs {price} </button>
               <div class="mt-2 p-9">
                 <div class="border-t pt-9 border-slate-200">
                   <div class="text-sm font-light text-slate-700">
@@ -125,6 +210,7 @@ const BillingDetail = () => {
         </div>
       </section>
     </div>
+    </>
   );
 };
 

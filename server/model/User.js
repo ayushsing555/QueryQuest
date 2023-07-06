@@ -11,6 +11,7 @@ const userstructure = new mongoose.Schema({
         required: true,
         unique: true
     },
+
     detail: {
         type: String,
         require: true,
@@ -19,9 +20,9 @@ const userstructure = new mongoose.Schema({
         type: String,
         require: true
     },
-    fullName:{
-        type:String,
-        require:true
+    fullName: {
+        type: String,
+        require: true
     },
     createdDate: {
         type: Date,
@@ -31,10 +32,23 @@ const userstructure = new mongoose.Schema({
         type: String,
         default: "Free"
     },
-    QueryPosted: {
+    validUpTo: {
+        type: Date,
+        default: function () {
+            const oneMonthFromNow = new Date();
+            oneMonthFromNow.setMonth(oneMonthFromNow.getMonth() + 1);
+            return oneMonthFromNow;
+        }
+    },
+    TotalQueryPosted: {
         type: Number,
         required: true,
         default: 0
+    },
+    CurrentQueryPosted:{
+        type:Number,
+        required:true,
+        default:0
     },
     instagram: {
         type: String,
