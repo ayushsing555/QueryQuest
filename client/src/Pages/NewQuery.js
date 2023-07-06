@@ -55,9 +55,9 @@ const NewQuery = () => {
     console.log(response);
     console.log(data);
     if (response.status !== 200) {
-      window.alert(data.error + "ayush");
+      window.alert(data.message);
     }
-    if (response.status === 200) {
+    else {
        window.alert(data.Message);
        await fetch(`http://localhost:8000/updateQueryNumber/${UserObjDetail.UserName}`, {
         method: "PUT",

@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Transporter = require('../controllers/TransporterFun');
-const { signIn, signUp, user, data, commentLike,payment, generateOtp, commentUpdate, answerUpdate, deleteCommentLike, CommentDelete, deleteLike, updateLiked, IndividualData, GetAllComment, AnswerDelete, GetUserQuery, CommentAdd, updateQueryNum, AnswerAdd, Home, IndividualUser } = require("../controllers/Path");
+const {signIn, signUp, user, data, commentLike, payment, generateOtp, commentUpdate, answerUpdate, deleteCommentLike, CommentDelete, deleteLike, updateLiked, IndividualData, GetAllComment, AnswerDelete, GetUserQuery, CommentAdd, updateQueryNum, AnswerAdd, Home, IndividualUser} = require("../controllers/Path");
 const auth = require("../Authentication/auth");
 const Query = require("../model/Query");
 const User = require("../model/User");
@@ -29,7 +29,7 @@ router.route("/verify").post(generateOtp);
 router.route("/payment").post(payment);
 router.post("/new", auth, async (req, res) => {
   try {
-    const { Question, Answer, postedBy } = req.body;
+    const {Question, Answer, postedBy} = req.body;
     const identification = req.identification;
     console.log(Answer + " sinh");
     let a = "";
@@ -37,21 +37,25 @@ router.post("/new", auth, async (req, res) => {
       a += Math.floor((Math.random() * 100));
     }
     if (Question == "") {
-      return res.status(400).send({ error: "please fill Question" });
+      return res.status(400).send({error: "please fill Question"});
     }
     const newQuery = new Query({
       Question, postedBy, identification
     });
     await newQuery.save();
     if (Answer != "") {
-      const ExistingQuery = await Query.findOne({ _id: newQuery._id });
+      const ExistingQuery = await Query.findOne({_id: newQuery._id});
       const QueryAns = await ExistingQuery.addData(Answer, a, postedBy);
       if (QueryAns && newQuery) {
-        return res.status(200).send({ message: "Query posted Successfully" });
+        const updation = await User.updateOne({_id: req.id},
+          {$inc: {CurrentQueryPosted: 1, TotalQueryPosted: 1}});
+        return res.status(200).send({message: "Query posted Successfully"});
       }
     } else {
       if (newQuery) {
-        return res.status(200).send({ message: "Query posted successfully" });
+        await User.findAndUpdateOne({_id: req.id},
+          {$inc: {CurrentQueryPosted: 1, TotalQueryPosted: 1}});
+        return res.status(200).send({message: "Query posted successfully"});
       }
     }
   }
