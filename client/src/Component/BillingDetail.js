@@ -2,6 +2,39 @@ import React, {useEffect, useState} from 'react';
 import {GetProfileData} from './GetProfileData';
 
 const BillingDetail = ({QueryTicket,validity,setTicketRaised}) => {
+
+  const user = GetProfileData();
+  const [usr, setUsrData] = useState([]);
+  const [invNo, setInvNo] = useState();
+
+  const getData = async () => {
+    const res = await fetch(`http://localhost:8000/user/${user.username}`);
+    const data = await res.json();
+    setUsrData(data);
+  };
+  
+  useEffect(() => {
+    getData();
+  }, [1]);
+
+    let validUpTo;
+  if (QueryTicket=="monthly") {
+     validUpTo= new Date(new Date().getFullYear(),new Date().getMonth()+validity, new Date().getDate())
+  }else{
+     validUpTo= new Date(new Date().getFullYear()+1,new Date().getMonth(), new Date().getDate())
+  }
+  
+      // var a='';
+        // for(let i=1; i<=7; i++){
+          
+         var invoiceNo;
+         
+         useEffect(()=>{
+          invoiceNo=Math.ceil(Math.random()*100000)
+          setInvNo(invoiceNo)
+         },1)
+        // };
+
   const [showDialog, setShowDialog] = useState(false);
   const handleClose = () => {
     setShowDialog(false);
@@ -18,6 +51,7 @@ const BillingDetail = ({QueryTicket,validity,setTicketRaised}) => {
       setPrice(10*(parseInt(validity)))
     }
   },[1]);
+  
   const setTicket = () =>{
     setShowDialog(true);
   }
@@ -29,11 +63,13 @@ const BillingDetail = ({QueryTicket,validity,setTicketRaised}) => {
         };
 
         let bodyContent = JSON.stringify({
+          invoiceNo:invNo,
             Price:price,
             Ticket:QueryTicket,
             Validity:validity,
             _id:user._id
         });
+        
         let response = await fetch(`http://localhost:8000/payment`, {
             method: "post",
             body: bodyContent,
@@ -55,7 +91,7 @@ const BillingDetail = ({QueryTicket,validity,setTicketRaised}) => {
    
      {showDialog && (
         <div className="fixed inset-0 flex items-center justify-center">
-          <div className="bg-white p-8 rounded shadow">
+          <div className="bg-white border-4 border-red-900 p-8 rounded shadow">
             <div className="flex justify-end">
               <button
                 className="text-gray-500 hover:text-gray-700"
@@ -77,11 +113,14 @@ const BillingDetail = ({QueryTicket,validity,setTicketRaised}) => {
                 </svg>
               </button>
             </div>
-            <h2 className="text-xl font-bold mb-4">Dialogue Box</h2>
+            <p className="text-xl font-bold ">Would you like to proceed with the payment?</p>
+            <br/>
+            <p className='font-serif mb-4'><span className='font-bold text-red-500'>Note: </span>Before proceeding with the payment, we want to emphasize <br/>  that once the payment is confirmed, it cannot be canceled or reversed.</p>
             
-               <button className='btn bg-red-900 text-black' onClick={BuyTicket}>
-                 Confirm
+               <button className='ml-20 btn btn-lg bg-red-900 hover:bg-green-800 hover:font-bold text-white' onClick={BuyTicket}>
+                 Yes
                </button> 
+               <button className='ml-24 btn btn-lg btn-info hover:font-bold hover:bg-cyan-700' onClick={handleClose}>No</button>
             
           </div>
         </div>
@@ -93,44 +132,43 @@ const BillingDetail = ({QueryTicket,validity,setTicketRaised}) => {
             <div class="bg-white text-yellow-600 border-2  border-r-red-600 border-l-red-600 rounded-b-md">
               <div class="p-9">
                 <div class="space-y-6 text-red-900">
-                  {/* <img class="object-cover h-12" src="https://pbs.twimg.com/profile_images/1513243060834123776/dL8-d7zI_400x400.png" alt=''/> */}
-                  <p class="text-xl font-extrabold tracking-tight uppercase font-body">
-                    Community Solutions
+                  <p class="text-5xl font-extrabold tracking-tight uppercase font-body">
+                  𝐐𝐮𝐞𝐫𝐲𝐐𝐮𝐞𝐬𝐭
                   </p>
                 </div>
               </div>
-              <div class="p-9">
+              <div class="p-8">
                 <div class="flex w-full">
                   <div class="grid grid-cols-4 gap-12">
-                    <div class="text-sm font-light text-slate-500">
-                      <p class=" font-normal text-xl text-slate-700">
+                    <div class="text-sm font-normal text-slate-500">
+                      <p class=" text-xl text-black mb-1 font-bold">
                         Invoice Detail:
                       </p>
-                      <p>Unwrapped</p>
-                      <p>Fake Street 123</p>
-                      <p>San Javier</p>
-                      <p>CA 1234</p>
+                      <p>QueryQuest</p>
+                      <p>Ajmer</p>
+                      <p>Rajasthan</p>
+                      <p>India</p>
                     </div>
-                    <div class="text-sm font-light text-slate-500">
-                      <p class="text-lg font-normal text-slate-700">Billed To:</p>
-                      <p>The Boring Company</p>
-                      <p>Tesla Street 007</p>
-                      <p>Frisco</p>
-                      <p>CA 0000</p>
+                    <div class="text-sm font-normal text-slate-500">
+                      <p class="text-xl text-black mb-1 font-bold">Billed To:</p>
+                      <p>{usr.fullName}</p>
+                      <p>{usr.email}</p>
+                      <p>{usr.gender}</p>
                     </div>
-                    <div class="text-sm font-light text-slate-500">
-                      <p class="text-lg font-normal text-slate-700">Invoice Number</p>
-                      <p>000000</p>
-                      <p class="mt-2 text-lg font-normal text-slate-700">
+                    <div class="text-sm font-normal text-slate-500">
+                      <p class="text-xl text-black mb-1 font-bold">Invoice Number</p>
+                      <p>{invNo}
+                        </p>
+                      <p class="text-xl text-black mb-1 font-bold">
                         Date of Issue
                       </p>
-                      <p>00.00.00</p>
+                      <p> {new Date().getDate()}.{new Date().getMonth()+1}.{new Date().getFullYear()}</p>
                     </div>
-                    <div class="text-sm font-light text-slate-500">
-                      <p class="text-lg font-normal text-slate-700">Terms</p>
-                      <p>0 Days</p>
-                      <p class="mt-2 text-lg font-normal text-slate-700">Next Billing</p>
-                      <p>00.00.00</p>
+                    <div class="text-sm font-normal text-slate-500">
+                      <p class="text-xl text-black mb-1 font-bold">Terms</p>
+                      <p>{validity===1 ? `${validity} month`: `${validity} months`}</p>
+                      <p class="text-xl text-black mb-1 font-bold">Next Billing</p>
+                      <p>{validUpTo.getDate()}.{validUpTo.getMonth()+1}.{validUpTo.getFullYear()}</p>
                     </div>
                   </div>
                 </div>
@@ -140,16 +178,16 @@ const BillingDetail = ({QueryTicket,validity,setTicketRaised}) => {
                   <table class="min-w-full divide-y divide-slate-500">
                     <thead>
                       <tr>
-                        <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-normal text-slate-700 sm:pl-6 md:pl-0">
+                        <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-bold text-black sm:pl-6 md:pl-0">
                           Ticket
                         </th>
-                        <th scope="col" class="hidden py-3.5 px-3 text-right text-sm font-normal text-slate-700 sm:table-cell">
+                        <th scope="col" class="hidden py-3.5 px-3 text-right text-sm font-bold text-black sm:table-cell">
                           Months
                         </th>
-                        <th scope="col" class="hidden py-3.5 px-3 text-right text-sm font-normal text-slate-700 sm:table-cell">
+                        <th scope="col" class="hidden py-3.5 px-3 text-right text-sm font-bold text-black sm:table-cell">
                           Price/Month
                         </th>
-                        <th scope="col" class="py-3.5 pl-3 pr-4 text-right text-sm font-normal text-slate-700 sm:pr-6 md:pr-0">
+                        <th scope="col" class="py-3.5 pl-3 pr-4 text-right text-sm font-bold text-black sm:pr-6 md:pr-0">
                           Amount
                         </th>
                       </tr>
@@ -157,40 +195,38 @@ const BillingDetail = ({QueryTicket,validity,setTicketRaised}) => {
                     <tbody>
                       <tr class="border-b border-slate-200">
                         <td class="py-4 pl-4 pr-3 text-sm sm:pl-6 md:pl-0">
-                          <div class="font-medium text-slate-700">Tesla Truck</div>
-                          <div class="mt-0.5 text-slate-500 sm:hidden">
-                            1 unit at $0.00
-                          </div>
+                          <div class="font-medium text-slate-700">QueryQuest</div>
+                          
                         </td>
                         <td class="hidden px-3 py-4 text-sm text-right text-slate-500 sm:table-cell">
-                          48
+                          {validity}
                         </td>
                         <td class="hidden px-3 py-4 text-sm text-right text-slate-500 sm:table-cell">
-                          Rs 0.00
+                          Rs {QueryTicket=="monthly"? "10" : "84"}
                         </td>
                         <td class="py-4 pl-3 pr-4 text-sm text-right text-slate-500 sm:pr-6 md:pr-0">
-                          Rs 0.00
+                          Rs {price}
                         </td>
                       </tr>
                     </tbody>
                     <tfoot>
                       <tr>
-                        <th scope="row" colspan="3" class="hidden pt-4 pl-6 pr-3 text-sm font-normal text-right text-slate-700 sm:table-cell md:pl-0">
+                        <th scope="row" colspan="3" class="hidden pt-4 pl-6 pr-3 text-sm font-bold text-right text-slate-700 sm:table-cell md:pl-0">
                           Total
                         </th>
                         <td class="pt-4 pl-3 pr-4 text-sm font-normal text-right text-slate-700 sm:pr-6 md:pr-0">
-                          Rs 0.00
+                          Rs {price}
                         </td>
                       </tr>
                     </tfoot>
                   </table>
                 </div>
               </div>
-                  <button className='btn btn-info ml-12 mt-1' onClick={choosePlan}>back to Price </button>
-                  <button className='btn btn-info ml-12 mt-1' onClick={setTicket}>Make Payment Rs {price} </button>
+                  <button className='btn bg-red-900 hover:bg-green-800 ml-12 mt-1 text-white font-bold rounded-lg' onClick={choosePlan}>Back to Price </button>
+                  <button className='btn bg-red-900 hover:bg-green-800 ml-12 mt-1 text-white font-bold rounded-lg' onClick={setTicket}>Make Payment of Rs {price} </button>
               <div class="mt-2 p-9">
                 <div class="border-t pt-9 border-slate-200">
-                  <div class="text-sm font-light text-slate-700">
+                  <div class="text-sm font-serif text-slate-700">
                     <p>
                       Payment terms are 14 days. Please be aware that according to the
                       Late Payment of Unwrapped Debts Act 0000, freelancers are

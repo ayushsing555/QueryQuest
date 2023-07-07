@@ -437,11 +437,18 @@ const generateOtp = async (req, res) => {
 };
 
 const payment = async (req, res) => {
-    let {Price,Validity,Ticket,_id} = req.body;
+    let {Price,Validity,Ticket,_id,invoiceNo} = req.body;
+   let user= await User.findOne({_id:_id});
     if(Ticket=='year'){
         Validity = 12;
     }
-    const user = await User.findByIdAndUpdate({_id:_id},{
+    let validDate;
+        if (Ticket=="monthly") {
+            validDate= new Date(new Date().getFullYear(),new Date().getMonth()+Validity, new Date().getDate())
+        }else{
+            validDate= new Date(new Date().getFullYear()+1,new Date().getMonth(), new Date().getDate())
+        }
+    const Payment = await User.findByIdAndUpdate({_id:_id},{
     $set: {
       validUpTo: new Date(Date.now() + (Validity * 30 * 24 * 60 * 60 * 1000)),
       ticket: Ticket,
@@ -449,10 +456,83 @@ const payment = async (req, res) => {
     }
   })
   const transporter = Transporter();
+  const emailContent=`<div style="background-color:  #f9f9f9; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+  <nav style="background-color: rgb(126, 27, 27); padding: 10px; border-radius: 20px;">
+    <img style="padding: 10px; border-radius: 30px;" src="QueryQuest.png" alt="">
+  </nav>
+<h1 style="color:rgb(126, 25, 25); text-align: center; margin-top: 30px; font-weight: bold; font-size: larger;">Thanks for trusting 𝐐𝐮𝐞𝐫𝐲𝐐𝐮𝐞𝐬𝐭, ${user.fullName},</h1>
+<br>
+<div>
+  <h2 style="text-align: center;">Invoice number <span>#${invoiceNo}</span></h2>
+  <p style="text-align: center; font-size: 12px;">Order received on <span> ${new Date().getMonth().toString()} ${new Date().getDate().toString()}, ${new Date().getFullYear().toString()}</span></p>
+  <br/>
+</div>
+<hr>
+<div style="margin-top: 30px; margin-left: 20px; background-color: rgb(234, 234, 234);">
+  <p style="background-color: rgb(126, 25, 25); color: white; padding: 10px; " class="text-xl text-black mb-1 font-bold">Billed To:</p>
+  <p style="margin-left: 20px; padding: 5px;">${user.fullName}</p>
+  <p style="margin-left: 20px; padding: 5px;">${user.email}</p>
+</div>
+
+<div class="flex flex-col mx-5 mt-10">
+  <table class="min-w-full divide-y divide-slate-500">
+    <thead>
+      <tr>
+        <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-bold text-black sm:pl-6 md:pl-0">
+          Ticket
+        </th>
+        <th scope="col" class="hidden py-3.5 px-3 text-right text-sm font-bold text-black sm:table-cell">
+          Months
+        </th>
+        <th scope="col" class="hidden py-3.5 px-3 text-right text-sm font-bold text-black sm:table-cell">
+          Price/Month
+        </th>
+        <th scope="col" class="py-3.5 pl-3 pr-4 text-right text-sm font-bold text-black sm:pr-6 md:pr-0">
+          Amount
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="border-b border-slate-200">
+        <td class="py-4 pl-4 pr-3 text-sm sm:pl-6 md:pl-0">
+          <div class="font-medium text-slate-700">QueryQuest</div>
+          
+        </td>
+        <td class="hidden px-3 py-4 text-sm text-right text-slate-500 sm:table-cell">
+          ${Validity}
+        </td>
+        <td class="hidden px-3 py-4 text-sm text-right text-slate-500 sm:table-cell">
+          Rs ${Ticket== "monthly"? "10" : "84"}
+        </td>
+        <td class="py-4 pl-3 pr-4 text-sm text-right text-slate-500 sm:pr-6 md:pr-0">
+          Rs ${Price}
+        </td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <th scope="row" colspan="3" class="hidden pt-4 pl-6 pr-3 text-sm font-bold text-right text-slate-700 sm:table-cell md:pl-0">
+          Total
+        </th>
+        <td class="pt-4 pl-3 pr-4 text-sm font-normal text-right text-slate-700 sm:pr-6 md:pr-0">
+          Rs ${Price}
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+
+<p style="margin-left: 20px;font-size: small;">Starts: ${new Date().getMonth().toString()} ${new Date().getDate().toString()}, ${new Date().getFullYear().toString()}</p>
+  <p style="margin-left: 20px;font-size: small;">Expires: ${validDate}</p>
+  <hr style="margin: 10px; margin-bottom: 20px;">
+<p style="font-size: 14px;margin-left: 10px; margin-top: 10px; font-family: serif;">Once again, thank you for choosing 𝐐𝐮𝐞𝐫𝐲𝐐𝐮𝐞𝐬𝐭 and for upgrading to our Popular Plan. We are excited to embark on this premium journey together and support you every step of the way.</p>
+<p style="font-size: 16px; margin-top: 30px; text-align: center; color: #555; font-family: serif;">Best regards,</p>
+<p style="font-size: 16px; margin-top: 5px; text-align: center; color: #555;">The <strong style="color:rgb(126, 25, 25);">𝐐𝐮𝐞𝐫𝐲𝐐𝐮𝐞𝐬𝐭</strong> Team</p>
+</div>`;
   const mailOptions = {
             from: 'queryquest750@gmail.com',
-            to: Email,
-            subject: 'Account Verification - OTP',
+            to: user.email,
+            subject: 'Thank You for Upgrading to the Popular Plan!',
             html: emailContent,
         };
         await transporter.sendMail(mailOptions);
