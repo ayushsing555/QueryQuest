@@ -553,8 +553,8 @@ const payment = async (req, res) => {
 };
 
 const TimeAdd = async (req, res) => {
-    console.log("singhalmains");
-    const {userName, time, QuesId} = req.body;
+    const {userName, time, QuesId,_id } = req.body;
+    console.log(_id+"ayush")
     Query.findById(QuesId)
         .then(question => {
             if (!question) {
@@ -588,6 +588,42 @@ const TimeAdd = async (req, res) => {
         .catch(error => {
             console.error('Error:', error);
         });
+    await Query.updateOne({_id: QuesId},
+        {$inc: {totalTimeSpend: time}});
+    User.findById(_id)
+        .then(user => {
+            if (!user) {
+                console.error('user not found');
+                return;
+            }
+            const UserTimeSpend = user.TimeSpend.find(Time => Time.QuestionId === QuesId);
+            if (UserTimeSpend) {
+                UserTimeSpend.Time.push({
+                    SpendTimes: time,
+                    startsAt: new Date()
+                });
+                return user.save();
+            } else {
+                const newQues = {
+                    QuestionId: QuesId,
+                    Time: [
+                        {
+                            SpendTimes: time,
+                            startsAt: new Date()
+                        }
+                    ]
+                };
+                user.TimeSpend.push(newQues);
+                return user.save();
+            }
+        })
+        .then(savedUser => {
+            console.log('View recorded aa successfully');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+
 };
 module.exports = {
     user,

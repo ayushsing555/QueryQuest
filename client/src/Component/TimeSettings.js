@@ -8,12 +8,12 @@ export function TimeChange(time){
 }
 export function TimeSaving (time,id){
     const UserDetail = GetProfileData();
-    console.log(UserDetail)
-    const sendTimes =  async (time,id,userName)=>{
+    console.log(UserDetail+"ayush")
+    const sendTimes =  async (time,id,userName,_id)=>{
         try{
-            console.log(time);
-         console.log(id);
-         console.log(userName)
+        //     console.log(time);
+        //  console.log(_id);
+        //  console.log(userName)
          let headersList = {
             "Accept": "*/*",
             "Content-Type": "application/json"
@@ -21,7 +21,9 @@ export function TimeSaving (time,id){
         let bodyContent = JSON.stringify({
             QuesId:id,
             time:time,
-            userName:userName
+            userName:userName,
+            "_id":_id
+
         });
 
         let response = await fetch("http://localhost:8000/add/time", {
@@ -36,5 +38,5 @@ export function TimeSaving (time,id){
          
         
     }
-    sendTimes(time,id,UserDetail.username);
+    sendTimes(time,id,UserDetail.username,UserDetail._id);
 }

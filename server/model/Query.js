@@ -24,6 +24,10 @@ const QueryScheme = mongoose.Schema({
     identification: {
         type: String,
     },
+    totalTimeSpend: {
+        type: Number,
+        default: 0
+    },
     views: [
         {
             userName: {
@@ -36,7 +40,10 @@ const QueryScheme = mongoose.Schema({
                     },
                     startsAt: {
                         type: Date,
-                        default: Date.now()
+                        default: function () {
+                            const currentTime = new Date();
+                            return new Date(currentTime.getTime() - this.spendTimes * 1000);
+                        }
                     }
                 }
             ]

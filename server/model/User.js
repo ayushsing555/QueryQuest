@@ -100,7 +100,7 @@ const userstructure = new mongoose.Schema({
     ],
     TimeSpend: [
         {
-            Question: {
+            QuestionId: {
                 type: String
             },
             Time: [
