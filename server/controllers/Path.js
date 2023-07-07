@@ -438,14 +438,13 @@ const generateOtp = async (req, res) => {
 
 const payment = async (req, res) => {
     let {Price,Validity,Ticket,_id,invoiceNo} = req.body;
-   let user= await User.find({_id:_id});
-    
+   let user= await User.findOne({_id:_id});
     if(Ticket=='year'){
         Validity = 12;
     }
     let validDate;
         if (Ticket=="monthly") {
-            validDate= new Date(new Date().getFullYear(),new Date().getMonth()+validity, new Date().getDate())
+            validDate= new Date(new Date().getFullYear(),new Date().getMonth()+Validity, new Date().getDate())
         }else{
             validDate= new Date(new Date().getFullYear()+1,new Date().getMonth(), new Date().getDate())
         }
@@ -533,7 +532,7 @@ const payment = async (req, res) => {
   const mailOptions = {
             from: 'queryquest750@gmail.com',
             to: user.email,
-            subject: 'Account Verification - OTP',
+            subject: 'Thank You for Upgrading to the Popular Plan!',
             html: emailContent,
         };
         await transporter.sendMail(mailOptions);
