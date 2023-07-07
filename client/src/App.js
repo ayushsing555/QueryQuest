@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {Routes, Route, BrowserRouter} from 'react-router-dom';
 import Home from './Pages/Home';
 import NewCard from './Pages/NewQuery';
@@ -17,12 +17,23 @@ import Footer from './Component/Footer';
 import Analytic from './Pages/Analytic';
 import Profile from './Pages/Profile';
 import EditProfile from './Pages/EditProfile';
+import Loading from './Component/loading';
 
 import SinghalAnalytics from './Pages/SinghalAnalytics';
 function App() {
+  const [loading, setLoading]= useState(false);
+
+  useEffect(()=>{
+      setLoading(true)
+      setTimeout(()=>{
+        setLoading(false)
+      },2000)
+  },[])
   return (
     <>
-      <BrowserRouter>
+      {
+        loading ? <Loading loading={loading}/> : 
+        <BrowserRouter>
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
@@ -44,6 +55,8 @@ function App() {
         </Routes>
         <Footer />
       </BrowserRouter>
+      }
+      
     </>
   );
 }
