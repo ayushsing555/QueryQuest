@@ -5,7 +5,7 @@ import { TimeChange } from '../Component/TimeSettings';
 const Query = ({elem}) => {
     return (
         <>
-            <div class="p-3 lg:w-1/3 hover:bg-red-800  bg-red-900 shadow-lg text-black body-font rounded-lg">
+            <div class="p-3 hover:bg-red-800  bg-red-900 shadow-lg text-black body-font rounded-lg">
                 <div class="h-full bg-red-100 bg-opacity-75 px-8 pt-10 pb-20 m-2 rounded-lg overflow-hidden text-center relative">
                     <h1 class="title-font text-3xl font-bold text-black-900 mb-3 -mt-3">{elem.Question}</h1>
                     <b className='text-sm'>Query posted By <NavLink style={{ color: "blue" }} to={`/Users/${elem._id}`} >{elem.postedBy}</NavLink> On <br /> {TimeChange(elem.postedOn)} </b>

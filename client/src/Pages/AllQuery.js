@@ -50,12 +50,17 @@ const AllQuery = () => {
               <input checked id="bordered-checkbox-2" type="checkbox" value="" name="bordered-checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
               <label for="bordered-checkbox-2" class="w-full py-4 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Checked state</label>
             </div>
-            <div class="container px-5 py-24 mx-auto">
-              <div class="flex flex-wrap -m-4">
+            <div class="container px-5 py-24 mx-auto w-full">
+              <div class="flex flex-wrap w-full">
                 {AllQuery.length !== null ?
                   AllQuery.map((ele) => {
                     return (
+                      <>
+                      <div className='flex-col lg:w-1/3'>
                       <Query elem={ele} />
+                      </div>
+                      </>
+                      
                     )
 
                   })
