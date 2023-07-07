@@ -45,10 +45,10 @@ const userstructure = new mongoose.Schema({
         required: true,
         default: 0
     },
-    CurrentQueryPosted:{
-        type:Number,
-        required:true,
-        default:0
+    CurrentQueryPosted: {
+        type: Number,
+        required: true,
+        default: 0
     },
     instagram: {
         type: String,
@@ -70,6 +70,23 @@ const userstructure = new mongoose.Schema({
         type: String,
         required: true
     },
+    PaymentHistory: [
+        {
+            dateOfBuy: {
+                type: Date,
+                default: Date.now()
+            },
+            ticket: {
+                type: String,
+            },
+            validity: {
+                type: Number
+            },
+            validUpTo: {
+                type: Date
+            }
+        }
+    ],
     tokens: [
         {
             token: {
@@ -93,5 +110,15 @@ userstructure.methods.generateToken = async function (next) {
     }
 };
 
+userstructure.methods.addPayment = async function (validDate, Ticket, Validity) {
+    try {
+        this.PaymentHistory = this.PaymentHistory.concat({dateOfBuy: Date.now(), ticket: Ticket, validity: Validity, validUpTo: validDate});
+        this.save();
+        return this;
+    }
+    catch (e) {
+        console.log(e);
+    }
+};
 const User = mongoose.model("User", userstructure);
 module.exports = User;

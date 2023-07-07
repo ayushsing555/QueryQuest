@@ -17,7 +17,7 @@ const data = async (req, res) => {
 const IndividualData = async (req, res) => {
     try {
         const _id = req.params._id;
-        let data = await Query.findOne({ _id: _id });
+        let data = await Query.findOne({_id: _id});
         res.send(data);
     } catch (e) {
         console.log(e);
@@ -35,7 +35,7 @@ const GetAllComment = async (req, res) => {
 
 const IndividualUser = async (req, res) => {
     const _id = req.params.id;
-    const data = await User.findOne({ userName: _id });
+    const data = await User.findOne({userName: _id});
     res.send(data);
 };
 
@@ -45,15 +45,15 @@ const Home = async (req, res) => {
 
 const signIn = async (req, res) => {
     try {
-        const { email, password } = req.body;
+        const {email, password} = req.body;
 
         if (email == '' || password == '') {
-            return res.status(400).send({ error: 'Please Fill all the field' });
+            return res.status(400).send({error: 'Please Fill all the field'});
         }
-        let isExisting = await User.findOne({ email: email });
+        let isExisting = await User.findOne({email: email});
 
         if (!isExisting) {
-            return res.status(400).send({ error: 'User not exist please signUp' });
+            return res.status(400).send({error: 'User not exist please signUp'});
         }
         if (password === isExisting.password) {
             const token = await isExisting.generateToken();
@@ -67,15 +67,15 @@ const signIn = async (req, res) => {
                     id: isExisting.identification,
                 });
         } else {
-            return res.status(400).send({ error: 'Invalid Credentials' });
+            return res.status(400).send({error: 'Invalid Credentials'});
         }
-    } catch (error) { }
+    } catch (error) {}
 };
 
 const GetUserQuery = async (req, res) => {
     const id = req.params.id;
     console.log(id);
-    const data = await Query.find({ identification: id });
+    const data = await Query.find({identification: id});
     res.send(data);
 };
 
@@ -105,16 +105,16 @@ const signUp = async (req, res) => {
             detail == '' ||
             gender == ''
         ) {
-            return res.status(400).send({ error: 'Please fill all the field' });
+            return res.status(400).send({error: 'Please fill all the field'});
         }
-        let isExiting = await User.findOne({ email: email });
+        let isExiting = await User.findOne({email: email});
         if (isExiting) {
             console.log(isExiting);
-            return res.status(400).send({ error: 'Email Already Exist' });
+            return res.status(400).send({error: 'Email Already Exist'});
         }
-        let isUserNameExisting = await User.findOne({ userName: userName });
+        let isUserNameExisting = await User.findOne({userName: userName});
         if (isUserNameExisting) {
-            return res.status(400).send({ error: 'UserName is already taken' });
+            return res.status(400).send({error: 'UserName is already taken'});
         }
         const newUser = new User({
             userName,
@@ -129,7 +129,7 @@ const signUp = async (req, res) => {
             detail,
         });
         const newUserData = await newUser.save();
-        res.status(200).send({ Message: 'Successfully registered' });
+        res.status(200).send({Message: 'Successfully registered'});
         if (newUserData) {
             const transporter = Transporter();
             const emailContent = `
@@ -195,23 +195,23 @@ const signUp = async (req, res) => {
 };
 
 const AnswerAdd = async (req, res) => {
-    const { identification, Ans, postedBy } = req.body;
+    const {identification, Ans, postedBy} = req.body;
     if (Ans == '') {
-        return res.status(400).send({ error: 'Please provide an answer' });
+        return res.status(400).send({error: 'Please provide an answer'});
     }
     console.log(identification);
     let a = '';
     for (i = 0; i < 4; i++) {
         a += Math.floor(Math.random() * 100);
     }
-    const ExistingQues = await Query.findOne({ _id: identification });
+    const ExistingQues = await Query.findOne({_id: identification});
     const user = await User.findOne({
         identification: ExistingQues.identification,
     });
     let email = user.email;
     if (ExistingQues) {
         NewAns = await ExistingQues.addData(Ans, a, postedBy);
-        res.status(200).send({ message: 'AnswerAdded' });
+        res.status(200).send({message: 'AnswerAdded'});
     }
 
     if (NewAns) {
@@ -244,7 +244,7 @@ const AnswerAdd = async (req, res) => {
 
 const updateQueryNum = async (req, res) => {
     const userName = req.params.userName;
-    const ExistingUser = await User.findOne({ userName: userName });
+    const ExistingUser = await User.findOne({userName: userName});
     const result = await ExistingUser.updateOne(
         {
             QueryPosted: ExistingUser.QueryPosted + 1,
@@ -254,27 +254,27 @@ const updateQueryNum = async (req, res) => {
         }
     );
     if (result) {
-        return res.status(200).send({ message: 'Successfully updated' });
+        return res.status(200).send({message: 'Successfully updated'});
     }
 };
 
 const AnswerDelete = async (req, res) => {
     console.log('ayush');
-    const { identification } = req.body;
+    const {identification} = req.body;
     const QuesId = req.params.QuesId;
     const ansId = req.params.AnsId;
     const ans = await Query.findByIdAndUpdate(
-        { _id: QuesId },
-        { $pull: { answers: { _id: ansId } } } // Specify the object to remove
+        {_id: QuesId},
+        {$pull: {answers: {_id: ansId}}} // Specify the object to remove
     );
     let deleteComments = await comment.deleteMany(
-        { AnsId: ansId },
+        {AnsId: ansId},
         {
             new: true,
         }
     );
     if (ans && deleteComments) {
-        return res.status(200).send({ message: 'ans deleted' });
+        return res.status(200).send({message: 'ans deleted'});
     } else {
         console.log('wome t');
     }
@@ -283,35 +283,35 @@ const AnswerDelete = async (req, res) => {
 const CommentDelete = async (req, res) => {
     const _id = req.params.id;
     let updateComment = await comment.findByIdAndDelete(
-        { _id },
+        {_id},
         {
             new: true,
         }
     );
     if (updateComment) {
-        return res.status(200).send({ message: 'Comment Deleted' });
+        return res.status(200).send({message: 'Comment Deleted'});
     } else {
-        return res.status(400).send({ error: 'something went wrong' });
+        return res.status(400).send({error: 'something went wrong'});
     }
 };
 
 const updateLiked = async (req, res) => {
     try {
-        const { name } = req.body;
+        const {name} = req.body;
         const QuesId = req.params.QuesId;
         const AnsId = req.params.AnsId;
         console.log(name);
         const result = await Query.updateOne(
-            { _id: QuesId, 'answers._id': AnsId }, // Filter to match the document and specific answer
-            { $addToSet: { 'answers.$[elem].likedBy': name } }, // Update operation
-            { arrayFilters: [{ 'elem._id': AnsId }], upsert: true }
+            {_id: QuesId, 'answers._id': AnsId}, // Filter to match the document and specific answer
+            {$addToSet: {'answers.$[elem].likedBy': name}}, // Update operation
+            {arrayFilters: [{'elem._id': AnsId}], upsert: true}
         );
-        await Query.updateOne({ _id: QuesId }, { $inc: { likes: 1 } }, { new: true });
+        await Query.updateOne({_id: QuesId}, {$inc: {likes: 1}}, {new: true});
         if (result) {
             console.log(result);
-            return res.status(200).send({ message: 'AddedLiked' });
+            return res.status(200).send({message: 'AddedLiked'});
         } else {
-            return res.status(400).send({ error: 'something went error' });
+            return res.status(400).send({error: 'something went error'});
         }
     } catch (e) {
         console.log(e);
@@ -319,82 +319,82 @@ const updateLiked = async (req, res) => {
 };
 const deleteLike = async (req, res) => {
     try {
-        const { name } = req.body;
+        const {name} = req.body;
         const QuesId = req.params.QuesId;
         const AnsId = req.params.AnsId;
         console.log(name);
         const result = await Query.updateOne(
-            { _id: QuesId, 'answers._id': AnsId }, // Filter to match the document and specific answer
-            { $pull: { 'answers.$[elem].likedBy': name } }, // Update operation
-            { arrayFilters: [{ 'elem._id': AnsId }], upsert: true }
+            {_id: QuesId, 'answers._id': AnsId}, // Filter to match the document and specific answer
+            {$pull: {'answers.$[elem].likedBy': name}}, // Update operation
+            {arrayFilters: [{'elem._id': AnsId}], upsert: true}
         );
-        await Query.updateOne({ _id: QuesId }, { $inc: { likes: -1 } }, { new: true });
+        await Query.updateOne({_id: QuesId}, {$inc: {likes: -1}}, {new: true});
         if (result) {
             console.log(result);
-            return res.status(200).send({ message: 'AddedLiked' });
+            return res.status(200).send({message: 'AddedLiked'});
         } else {
-            return res.status(400).send({ error: 'something went error' });
+            return res.status(400).send({error: 'something went error'});
         }
     } catch (e) {
         console.log(e);
     }
 };
 const commentLike = async (req, res) => {
-    const { name } = req.body;
+    const {name} = req.body;
     console.log(name);
     const id = req.params.id;
     const update = await comment.updateOne(
         {
             _id: id,
         },
-        { $push: { likedBy: name } },
-        { new: true }
+        {$push: {likedBy: name}},
+        {new: true}
     );
     if (update) {
         console.log(update);
-        return res.status(200).send({ message: 'liked' });
+        return res.status(200).send({message: 'liked'});
     } else {
-        return res.status(400).send({ error: 'something went wrong' });
+        return res.status(400).send({error: 'something went wrong'});
     }
 };
 
 const deleteCommentLike = async (req, res) => {
-    const { name } = req.body;
+    const {name} = req.body;
     console.log(name);
     const id = req.params.id;
     const update = await comment.updateOne(
         {
             _id: id,
         },
-        { $pull: { likedBy: name } },
-        { new: true }
+        {$pull: {likedBy: name}},
+        {new: true}
     );
     if (update) {
         console.log(update);
-        return res.status(200).send({ message: 'liked' });
+        return res.status(200).send({message: 'liked'});
     } else {
-        return res.status(400).send({ error: 'something went wrong' });
+        return res.status(400).send({error: 'something went wrong'});
     }
 };
 
 const answerUpdate = async (req, res) => {
-    const { QuesId, AnsId, Answer } = req.body;
+    const {QuesId, AnsId, Answer} = req.body;
     const updateAns = await Query.updateOne(
-        { _id: QuesId, 'answers._id': AnsId },
-        { $set: { 'answers.$.ans': Answer } },
+        {_id: QuesId, 'answers._id': AnsId},
+        {$set: {'answers.$.ans': Answer}},
         {
             new: true,
         }
     );
     if (updateAns) {
-        return res.status(200).send({ message: 'successfully updated' });
+        return res.status(200).send({message: 'successfully updated'});
     } else {
-        return res.status(400).send({ error: 'something went wrong' });
+        return res.status(400).send({error: 'something went wrong'});
     }
 };
 
 const commentUpdate = async (req, res) => {
-    const { CommentId, Comment } = req.body;
+    const {CommentId, Comment} = req.body;
     const updateComment = await comment.updateOne(
         {
             _id: CommentId,
@@ -406,15 +406,15 @@ const commentUpdate = async (req, res) => {
         }
     );
     if (updateComment) {
-        return res.status(200).send({ message: 'successfully updated' });
+        return res.status(200).send({message: 'successfully updated'});
     } else {
-        return res.status(400).send({ error: 'something went wrong' });
+        return res.status(400).send({error: 'something went wrong'});
     }
 };
 
 const generateOtp = async (req, res) => {
     try {
-        const { Email } = req.body;
+        const {Email} = req.body;
         const transporter = Transporter();
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
         const emailContent = `<div style="background-color: #f9f9f9; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
@@ -430,33 +430,38 @@ const generateOtp = async (req, res) => {
             html: emailContent,
         };
         await transporter.sendMail(mailOptions);
-        return res.status(200).send({ otp: otp });
+        return res.status(200).send({otp: otp});
     } catch (e) {
         console.log('error', e);
     }
 };
 
 const payment = async (req, res) => {
-    let {Price,Validity,Ticket,_id,invoiceNo} = req.body;
-   let user= await User.findOne({_id:_id});
-    if(Ticket=='year'){
-        Validity = 12;
-    }
-    let validDate;
-        if (Ticket=="monthly") {
-            validDate= new Date(new Date().getFullYear(),new Date().getMonth()+Validity, new Date().getDate())
-        }else{
-            validDate= new Date(new Date().getFullYear()+1,new Date().getMonth(), new Date().getDate())
+    try {
+        let {Price, Validity, Ticket, _id, invoiceNo} = req.body;
+        let user = await User.findOne({_id: _id});
+        if (Ticket == 'year') {
+            Validity = 12;
         }
-    const Payment = await User.findByIdAndUpdate({_id:_id},{
-    $set: {
-      validUpTo: new Date(Date.now() + (Validity * 30 * 24 * 60 * 60 * 1000)),
-      ticket: Ticket,
-      CurrentQueryPosted:0
-    }
-  })
-  const transporter = Transporter();
-  const emailContent=`<div style="background-color:  #f9f9f9; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+        let validDate;
+        if (Ticket == "monthly") {
+            validDate = new Date(new Date().getFullYear(), new Date().getMonth() + Validity, new Date().getDate());
+        } else {
+            validDate = new Date(new Date().getFullYear() + 1, new Date().getMonth(), new Date().getDate());
+        }
+        const Payment = await User.findByIdAndUpdate({_id: _id}, {
+            $set: {
+                validUpTo: new Date(Date.now() + (Validity * 30 * 24 * 60 * 60 * 1000)),
+                ticket: Ticket,
+                CurrentQueryPosted: 0
+            }
+        },{
+                new :true
+            });
+        res.status(200).send({message:"Ticket successfully Subscribed"})
+        if(Payment){
+        const transporter = Transporter();
+        const emailContent = `<div style="background-color:  #f9f9f9; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
   <nav style="background-color: rgb(126, 27, 27); padding: 10px; border-radius: 20px;">
     <img style="padding: 10px; border-radius: 30px;" src="QueryQuest.png" alt="">
   </nav>
@@ -502,7 +507,7 @@ const payment = async (req, res) => {
           ${Validity}
         </td>
         <td class="hidden px-3 py-4 text-sm text-right text-slate-500 sm:table-cell">
-          Rs ${Ticket== "monthly"? "10" : "84"}
+          Rs ${Ticket == "monthly" ? "10" : "84"}
         </td>
         <td class="py-4 pl-3 pr-4 text-sm text-right text-slate-500 sm:pr-6 md:pr-0">
           Rs ${Price}
@@ -529,13 +534,22 @@ const payment = async (req, res) => {
 <p style="font-size: 16px; margin-top: 30px; text-align: center; color: #555; font-family: serif;">Best regards,</p>
 <p style="font-size: 16px; margin-top: 5px; text-align: center; color: #555;">The <strong style="color:rgb(126, 25, 25);">𝐐𝐮𝐞𝐫𝐲𝐐𝐮𝐞𝐬𝐭</strong> Team</p>
 </div>`;
-  const mailOptions = {
+        const mailOptions = {
             from: 'queryquest750@gmail.com',
             to: user.email,
             subject: 'Thank You for Upgrading to the Popular Plan!',
             html: emailContent,
         };
         await transporter.sendMail(mailOptions);
+        const PaymentHistory = await user.addPayment(validDate,Ticket,Validity);
+        
+    }
+
+}
+    catch (e) {
+        console.log(e);
+    }
+
 };
 module.exports = {
     user,
