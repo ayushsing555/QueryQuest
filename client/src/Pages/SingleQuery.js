@@ -9,7 +9,10 @@ import UpdateAnswerBox from '../Component/UpdateAnswerBox';
 import {useNavigate} from 'react-router-dom';
 import Comment from '../Component/Comment';
 import {TimeChange} from '../Component/TimeSettings';
+import {TimeSaving} from "../Component/TimeSettings";
+import {GetProfileData} from '../Component/GetProfileData';
  const SingleQuery = () => {
+    const UserDetail = GetProfileData()
     const {id} = useParams();
     const[calculate,setTime] = useState(0);
     const navigator = useNavigate();
@@ -80,7 +83,9 @@ import {TimeChange} from '../Component/TimeSettings';
         return () => {
             // Clean up any resources or subscriptions here
             clearInterval(times)
-            console.log("calculatedTime",time,userDetail.UserName)
+            if(parseInt(time)>0){
+                TimeSaving(parseInt(time),id); 
+            }
         };
     }, [location]);
 

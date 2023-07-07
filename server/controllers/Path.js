@@ -455,13 +455,13 @@ const payment = async (req, res) => {
                 ticket: Ticket,
                 CurrentQueryPosted: 0
             }
-        },{
-                new :true
-            });
-        res.status(200).send({message:"Ticket successfully Subscribed"})
-        if(Payment){
-        const transporter = Transporter();
-        const emailContent = `<div style="background-color:  #f9f9f9; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+        }, {
+            new: true
+        });
+        res.status(200).send({message: "Ticket successfully Subscribed"});
+        if (Payment) {
+            const transporter = Transporter();
+            const emailContent = `<div style="background-color:  #f9f9f9; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
   <nav style="background-color: rgb(126, 27, 27); padding: 10px; border-radius: 20px;">
     <img style="padding: 10px; border-radius: 30px;" src="QueryQuest.png" alt="">
   </nav>
@@ -534,26 +534,65 @@ const payment = async (req, res) => {
 <p style="font-size: 16px; margin-top: 30px; text-align: center; color: #555; font-family: serif;">Best regards,</p>
 <p style="font-size: 16px; margin-top: 5px; text-align: center; color: #555;">The <strong style="color:rgb(126, 25, 25);">𝐐𝐮𝐞𝐫𝐲𝐐𝐮𝐞𝐬𝐭</strong> Team</p>
 </div>`;
-        const mailOptions = {
-            from: 'queryquest750@gmail.com',
-            to: user.email,
-            subject: 'Thank You for Upgrading to the Popular Plan!',
-            html: emailContent,
-        };
-        await transporter.sendMail(mailOptions);
-        const PaymentHistory = await user.addPayment(validDate,Ticket,Validity);
-        
-    }
+            const mailOptions = {
+                from: 'queryquest750@gmail.com',
+                to: user.email,
+                subject: 'Thank You for Upgrading to the Popular Plan!',
+                html: emailContent,
+            };
+            await transporter.sendMail(mailOptions);
+            await user.addPayment(validDate, Ticket, Validity);
 
-}
+        }
+
+    }
     catch (e) {
         console.log(e);
     }
 
 };
+
+const TimeAdd = async (req, res) => {
+    console.log("singhalmains");
+    const {userName, time, QuesId} = req.body;
+    Query.findById(QuesId)
+        .then(question => {
+            if (!question) {
+                console.error('Question not found');
+                return;
+            }
+            const userViews = question.views.find(view => view.userName === userName);
+            if (userViews) {
+                userViews.Session.push({
+                    SpendTimes: time,
+                    startsAt: new Date()
+                });
+                return question.save();
+            } else {
+                const newUser = {
+                    userName: userName,
+                    Session: [
+                        {
+                            SpendTimes: time,
+                            startsAt: new Date()
+                        }
+                    ]
+                };
+                question.views.push(newUser);
+                return question.save();
+            }
+        })
+        .then(savedQuestion => {
+            console.log('View recorded successfully');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+};
 module.exports = {
     user,
     data,
+    TimeAdd,
     payment,
     generateOtp,
     signIn,

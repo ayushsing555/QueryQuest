@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {GetProfileData} from './GetProfileData';
 
 const BillingDetail = ({QueryTicket,validity,setTicketRaised}) => {
-
   const user = GetProfileData();
   const [usr, setUsrData] = useState([]);
   const [invNo, setInvNo] = useState();
@@ -77,7 +76,8 @@ const BillingDetail = ({QueryTicket,validity,setTicketRaised}) => {
         });
         const data = await response.json();
         if (response.status === 200) {
-            window.alert("Disliked");
+            window.alert("Successfully Subscribed");
+            handleClose()
             
         }
         else {

@@ -97,7 +97,26 @@ const userstructure = new mongoose.Schema({
                 default: Date.now()
             }
         }
+    ],
+    TimeSpend: [
+        {
+            Question: {
+                type: String
+            },
+            Time: [
+                {
+                    SpendTimes: {
+                        type: Number,
+                    },
+                    startsAt: {
+                        type: Date,
+                        default: Date.now()
+                    }
+                }
+            ]
+        }
     ]
+
 });
 userstructure.methods.generateToken = async function (next) {
     try {
