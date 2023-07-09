@@ -3,7 +3,6 @@ import {GetProfileData} from './GetProfileData';
 import DialogBox from './DialogBox';
 import Modal from 'react-modal';
 
-
 const BillingDetail = ({QueryTicket,validity,setTicketRaised}) => {
   const user = GetProfileData();
   const [usr, setUsrData] = useState([]);

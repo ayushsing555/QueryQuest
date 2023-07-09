@@ -9,14 +9,11 @@ const NewQuery = () => {
   const [QueryDetail, setQueryDetail] = useState({
     Query: "", QueryAns: ""
   });
-  const [showDialog, setShowDialog] = useState(false);
 
   const UserDetail = localStorage.getItem("Details");
   const UserObjDetail = JSON.parse(UserDetail);
   if (UserDetail === null) {
-    setShowDialog(true)
-    // window.alert("Please login to post Query");
-    // navigators("/signin");
+    navigators("/signin");
   }
   const checkAvailable = () => {
     setHaveAns(!haveAns);
@@ -72,9 +69,6 @@ const NewQuery = () => {
   };
   return (
     <>
-    {showDialog && (
-            <DialogBox heading="Please login to post Query..." showNotes={false} notes="" btnData="OK" cancelBtn={false} cancelBtnData="" btnFunct={navigator("/signin")} showDialogBox={true}/>
-      )}
       <div className=' shadow-2xl border-2 border-dotted  border-red-800 m-3'>
         <div class="m-6 p-4">
           <label for="exampleFormControlInput1 " class="form-label text-base">Query</label>
