@@ -10,7 +10,6 @@ const UserProfile = () => {
     const [deleteAcc, setDeleteAcc] = useState(false);
     const handleClose = () => {
       setDltConfrmDialog(false);
-      setDeletedDialog(false);
     };
 
     const Logout = () => {
