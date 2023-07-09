@@ -1,9 +1,14 @@
 
 import React, {useState} from 'react';
 import {RxUpdate} from 'react-icons/rx';
+import DialogBox from './DialogBox';
+import Modal from 'react-modal';
+
 const UpdateCommentBox = ({commentId,ExistComment,getAllData}) => {
     const [haveAns, setHaveAns] = useState(false);
     const [comment, setComment] = useState(ExistComment);
+    const [comntMsg, setComntMsg] = useState("");
+    const [cmntDialog, setCmntDialog] = useState(false);
     // const [ans,setAns] = useState(answer.ans);
     const [CommentStatus, setCommentStatus] = useState("Have An comment about this Query?");
     const checkAvailable = () => {
@@ -16,6 +21,17 @@ const UpdateCommentBox = ({commentId,ExistComment,getAllData}) => {
             setComment("");
         }
     };
+
+    const handleClose = () => {
+      setCmntDialog(false);
+  };
+
+  const [isOpen, setIsOpen] = useState(false);
+
+    function toggleModal() {
+        setIsOpen(!isOpen);
+    }
+
     const update = async() =>{
     let headersList = {
       "Accept": "*/*",
@@ -36,7 +52,10 @@ const UpdateCommentBox = ({commentId,ExistComment,getAllData}) => {
       window.alert(data.error + "ayush");
     }
     if (response.status === 200) {
-       window.alert(data.message);
+      setComntMsg(data.message);
+      setCmntDialog(true);
+      toggleModal()
+      //  window.alert(data.message);
        checkAvailable();
        getAllData();
     }
@@ -46,6 +65,19 @@ const UpdateCommentBox = ({commentId,ExistComment,getAllData}) => {
     return (
 
         <>
+        <Modal
+        isOpen={isOpen}
+        onRequestClose={toggleModal}
+        contentLabel="My dialog"
+        className="mymodal"
+        overlayClassName="myoverlay"
+        closeTimeoutMS={500}
+      >
+        {
+            cmntDialog && (
+                <DialogBox heading={comntMsg+" Successfully"} showNotes={false} notes="" btnData="OK" cancelBtn={false} cancelBtnData="" btnFunct={handleClose} showDialogBox={true}/>
+            )
+        }</Modal>
             {
                 haveAns ? <>
                     <textarea col={35} rows={3} value={comment} onChange={(e) => setComment(e.target.value)} placeholder='Enter your thoughts here' ></textarea>

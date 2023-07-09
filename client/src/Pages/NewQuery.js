@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
+import DialogBox from '../Component/DialogBox';
 
 const NewQuery = () => {
   const navigators = useNavigate();
@@ -8,10 +9,10 @@ const NewQuery = () => {
   const [QueryDetail, setQueryDetail] = useState({
     Query: "", QueryAns: ""
   });
+
   const UserDetail = localStorage.getItem("Details");
   const UserObjDetail = JSON.parse(UserDetail);
   if (UserDetail === null) {
-    window.alert("Please login to post Query");
     navigators("/signin");
   }
   const checkAvailable = () => {
@@ -58,7 +59,7 @@ const NewQuery = () => {
       window.alert(data.message);
     }
     else {
-       window.alert(data.Message);
+       window.alert(data.message);
        await fetch(`http://localhost:8000/updateQueryNumber/${UserObjDetail.UserName}`, {
         method: "PUT",
       });

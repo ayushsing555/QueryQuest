@@ -37,7 +37,7 @@ const SignIn = () => {
         }
 
         if (response.status === 200) {
-            window.alert("successfully logged in");
+            // window.alert("successfully logged in");
             const LoggedInDetails = {
                 "UserName": data.userName,
                 "token": data.token,

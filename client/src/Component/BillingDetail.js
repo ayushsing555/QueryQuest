@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {GetProfileData} from './GetProfileData';
+import DialogBox from './DialogBox';
+import Modal from 'react-modal';
 
 const BillingDetail = ({QueryTicket,validity,setTicketRaised}) => {
   const user = GetProfileData();
@@ -21,23 +23,26 @@ const BillingDetail = ({QueryTicket,validity,setTicketRaised}) => {
   if (QueryTicket==="monthly") {
      validUpTo= new Date(date.setMonth(date.getMonth()+parseInt(validity)));
   }else{
+
      validUpTo= new Date(date.setMonth(date.getMonth()+12))
   }
   
       // var a='';
         // for(let i=1; i<=7; i++){
           
+
          var invoiceNo;
          
          useEffect(()=>{
           invoiceNo=Math.ceil(Math.random()*100000)
           setInvNo(invoiceNo)
          },1)
-        // };
 
   const [showDialog, setShowDialog] = useState(false);
+  const [subscribedDialog, setSubscribedDialog] = useState(false);
   const handleClose = () => {
     setShowDialog(false);
+    setSubscribedDialog(false);
   };
   const choosePlan = () => {
     setTicketRaised()
@@ -54,8 +59,17 @@ const BillingDetail = ({QueryTicket,validity,setTicketRaised}) => {
   
   const setTicket = () =>{
     setShowDialog(true);
+    toggleModal()
   }
+
+  const [isOpen, setIsOpen] = useState(false);
+
+    function toggleModal() {
+        setIsOpen(!isOpen);
+    }
+
   const BuyTicket = async() =>{
+    setShowDialog(false)
     const user = GetProfileData();
      let headersList = {
             "Accept": "*/*",
@@ -77,9 +91,7 @@ const BillingDetail = ({QueryTicket,validity,setTicketRaised}) => {
         });
         const data = await response.json();
         if (response.status === 200) {
-            window.alert("Successfully Subscribed");
-            handleClose()
-            
+          setSubscribedDialog(true)       
         }
         else {
             window.alert(data.error);
@@ -88,44 +100,21 @@ const BillingDetail = ({QueryTicket,validity,setTicketRaised}) => {
   
   return (
     <>
-
-   
+    <Modal
+        isOpen={isOpen}
+        onRequestClose={toggleModal}
+        contentLabel="My dialog"
+        className="mymodal"
+        overlayClassName="myoverlay"
+        closeTimeoutMS={500}
+      >
      {showDialog && (
-        <div className="fixed inset-0 flex items-center justify-center">
-          <div className="bg-white border-4 border-red-900 p-8 rounded shadow">
-            <div className="flex justify-end">
-              <button
-                className="text-gray-500 hover:text-gray-700"
-                onClick={handleClose}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
-            </div>
-            <p className="text-xl font-bold ">Would you like to proceed with the payment?</p>
-            <br/>
-            <p className='font-serif mb-4'><span className='font-bold text-red-500'>Note: </span>Before proceeding with the payment, we want to emphasize <br/>  that once the payment is confirmed, it cannot be canceled or reversed.</p>
-            
-               <button className='ml-20 btn btn-lg bg-red-900 hover:bg-green-800 hover:font-bold text-white' onClick={BuyTicket}>
-                 Yes
-               </button> 
-               <button className='ml-24 btn btn-lg btn-info hover:font-bold hover:bg-cyan-700' onClick={handleClose}>No</button>
-            
-          </div>
-        </div>
+            <DialogBox heading="Would you like to proceed with the payment?" showNotes={true} notes="Before proceeding with the payment, we want to emphasize that once the payment is confirmed, it cannot be canceled or reversed." btnData="Yes" cancelBtn={true} cancelBtnData="No" btnFunct={BuyTicket} showDialogBox={true}/>
+          
       )}
+      {subscribedDialog && (
+          <DialogBox heading="Successfully Subscribed" showNotes={false} notes="" btnData="OK" cancelBtn={false} cancelBtnData="" btnFunct={handleClose} showDialogBox={true}/>
+      )}</Modal>
     <div>
       <section class="py-4 bg-white">
         <div class="max-w-7xl mx-auto py-1  bg-red-500">

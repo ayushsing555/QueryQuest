@@ -5,8 +5,21 @@ import {FcLike} from 'react-icons/fc';
 import {NavLink} from 'react-router-dom';
 import { TimeChange } from './TimeSettings';
 import UpdateCommentBox from './UpdateCommentBox';
+import DialogBox from './DialogBox';
+import Modal from 'react-modal';
+
 const Comment = ({Comments, AnsID, AnsPostedBy, getAllData, QuesPostedBy, }) => {
     let comm = [...Comments];
+    const [dltCmnt, setDltCmnt] = useState(false);
+    const [like, setLike] = useState(false);
+    const [disliked, setDisLiked] = useState(false);
+
+    const handleClose = () => {
+        setDltCmnt(false)
+        setLike(false)
+        setDisLiked(false)
+      };
+
     let commentNo = 0;
     const filterComment = comm[0].filter((elem) => {
         return (elem.AnsId === AnsID);
@@ -23,7 +36,9 @@ const Comment = ({Comments, AnsID, AnsPostedBy, getAllData, QuesPostedBy, }) => 
         });
         const data = await response.json();
         if (response.status === 200) {
-            window.alert("Comment Deleted");
+            setDltCmnt(true)
+            toggleModal()
+            // window.alert("Comment Deleted");
             getAllData();
         }
         else {
@@ -47,13 +62,21 @@ const Comment = ({Comments, AnsID, AnsPostedBy, getAllData, QuesPostedBy, }) => 
         });
         const data = await response.json();
         if (response.status === 200) {
-            window.alert("liked");
+            setLike(true)
+            toggleModal()
+            // window.alert("liked");
             getAllData();
         }
         else {
             window.alert(data.error);
         }
     };
+
+    const [isOpen, setIsOpen] = useState(false);
+
+    function toggleModal() {
+        setIsOpen(!isOpen);
+    }
 
     const dislike = async (_id) => {
         let headersList = {
@@ -71,7 +94,9 @@ const Comment = ({Comments, AnsID, AnsPostedBy, getAllData, QuesPostedBy, }) => 
         });
         const data = await response.json();
         if (response.status === 200) {
-            window.alert("Disliked");
+            setDisLiked(true)
+            toggleModal()
+            // window.alert("Disliked");
             getAllData();
         }
         else {
@@ -80,6 +105,23 @@ const Comment = ({Comments, AnsID, AnsPostedBy, getAllData, QuesPostedBy, }) => 
     };
     return (
         <>
+        <Modal
+        isOpen={isOpen}
+        onRequestClose={toggleModal}
+        contentLabel="My dialog"
+        className="mymodal"
+        overlayClassName="myoverlay"
+        closeTimeoutMS={500}
+      >
+        {dltCmnt &&
+            (<DialogBox heading="Comment Deleted Successfully" showNotes={false} notes="" btnData="OK" cancelBtn={false} cancelBtnData="" btnFunct={handleClose} showDialogBox={true}/>    
+      )}
+        {like &&
+            (<DialogBox heading="Liked Successfully" showNotes={false} notes="" btnData="OK" cancelBtn={false} cancelBtnData="" btnFunct={handleClose} showDialogBox={true}/>    
+      )}
+        {disliked &&
+            (<DialogBox heading="Disliked Successfully" showNotes={false} notes="" btnData="OK" cancelBtn={false} cancelBtnData="" btnFunct={handleClose} showDialogBox={true}/>    
+      )}</Modal>
             {
 
                 filterComment.map((comment) => {
