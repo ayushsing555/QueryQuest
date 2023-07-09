@@ -567,10 +567,12 @@ const TimeAdd = async (req, res) => {
                     SpendTimes: time,
                     startsAt: new Date()
                 });
+                userViews.totalTimeSpend = userViews.totalTimeSpend+time
                 return question.save();
             } else {
                 const newUser = {
                     userName: userName,
+                    totalTimeSpend:time,
                     Session: [
                         {
                             SpendTimes: time,

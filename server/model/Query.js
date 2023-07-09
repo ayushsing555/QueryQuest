@@ -33,6 +33,10 @@ const QueryScheme = mongoose.Schema({
             userName: {
                 type: String
             },
+            totalTimeSpend:{
+                type:Number,
+                default:0
+            },
             Session: [
                 {
                     SpendTimes: {
