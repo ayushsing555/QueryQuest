@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
+import DialogBox from '../Component/DialogBox';
 
 const NewQuery = () => {
   const navigators = useNavigate();
@@ -8,11 +9,14 @@ const NewQuery = () => {
   const [QueryDetail, setQueryDetail] = useState({
     Query: "", QueryAns: ""
   });
+  const [showDialog, setShowDialog] = useState(false);
+
   const UserDetail = localStorage.getItem("Details");
   const UserObjDetail = JSON.parse(UserDetail);
   if (UserDetail === null) {
-    window.alert("Please login to post Query");
-    navigators("/signin");
+    setShowDialog(true)
+    // window.alert("Please login to post Query");
+    // navigators("/signin");
   }
   const checkAvailable = () => {
     setHaveAns(!haveAns);
@@ -58,7 +62,7 @@ const NewQuery = () => {
       window.alert(data.message);
     }
     else {
-       window.alert(data.Message);
+       window.alert(data.message);
        await fetch(`http://localhost:8000/updateQueryNumber/${UserObjDetail.UserName}`, {
         method: "PUT",
       });
@@ -68,6 +72,9 @@ const NewQuery = () => {
   };
   return (
     <>
+    {showDialog && (
+            <DialogBox heading="Please login to post Query..." showNotes={false} notes="" btnData="OK" cancelBtn={false} cancelBtnData="" btnFunct={navigator("/signin")} showDialogBox={true}/>
+      )}
       <div className=' shadow-2xl border-2 border-dotted  border-red-800 m-3'>
         <div class="m-6 p-4">
           <label for="exampleFormControlInput1 " class="form-label text-base">Query</label>

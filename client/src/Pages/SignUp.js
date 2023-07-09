@@ -1,7 +1,10 @@
-import React, {useState} from 'react';
-import {NavLink} from 'react-router-dom';
-import {useNavigate} from 'react-router-dom';
+import React, { useState } from 'react';
+import { NavLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import DialogBox from '../Component/DialogBox';
+import Modal from 'react-modal';
 const EmailValidator = require('email-validator');
+
 const SignUp = () => {
     const navigator = useNavigate();
     const [verified, setVerified] = useState(false);
@@ -16,12 +19,23 @@ const SignUp = () => {
         Image: ""
     });
 
+    const [emailDialog, setEmailDialog] = useState(false);
+    const [otpDialog, setOtpDialog] = useState(false);
+    const handleClose = () => {
+        setEmailDialog(false);
+        setOtpDialog(false);
+    };
+
     const sendOtp = async () => {
         if (UserDetail.email === "") {
-            return window.alert("please provied an email");
+            toggleModal()
+            setEmailDialog(true)
+            return;
         }
         if (!EmailValidator.validate(UserDetail.email)) {
-            return window.alert("please provide an valid email");
+            toggleModal()
+            setEmailDialog(true);
+            return;
         }
         setEmail(false);
         setVerifyInput(true);
@@ -59,7 +73,8 @@ const SignUp = () => {
             setVerifyInput(false);
         }
         else {
-            window.alert("Invalid Otp");
+            toggleModal()
+            setOtpDialog(true)
         }
     };
     const handleChange = (e) => {
@@ -68,6 +83,12 @@ const SignUp = () => {
         let value = e.target.value;
         setUserDetail({...UserDetail, [name]: value});
     };
+
+    const [isOpen, setIsOpen] = useState(false);
+
+    function toggleModal() {
+        setIsOpen(!isOpen);
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -101,29 +122,47 @@ const SignUp = () => {
         if (response.status !== 200) {
             window.alert(data.error + "ayush");
         }
+        
         if (response.status === 200) {
-            window.alert(data.Message);
             navigator("/signin");
         }
-        console.log(data);
     };
+
     return (
         <>
+        <Modal
+        isOpen={isOpen}
+        onRequestClose={toggleModal}
+        contentLabel="My dialog"
+        className="mymodal"
+        overlayClassName="myoverlay"
+        closeTimeoutMS={500}
+      >
+        {
+            emailDialog && (
+                <DialogBox heading="Please Enter a valid Email" showNotes={true} notes="Please Enter a valid email address to get OTP..." btnData="OK" cancelBtn={false} cancelBtnData="" btnFunct={handleClose} showDialogBox={true}/>
+            )
+        }
+        {
+            otpDialog && (
+                <DialogBox heading="Invalid OTP" showNotes={true} notes="Please Enter a valid OTP to register..." btnData="OK" cancelBtn={false} cancelBtnData="" btnFunct={handleClose} showDialogBox={true}/>
+            )
+        }</Modal>
             <section class="vh-90 ">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-sm-6 -mt-10">
                             <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-3 pt-5 pt-xl-0 ">
-                                <form style={{width: "25rem"}}>
-                                    <h3 class="text-center text-black text-3xl font-bold pt-3 mt-4" style={{letterSpacing: "1px;"}}>Sign Up</h3>
+                                <form style={{ width: "25rem" }}>
+                                    <h3 class="text-center text-black text-3xl font-bold pt-3 mt-4" style={{ letterSpacing: "1px;" }}>Sign Up</h3>
                                     <p className='text-center text-red-600 font-bold text-sm font-serif mb-3'>Unlock a world of possibilities, sign up and explore!</p>
 
                                     <div class="mt-4 font-bold mb-4">
-                                    <label class="form-label text-black" for="form2Example18">User Name</label>
+                                        <label class="form-label text-black" for="form2Example18">User Name</label>
                                         <input value={UserDetail.userName} name='userName' onChange={handleChange} type="name" id="form2Example18" class="form-control border-2 border-red-900 hover:border-4 hover:border-red-900 focus:border-4  font-bold focus:border-red-900 form-control-lg" required />
                                     </div>
                                     <div class="mt-4 font-bold mb-4">
-                                    <label class="form-label text-black" for="form2Example18">Full Name</label>
+                                        <label class="form-label text-black" for="form2Example18">Full Name</label>
                                         <input value={UserDetail.fullName} name='fullName' onChange={handleChange} type="name" id="form2Example18" class="form-control border-2 border-red-900 hover:border-4 hover:border-red-900 focus:border-4  font-bold focus:border-red-900 form-control-lg" required />
                                     </div>
 
@@ -132,7 +171,7 @@ const SignUp = () => {
                                         verfiyInput ? <>
                                             <p className='text-md font-semibold mt-2 text-black'>We have sent an OTP to your <b className='text-lg text-red-900'>{UserDetail.email}</b> if you want to change email <button className="btn btn-sm hover:bg-green-800 bg-red-900 text-white font-bold" onClick={changeEmail} >change</button></p>
                                             <div class="mt-4 font-bold mb-4">
-                                            <label class="form-label text-black" for="form2Example18">Enter Otp:</label>
+                                                <label class="form-label text-black" for="form2Example18">Enter Otp:</label>
                                                 <input value={EnterOtp} name='otp' onChange={(e) => SetEnterOtp(e.target.value)} type="name" id="form2Example18" class="form-control border-2 border-red-900 hover:border-4 hover:border-red-900 focus:border-4  font-bold focus:border-red-900 form-control-lg" required />
                                             </div>
                                             <button className="btn btn-lg hover:bg-green-800 focus:bg-green-800 bg-red-900 text-white font-bold" onClick={verify}>Verify</button>
@@ -141,7 +180,7 @@ const SignUp = () => {
                                     {
                                         email ? <>
                                             <div class="mt-4 font-bold mb-4">
-                                            <label class="form-label text-black" for="form2Example18">Email address</label>
+                                                <label class="form-label text-black" for="form2Example18">Email address</label>
                                                 <input value={UserDetail.email} name='email' onChange={handleChange} type="email" id="form2Example18" class="form-control border-2 border-red-900 hover:border-4 hover:border-red-900 focus:border-4  font-bold focus:border-red-900 form-control-lg" required />
                                             </div>
                                             <button className="btn btn-lg focus:bg-green-800 hover:bg-green-800 bg-red-900 text-white font-bold" onClick={sendOtp} >Send OTP</button>
@@ -150,21 +189,21 @@ const SignUp = () => {
                                     {
                                         verified ? <>
                                             <div class="mt-4 font-bold mb-4">
-                                            <label class="form-label text-black" for="form2Example18">Instagram</label>
+                                                <label class="form-label text-black" for="form2Example18">Instagram</label>
                                                 <input value={UserDetail.InstagramLink} name='InstagramLink' onChange={handleChange} type="url" id="form2Example18" class="form-control border-2 border-red-900 hover:border-4 hover:border-red-900 focus:border-4  font-bold focus:border-red-900 form-control-lg" required />
                                             </div>
 
 
                                             <div class="mt-4 font-bold mb-4">
-                                            <label class="form-label text-black" for="form2Example18">Linkdin</label>
+                                                <label class="form-label text-black" for="form2Example18">Linkdin</label>
                                                 <input value={UserDetail.LinkdinLink} name='LinkdinLink' onChange={handleChange} type="url" id="form2Example18" class="form-control border-2 border-red-900 hover:border-4 hover:border-red-900 focus:border-4  font-bold focus:border-red-900 form-control-lg" required />
                                             </div>
                                             <div class="mt-4 font-bold mb-4">
-                                            <label class="form-label text-black" for="form2Example18">GitHub</label>
+                                                <label class="form-label text-black" for="form2Example18">GitHub</label>
                                                 <input value={UserDetail.GitHubLink} name='GitHubLink' onChange={handleChange} type="url" id="form2Example18" class="form-control border-2 border-red-900 hover:border-4 hover:border-red-900 focus:border-4  font-bold focus:border-red-900 form-control-lg" required />
                                             </div>
                                             <div class="mt-4 font-bold mb-4">
-                                            <label class="form-label text-black" for="form2Example28">Password</label>
+                                                <label class="form-label text-black" for="form2Example28">Password</label>
                                                 <input value={UserDetail.Password} name='Password' onChange={handleChange} type="password" id="form2Example28" class="form-control border-2 border-red-900 hover:border-4 hover:border-red-900 focus:border-4  font-bold focus:border-red-900 form-control-lg" required />
                                             </div>
                                             <div class="mt-4 font-bold mb-4">

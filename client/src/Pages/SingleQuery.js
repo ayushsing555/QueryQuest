@@ -11,17 +11,26 @@ import Comment from '../Component/Comment';
 import {TimeChange} from '../Component/TimeSettings';
 import {TimeSaving} from "../Component/TimeSettings";
 import {GetProfileData} from '../Component/GetProfileData';
+import DialogBox from '../Component/DialogBox';
+import Modal from 'react-modal';
+
  const SingleQuery = () => {
     const UserDetail = GetProfileData()
     const {id} = useParams();
     const[calculate,setTime] = useState(0);
     const navigator = useNavigate();
     const [AllQuery, setAllQuery] = useState([]);
+
+    const [addAns, setAddAns] = useState(false);
+    const [dltAns, setDltAns] = useState(false);
+    const [like, setLike] = useState(false);
+    const [disliked, setDisLiked] = useState(false);
+
     const [AllComment, setAllComment] = useState([]);
     const [ans, setAns] = useState("");
     let userDetail = localStorage.getItem("Details");
+    
     if (userDetail == null) {
-        window.alert("please login first to see Query");
         navigator("/signin");
     } else {
         userDetail = JSON.parse(userDetail);
@@ -42,6 +51,12 @@ import {GetProfileData} from '../Component/GetProfileData';
             console.log(e);
         }
     };
+
+    const [isOpen, setIsOpen] = useState(false);
+
+    function toggleModal() {
+        setIsOpen(!isOpen);
+    }
 
     const AnswerAdd = async (id) => {
         let headersList = {
@@ -66,7 +81,8 @@ import {GetProfileData} from '../Component/GetProfileData';
         }
         if (response.status === 200) {
             getAllData();
-            window.alert("Answer added");
+            toggleModal()
+            setAddAns(true);
             setAns("");
         }
     };
@@ -104,7 +120,8 @@ const DeleteAnswer = async (QuesId, AnsId) => {
     const data = await response.json();
     if (response.status === 200) {
         getAllData();
-        window.alert("Answer Deleted");
+        setDltAns(true)
+        toggleModal()
     }
     else {
         window.alert(data.error);
@@ -128,7 +145,8 @@ const addLike = async (QuesId, AnsId) => {
     const data = await response.json();
     if (response.status === 200) {
         getAllData();
-        window.alert("Liked");
+        setLike(true)
+        toggleModal()
     }
     else {
         window.alert(data.error);
@@ -151,20 +169,43 @@ const dislike = async (QuesId, AnsId) => {
     const data = await response.json();
     if (response.status === 200) {
         getAllData();
-        window.alert("Disliked");
+        setDisLiked(true)
+        toggleModal()
+        // window.alert("Disliked");
     }
     else {
         window.alert(data.error);
     }
 };
-
-
-
-
-
+const handleClose = () => {
+    setAddAns(false)
+    setDltAns(false)
+    setLike(false)
+    setDisLiked(false)
+  };
 
 return (
     <>
+      <Modal
+        isOpen={isOpen}
+        onRequestClose={toggleModal}
+        contentLabel="My dialog"
+        className="mymodal"
+        overlayClassName="myoverlay"
+        closeTimeoutMS={500}
+      >{ addAns &&
+            (<DialogBox heading="Answer Added Successfully" showNotes={false} notes="" btnData="OK" cancelBtn={false} cancelBtnData="" btnFunct={handleClose} showDialogBox={true}/>    
+      ) } 
+      {dltAns &&
+            (<DialogBox heading="Answer Deleted Successfully" showNotes={false} notes="" btnData="OK" cancelBtn={false} cancelBtnData="" btnFunct={handleClose} showDialogBox={true}/>    
+      )}
+        {like &&
+            (<DialogBox heading="Liked Successfully" showNotes={false} notes="" btnData="OK" cancelBtn={false} cancelBtnData="" btnFunct={handleClose} showDialogBox={true}/>    
+      )}
+        {disliked &&
+            (<DialogBox heading="Disliked Successfully" showNotes={false} notes="" btnData="OK" cancelBtn={false} cancelBtnData="" btnFunct={handleClose} showDialogBox={true}/>    
+      )}</Modal>
+        
          <h1 className='text-3xl text-center underline' >You are on this page since {calculate} Seconds</h1>
         {
             AllQuery.map((elem) => {

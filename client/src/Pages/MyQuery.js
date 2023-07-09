@@ -2,17 +2,23 @@ import React, { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import Query from '../Component/Query';
 import ClipLoader from "react-spinners/ClipLoader";
+import DialogBox from '../Component/DialogBox';
 
 const MyQuery = () => {
   const [AllQuery, setAllQuery] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [showDialog, setShowDialog] = useState(false);
+  // const handleClose = () => {
+  //   setShowDialog(false);
+  // };
 
   const navigator = useNavigate();
 
   let UserDetail = localStorage.getItem("Details");
   if (UserDetail === null) {
-    window.alert("please sign in");
-    navigator("/signin");
+    setShowDialog(true)
+    // window.alert("please sign in");
+    // navigator("/signin");
   }
   UserDetail = JSON.parse(UserDetail);
 
@@ -34,6 +40,9 @@ const MyQuery = () => {
 
   return (
     <>
+    {showDialog && (
+            <DialogBox heading="Please Sign In...." showNotes={false} notes="" btnData="OK" cancelBtn={false} cancelBtnData="" btnFunct={navigator("/signin")} showDialogBox={true}/>
+      )}
       {
         loading ? <div className="flex justify-center p-5 mt-10 mb-10 h-full">
           <ClipLoader className='align-self-center' color="hsla(10, 62%, 30%, 0.99)"
@@ -50,7 +59,7 @@ const MyQuery = () => {
                     <div className='flex-col lg:w-1/3 '>
                       <Query elem={ele} />
   
-                        <button class="bg-green-900 hover:bg-green-800 text-white font-bold  rounded-lg p-2 w-48 mb-3 ml-24 mt-1"><NavLink to={`/analysis`} class="text-white inline-flex items-center ml-2px">Go to Query Analytics 
+                        <button class="bg-green-900 hover:bg-green-800 text-white font-bold  rounded-lg p-2 w-48 mb-3 ml-24 mt-1"><NavLink to={`queryAnalytic`} class="text-white inline-flex items-center ml-2px">Go to Query Analytics 
                             <svg class="w-4 h-4 ml-20" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M5 12h14"></path>
                                 <path d="M12 5l7 7-7 7"></path>

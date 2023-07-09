@@ -1,9 +1,13 @@
-
 import React, {useState} from 'react';
 import {RxUpdate} from 'react-icons/rx';
+import DialogBox from './DialogBox';
+import Modal from 'react-modal';
+
 const UpdateAnswerBox = ({answer,QuesId,getAllData}) => {
     const [haveAns, setHaveAns] = useState(false);
     const [comment, setComment] = useState("");
+    const [ansMsg, setAnsMsg] = useState("");
+    const [ansDialog, setAnsDialog] = useState(false);
     const [ans,setAns] = useState(answer.ans);
     const [CommentStatus, setCommentStatus] = useState("Have An comment about this Query?");
     const checkAvailable = () => {
@@ -16,6 +20,16 @@ const UpdateAnswerBox = ({answer,QuesId,getAllData}) => {
             setComment("");
         }
     };
+
+    const handleClose = () => {
+      setAnsDialog(false);
+  };
+
+  const [isOpen, setIsOpen] = useState(false);
+
+    function toggleModal() {
+        setIsOpen(!isOpen);
+    }
     const update = async() =>{
     let headersList = {
       "Accept": "*/*",
@@ -37,7 +51,10 @@ const UpdateAnswerBox = ({answer,QuesId,getAllData}) => {
       window.alert(data.error + "ayush");
     }
     if (response.status === 200) {
-       window.alert(data.message);
+      setAnsMsg(data.message);
+      setAnsDialog(true);
+      toggleModal()
+      //  window.alert(data.message);
        checkAvailable();
        getAllData();
     }
@@ -47,6 +64,19 @@ const UpdateAnswerBox = ({answer,QuesId,getAllData}) => {
     return (
 
         <>
+        <Modal
+        isOpen={isOpen}
+        onRequestClose={toggleModal}
+        contentLabel="My dialog"
+        className="mymodal"
+        overlayClassName="myoverlay"
+        closeTimeoutMS={500}
+      >
+        {
+            ansDialog && (
+                <DialogBox heading={ansMsg} showNotes={false} notes="" btnData="OK" cancelBtn={false} cancelBtnData="" btnFunct={handleClose} showDialogBox={true}/>
+            )
+        }</Modal>
             {
                 haveAns ? <>
                     <textarea col={35} rows={3} value={ans} onChange={(e) => setAns(e.target.value)} placeholder='Enter your thoughts here' ></textarea>

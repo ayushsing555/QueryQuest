@@ -2,17 +2,22 @@ import React, { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import Query from '../Component/Query';
 import ClipLoader from "react-spinners/ClipLoader";
+import DialogBox from '../Component/DialogBox';
 
 const AllQuery = () => {
   const [AllQuery, setAllQuery] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [showDialog, setShowDialog] = useState(false);
+  // const handleClose = () => {
+  //   setShowDialog(false);
+  // };
 
   const navigator = useNavigate();
   const getUserDetail = () => {
     const UserDetail = localStorage.getItem("Details");
     if (UserDetail === null) {
-      window.alert("Please sign in");
-      navigator("/signin");
+      setShowDialog(true)
+      // navigator("/signin");
     }
   };
   let likes = 0;
@@ -36,6 +41,9 @@ const AllQuery = () => {
 
   return (
     <>
+    {showDialog && (
+            <DialogBox heading="Please Sign In...." showNotes={false} notes="" btnData="OK" cancelBtn={false} cancelBtnData="" btnFunct={navigator("/signin")} showDialogBox={true}/>
+      )}
       {
         loading ? <div className="flex justify-center p-5 mt-10 mb-10 h-full">
           <ClipLoader className='align-self-center' color="hsla(10, 62%, 30%, 0.99)"
