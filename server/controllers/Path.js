@@ -602,10 +602,12 @@ const TimeAdd = async (req, res) => {
                     SpendTimes: time,
                     startsAt: new Date()
                 });
+                UserTimeSpend.TotaltimeSpend = UserTimeSpend.TotaltimeSpend+time
                 return user.save();
             } else {
                 const newQues = {
                     QuestionId: QuesId,
+                    TotaltimeSpend:time,
                     Time: [
                         {
                             SpendTimes: time,

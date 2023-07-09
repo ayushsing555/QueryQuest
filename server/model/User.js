@@ -103,6 +103,9 @@ const userstructure = new mongoose.Schema({
             QuestionId: {
                 type: String
             },
+            TotaltimeSpend:{
+                type:Number
+            },
             Time: [
                 {
                     SpendTimes: {

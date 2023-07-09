@@ -17,10 +17,11 @@ const BillingDetail = ({QueryTicket,validity,setTicketRaised}) => {
   }, [1]);
 
     let validUpTo;
-  if (QueryTicket=="monthly") {
-     validUpTo= new Date(new Date().getFullYear(),new Date().getMonth()+validity, new Date().getDate())
+    let date = new Date();
+  if (QueryTicket==="monthly") {
+     validUpTo= new Date(date.setMonth(date.getMonth()+parseInt(validity)));
   }else{
-     validUpTo= new Date(new Date().getFullYear()+1,new Date().getMonth(), new Date().getDate())
+     validUpTo= new Date(date.setMonth(date.getMonth()+12))
   }
   
       // var a='';
