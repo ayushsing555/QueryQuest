@@ -20,6 +20,7 @@ import EditProfile from './Pages/EditProfile';
 import Loading from './Component/loading';
 import QueryAnalytics from './Pages/QueryAnalytics';
 import SinghalAnalytics from './Pages/SinghalAnalytics';
+import UserSessions from './Component/UserSessions';
 function App() {
   const [loading, setLoading]= useState(false);
 
@@ -53,6 +54,7 @@ function App() {
           <Route path='/profile/edit' element={<EditProfile />} />
           <Route path='/myAnalytic' element={<SinghalAnalytics />} />
           <Route path='/queryAnalytic/:id' element={<QueryAnalytics />} />
+          <Route path='/sessions/:id' element={<UserSessions />} />
         </Routes>
         <Footer />
       </BrowserRouter>
