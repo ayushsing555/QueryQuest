@@ -18,7 +18,7 @@ import Analytic from './Pages/Analytic';
 import Profile from './Pages/Profile';
 import EditProfile from './Pages/EditProfile';
 import Loading from './Component/loading';
-
+import QueryAnalytics from './Pages/QueryAnalytics';
 import SinghalAnalytics from './Pages/SinghalAnalytics';
 function App() {
   const [loading, setLoading]= useState(false);
@@ -52,6 +52,7 @@ function App() {
           <Route path='/profile' element={<Profile />} />
           <Route path='/profile/edit' element={<EditProfile />} />
           <Route path='/myAnalytic' element={<SinghalAnalytics />} />
+          <Route path='/queryAnalytic/:id' element={<QueryAnalytics />} />
         </Routes>
         <Footer />
       </BrowserRouter>

@@ -55,7 +55,6 @@ const UpdateCommentBox = ({commentId,ExistComment,getAllData}) => {
       setComntMsg(data.message);
       setCmntDialog(true);
       toggleModal()
-      //  window.alert(data.message);
        checkAvailable();
        getAllData();
     }
