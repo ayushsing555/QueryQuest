@@ -1,22 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router";
 import ClipLoader from "react-spinners/ClipLoader";
-
+import { TimeChange } from "./TimeSettings";
 const UserSessions = () => {
     const { id } = useParams();
     const { user } = useParams();
-
-    const [sessions, setSessions] = useState([]);
     const [usrSession, setUerSession] = useState([]);
     const [loading, setLoading] = useState(false);
     var sno = 1;
     const getData = async () => {
         const res = await fetch(`http://localhost:8000/data/${id}`);
         const data = await res.json();
-        setSessions(data.views)
-        sessions.map((ele)=>{
+        data.views.filter((ele)=>{
             if (ele.userName === user) {
-                setUerSession(ele.Session)
+               return setUerSession(ele.Session)
             }
           })
       };
@@ -62,7 +59,6 @@ const UserSessions = () => {
                     <tbody>
                     {
                         usrSession.map((ele)=>{
-                            {/* console.log(ele) */}
                         return(
                             <>
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
@@ -73,7 +69,7 @@ const UserSessions = () => {
                                 {ele.SpendTimes}
                             </td>
                             <td class="px-6 py-4">
-                                {ele.startsAt}
+                                {TimeChange(ele.startsAt)}
                             </td>
                         </tr>
                         </>
