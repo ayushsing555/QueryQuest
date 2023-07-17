@@ -14,11 +14,12 @@ const MyQuery = () => {
     navigator("/signin");
   }
   UserDetail = JSON.parse(UserDetail);
-
+  console.log(UserDetail.id)
   const getData = async () => {
     const res = await fetch(`http://localhost:8000/user/Queries/${UserDetail.id}`);
     const data = await res.json();
     setAllQuery(data);
+    
   };
   useEffect(() => {
     getData();
@@ -38,7 +39,7 @@ const MyQuery = () => {
             size={150} loading={loading} aria-label="Loading Spinner"
             data-testid="loader" /> </div>
           : <section class="text-black body-font">
-            <button className='flex items-center mt-2 ml-auto -mr-74 text-white  bg-red-900 font-semibold hover:bg-green-800 hover:font-semibold border-0 py-2 px-4 focus:outline-none rounded'><NavLink to={"/myAnalytic"} className="text-white"> Go to Analytics Dashboard </NavLink></button>
+            <button className='flex items-center mt-2 ml-auto -mr-74 text-white  bg-red-900 font-semibold hover:bg-green-800 hover:font-semibold border-0 py-2 px-4 focus:outline-none rounded'><NavLink to={`/myAnalytic/${UserDetail.id}`} className="text-white"> Go to Analytics Dashboard </NavLink></button>
             <div class="container ml-2 py-24 w-full">
               <div class="flex flex-wrap w-full">
                 {AllQuery.length !== null ?
