@@ -1,8 +1,6 @@
 const Query = require('../model/Query');
 const User = require('../model/User');
-const auth = require('../Authentication/auth');
 const comment = require('../model/Comment');
-const nodemailer = require('nodemailer');
 const Transporter = require('./TransporterFun');
 const user = async (req, res) => {
     const allUser = await User.find();
