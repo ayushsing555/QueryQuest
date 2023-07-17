@@ -30,7 +30,7 @@ const AllQuery = () => {
     setLoading(true)
     setTimeout(() => {
       setLoading(false)
-    }, 500)
+    }, 1500)
   }, [])
 
   return (
