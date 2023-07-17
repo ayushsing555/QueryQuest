@@ -52,7 +52,7 @@ function App() {
           <Route path='/analysis' element={<Analytic />} />
           <Route path='/profile' element={<Profile />} />
           <Route path='/profile/edit' element={<EditProfile />} />
-          <Route path='/myAnalytic' element={<SinghalAnalytics />} />
+          <Route path='/myAnalytic/:id' element={<SinghalAnalytics />} />
           <Route path='/queryAnalytic/:id' element={<QueryAnalytics />} />
           <Route path='/sessions/:id/:user' element={<UserSessions />} />
         </Routes>

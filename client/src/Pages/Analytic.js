@@ -45,7 +45,7 @@ const Analytic = () => {
     return (
         <>
             <div class="relative overflow-x-auto shadow-md h-96 overflow-auto  m-5 sm:rounded-lg">
-                <table class="w-full text-sm  text-center text-black text-xl dark:text-gray-400">
+                <table class="w-full  text-center text-black text-xl dark:text-gray-400">
                     <thead class="text-xs text-gray-700  bg-gray-50 dark:bg-red-900 dark:text-gray-400">
                         <tr className='text-xl'>
                             <th scope="col" class="px-6 py-3">
