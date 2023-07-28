@@ -95,6 +95,33 @@ const Home = () => {
     </div>
   </div>
 </section>
+
+<main>
+      <div className='p-3 hover:bg-red-800  bg-red-900 shadow-lg text-black body-font rounded-lg w-10/12 ml-auto mr-auto'>
+      <div className='h-full bg-red-100 bg-opacity-75 pt-10 pb-10 rounded-lg '>
+          <h2 className='sm:text-3xl text-2xl font-bold title-font text-center mb-3'>Who we Are !!</h2>
+          <h3 className='ml-5 font-bold font-serif'>Empowering the world to develop technology through collective knowledge.</h3>
+          <p className='ml-5 font-bold font-serif'>Our mission is to share and grow the world's knowledge. We want to connect the people who knowledge to the people who used it, to bring together people with different perspectives so they 
+            can understand each other better, to empower everyone to share their knowledge for the benefit of the rest of the world.</p>
+      </div>
+      </div>
+</main>
+
+      <section className= 'mt-5 mb-5 w-full'>
+      <div className='p-3 hover:bg-red-800  bg-red-900 shadow-lg text-black body-font rounded-lg w-10/12 ml-auto mr-auto'>
+      <div className='h-full bg-red-100 bg-opacity-75 pt-10 pb-10 rounded-lg '>
+      <h2 className='sm:text-3xl text-2xl font-bold title-font text-center mb-3'>Why Us?</h2>
+      <div className='flex flex-row m-2 ml-5 font-bold font-serif'>
+      <div className='inline-flex items-center pr-2 py-1 border-r-2 border-gray-800 w-10/12'>
+        <p>We made our platform a global knowledge sharing platform, connectiong people to share insights on various topics and providing a unique platform to learn, share, & connect with others.</p>
+      </div>
+      <div>
+        <p>Platforms lets people ask questions, get instant answers, learn, & share technical knowledge.</p>
+      </div>
+      </div>
+        </div>
+      </div>
+      </section>
     </>
   )
 }
