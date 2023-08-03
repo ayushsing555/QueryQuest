@@ -18,6 +18,7 @@ import Analytic from './Pages/Analytic';
 import Profile from './Pages/Profile';
 import EditProfile from './Pages/EditProfile';
 import Loading from './Component/loading';
+import Services from './Services';
 
 import SinghalAnalytics from './Pages/SinghalAnalytics';
 function App() {
@@ -52,6 +53,7 @@ function App() {
           <Route path='/profile' element={<Profile />} />
           <Route path='/profile/edit' element={<EditProfile />} />
           <Route path='/myAnalytic' element={<SinghalAnalytics />} />
+          <Route path='/services' element={<Services/>} />
         </Routes>
         <Footer />
       </BrowserRouter>

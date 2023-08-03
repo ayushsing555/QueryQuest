@@ -112,7 +112,7 @@ const Home = () => {
       <div className='h-full bg-red-100 bg-opacity-75 pt-10 pb-10 rounded-lg '>
       <h2 className='sm:text-3xl text-2xl font-bold title-font text-center mb-3'>Why Us?</h2>
       <div className='flex flex-row m-2 ml-5 font-bold font-serif'>
-      <div className='inline-flex items-center pr-2 py-1 border-r-2 border-gray-800 w-10/12'>
+      <div className='inline-flex items-center pr-2 py-1 w-10/12'>
         <p>We made our platform a global knowledge sharing platform, connectiong people to share insights on various topics and providing a unique platform to learn, share, & connect with others.</p>
       </div>
       <div>
