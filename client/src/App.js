@@ -18,9 +18,10 @@ import Analytic from './Pages/Analytic';
 import Profile from './Pages/Profile';
 import EditProfile from './Pages/EditProfile';
 import Loading from './Component/loading';
-import Services from './Services';
-
+import Services from './Pages/Services';
 import SinghalAnalytics from './Pages/SinghalAnalytics';
+import AboutUs from './Pages/AboutUs';
+
 function App() {
   const [loading, setLoading]= useState(false);
 
@@ -54,6 +55,7 @@ function App() {
           <Route path='/profile/edit' element={<EditProfile />} />
           <Route path='/myAnalytic' element={<SinghalAnalytics />} />
           <Route path='/services' element={<Services/>} />
+          <Route path='/about' element={<AboutUs/>} />
         </Routes>
         <Footer />
       </BrowserRouter>
