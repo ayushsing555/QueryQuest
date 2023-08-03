@@ -1,18 +1,31 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { TimeChange } from '../Component/TimeSettings';
-
-const Query = ({elem}) => {
+import {NavLink} from 'react-router-dom';
+import {TimeChange} from '../Component/TimeSettings';
+import {ActiveUser} from './ActiveUser';
+const Query = ({elem, ActiveUser}) => {
     return (
         <>
             <div class="p-3 hover:bg-red-800  bg-red-900 shadow-lg text-black body-font rounded-lg">
                 <div class="h-full bg-red-100 bg-opacity-75 px-8 pt-10 pb-20 m-2 rounded-lg overflow-hidden text-center relative">
-                    <h1 class="title-font text-3xl font-bold text-black-900 mb-3 -mt-3">{elem.Question}</h1>
-                    <b className='text-sm'>Query posted By <NavLink style={{ color: "blue" }} to={`/Users/${elem._id}`} >{elem.postedBy}</NavLink> On <br /> {TimeChange(elem.postedOn)} </b>
+                    <h1 class="title-font text-3xl font-bold text-black-900 mb-3 -mt-3">{elem.Question.substring(0,15)+"..."}</h1>
+                    <b className='text-sm'>Query posted By 
+                        {
+
+                            ActiveUser.includes(elem.postedBy) ? <>
+                                <NavLink style={{color: "blue"}} to={`/user/${elem.postedBy}`} >
+                                  {" "+elem.postedBy+" "}
+                                </NavLink>
+                            </> : <>
+                                <b>{" "+elem.postedBy+" (deleted)"}</b>
+                            </>
+
+
+                        }
+                        On <br /> {TimeChange(elem.postedOn)} </b>
                     <br />
                     <br />
                     <NavLink to={`/query/${elem._id}`} class="text-indigo-500 inline-flex items-center">
-                        <button class="bg-red-900 hover:bg-green-800 text-white font-bold py-2 px-4 rounded">Solutions 
+                        <button class="bg-red-900 hover:bg-green-800 text-white font-bold py-2 px-4 rounded">Solutions
                             <svg class="w-4 h-4 ml-6" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M5 12h14"></path>
                                 <path d="M12 5l7 7-7 7"></path>
@@ -40,7 +53,7 @@ const Query = ({elem}) => {
                 </div>
             </div>
         </>
-    )
-}
+    );
+};
 
 export default Query;
