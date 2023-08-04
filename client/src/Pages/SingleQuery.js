@@ -171,7 +171,6 @@ const dislike = async (QuesId, AnsId) => {
         getAllData();
         setDisLiked(true)
         toggleModal()
-        // window.alert("Disliked");
     }
     else {
         window.alert(data.error);
