@@ -90,8 +90,8 @@ const SinghalAnalytics = () => {
                         {ele.likes}
                       </td>
                       <td class="px-6 py-4">
-                       <span className='ml-10'> {ele.answers.length}</span>
-                        <button class="bg-green-900 hover:bg-green-800 text-white   rounded-lg p-2 w-48 mb-3 ml-24 mt-1"><NavLink to={`/query/${ele._id}`} class="text-white inline-flex items-center ml-2px">See All Solutions
+                      <span className='ml-14'>{ele.answers.length}</span>
+                        <button class="bg-red-900 hover:bg-green-800 text-white  rounded-lg p-2 w-48 mb-3 ml-24 mt-2"><NavLink to={`/query/${ele._id}`} class="text-white inline-flex items-center ml-2px">See all solutions 
                             <svg class="w-4 h-4 ml-20" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M5 12h14"></path>
                                 <path d="M12 5l7 7-7 7"></path>
@@ -100,8 +100,8 @@ const SinghalAnalytics = () => {
                         </button>
                       </td>
                       <td class="px-6 py-4">
-                        {ele.views.length}
-                        <button class="bg-green-900 hover:bg-green-800 text-white font-bold  rounded-lg p-2 w-48 mb-3 ml-24 mt-1"><NavLink to={`queryAnalytic`} class="text-white inline-flex items-center ml-2px">See all viewers 
+                      <span className='ml-14'>{ele.views.length}</span>
+                        <button class="bg-red-900 hover:bg-green-800 text-white  rounded-lg p-2 w-48 mb-3 ml-24 mt-2"><NavLink to={`/queryAnalytic/${ele._id}`} class="text-white inline-flex items-center ml-2px">See all viewers 
                             <svg class="w-4 h-4 ml-20" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M5 12h14"></path>
                                 <path d="M12 5l7 7-7 7"></path>
