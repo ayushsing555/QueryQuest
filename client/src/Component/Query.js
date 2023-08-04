@@ -16,7 +16,7 @@ const Query = ({elem, ActiveUser}) => {
                                   {" "+elem.postedBy+" "}
                                 </NavLink>
                             </> : <>
-                                <b>{" "+elem.postedBy+" (deleted)"}</b>
+                                <b className='text-gray-500'>{" "+elem.postedBy+" (deleted)"}</b>
                             </>
 
 
