@@ -54,7 +54,7 @@ router.post("/new", auth, async (req, res) => {
       }
     } else {
       if (newQuery) {
-        await User.findAndUpdateOne({_id: req.id},
+        await User.updateOne({_id: req.id},
           {$inc: {CurrentQueryPosted: 1, TotalQueryPosted: 1}});
         return res.status(200).send({message: "Query posted successfully"});
       }
