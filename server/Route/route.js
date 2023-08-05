@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Transporter = require('../controllers/TransporterFun');
-const {signIn, signUp, user, data, commentLike,ForgotPassword, TimeAdd, payment, generateOtp, commentUpdate, answerUpdate, deleteCommentLike, CommentDelete, deleteLike, updateLiked, IndividualData, GetAllComment, AnswerDelete, GetUserQuery, CommentAdd, updateQueryNum, AnswerAdd, Home, IndividualUser} = require("../controllers/Path");
+const {signIn, signUp, user, data,changePassword, commentLike,ForgotPassword, TimeAdd, payment, generateOtp, commentUpdate, answerUpdate, deleteCommentLike, CommentDelete, deleteLike, updateLiked, IndividualData, GetAllComment, AnswerDelete, GetUserQuery, CommentAdd, updateQueryNum, AnswerAdd, Home, IndividualUser} = require("../controllers/Path");
 const auth = require("../Authentication/auth");
 const Query = require("../model/Query");
 const User = require("../model/User");
@@ -29,6 +29,7 @@ router.route("/verify").post(generateOtp);
 router.route("/payment").post(payment);
 router.route("/add/time").post(TimeAdd);
 router.route("/forgotpassword").post(ForgotPassword);
+router.route("/changePassword").post(changePassword);
 router.post("/new", auth, async (req, res) => {
   try {
     const {Question, Answer, postedBy} = req.body;
