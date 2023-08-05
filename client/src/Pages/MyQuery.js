@@ -15,7 +15,7 @@ const MyQuery = () => {
     navigator("/signin");
   }
   UserDetail = JSON.parse(UserDetail);
-  console.log(UserDetail.id)
+  // console.log(UserDetail.id)
   const getData = async () => {
     const res = await fetch(`http://localhost:8000/user/Queries/${UserDetail.id}`);
     const data = await res.json();

@@ -14,7 +14,6 @@ import Users from './Pages/Users';
 import SingleUser from './Pages/SingleUser';
 import Pricing from './Pages/Pricing';
 import Footer from './Component/Footer';
-import Analytic from './Pages/Analytic';
 import Profile from './Pages/Profile';
 import EditProfile from './Pages/EditProfile';
 import Loading from './Component/loading';
@@ -52,10 +51,8 @@ function App() {
           <Route path='/pricing' element={<Pricing />} />
           <Route path='/user/:id' element={<SingleUser />} />
           <Route path='/query/:id' element={<SingleQuery />} />
-          <Route path='/analysis' element={<Analytic />} />
           <Route path='/profile' element={<Profile />} />
           <Route path='/profile/edit' element={<EditProfile />} />
-          
           <Route path='/myAnalytic' element={<SinghalAnalytics />} />
           <Route path='/services' element={<Services/>} />
           <Route path='/about' element={<AboutUs/>} />
