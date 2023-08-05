@@ -13,7 +13,7 @@ const SingleUser = () => {
 
     let userDetail = localStorage.getItem('Details');
     userDetail=JSON.parse(userDetail); 
-    console.log(userDetail.UserName);
+    // console.log(userDetail.UserName);
 
     useEffect(() => {
         getSingleData();

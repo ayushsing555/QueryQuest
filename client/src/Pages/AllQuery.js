@@ -20,6 +20,9 @@ const AllQuery = () => {
       navigator("/signin");
     }
   };
+  let userDetail = localStorage.getItem('Details');
+    userDetail=JSON.parse(userDetail); 
+
   getUserDetail();
   const getData = async () => {
     const res = await fetch("http://localhost:8000/data");
@@ -58,10 +61,11 @@ const AllQuery = () => {
            return elem;
          }
        })
-      console.log(AllGlobalQuery)
+      // console.log(AllGlobalQuery)
        setAllQuery(FilterData)
     }
   };
+  console.log(AllQuery)
 
   return (
     <>
@@ -102,10 +106,15 @@ const AllQuery = () => {
               <div class="flex flex-wrap w-full">
                 {AllQuery.length !== null ?
                   AllQuery.map((ele) => {
+                    {/* console.log(ele) */}
                     return (
                       <>
                         <div className='flex-col lg:w-1/3'>
-                          <Query elem={ele} ActiveUser = {AllActiveUsers}  />
+                        {
+                          userDetail.UserName === ele.postedBy ? <Query elem={ele} ActiveUser = {AllActiveUsers} analyticDisplay={true} dltquery={true} queryanalysisLink={ele._id}/>
+                          : <Query elem={ele} ActiveUser = {AllActiveUsers} analyticDisplay={false} dltquery={false} queryanalysisLink={``}/>
+                        }
+                          
                         </div>
                       </>
                     );
