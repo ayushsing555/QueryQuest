@@ -18,17 +18,17 @@ const Home = () => {
               />
               <img
                 src="/image/newQuery.JPG"
-                alt="image 2"
+                alt=" 2"
                 className=" w-100"
               />
               <img
                 src="/image/single Query.JPG"
-                alt="image 3"
+                alt=" 3"
                 className=" w-full"
               />
               <img
                 src="/image/users.JPG"
-                alt="image 3"
+                alt=" 3"
                 className=" w-full"
               />
             </Carousel>

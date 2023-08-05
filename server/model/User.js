@@ -70,6 +70,9 @@ const userstructure = new mongoose.Schema({
         type: String,
         required: true
     },
+    forgotPasswordToken:{
+        type:String
+    },
     PaymentHistory: [
         {
             dateOfBuy: {

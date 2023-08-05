@@ -2,6 +2,8 @@ const Query = require('../model/Query');
 const User = require('../model/User');
 const comment = require('../model/Comment');
 const Transporter = require('./TransporterFun');
+// const Token = require('../helperFunction/Token');
+const {Password,Token} = require('../helperFunction/Token');
 const user = async (req, res) => {
     const allUser = await User.find();
     res.send(allUser);
@@ -551,8 +553,8 @@ const payment = async (req, res) => {
 };
 
 const TimeAdd = async (req, res) => {
-    const {userName, time, QuesId,_id } = req.body;
-    console.log(_id+"ayush")
+    const {userName, time, QuesId, _id} = req.body;
+    console.log(_id + "ayush");
     Query.findById(QuesId)
         .then(question => {
             if (!question) {
@@ -565,12 +567,12 @@ const TimeAdd = async (req, res) => {
                     SpendTimes: time,
                     startsAt: new Date()
                 });
-                userViews.totalTimeSpend = userViews.totalTimeSpend+time
+                userViews.totalTimeSpend = userViews.totalTimeSpend + time;
                 return question.save();
             } else {
                 const newUser = {
                     userName: userName,
-                    totalTimeSpend:time,
+                    totalTimeSpend: time,
                     Session: [
                         {
                             SpendTimes: time,
@@ -602,12 +604,12 @@ const TimeAdd = async (req, res) => {
                     SpendTimes: time,
                     startsAt: new Date()
                 });
-                UserTimeSpend.TotaltimeSpend = UserTimeSpend.TotaltimeSpend+time
+                UserTimeSpend.TotaltimeSpend = UserTimeSpend.TotaltimeSpend + time;
                 return user.save();
             } else {
                 const newQues = {
                     QuestionId: QuesId,
-                    TotaltimeSpend:time,
+                    TotaltimeSpend: time,
                     Time: [
                         {
                             SpendTimes: time,
@@ -627,12 +629,89 @@ const TimeAdd = async (req, res) => {
         });
 
 };
+
+const ForgotPassword = async (req, res) => {
+    const {email} = req.body;
+    const isExistEmail = await User.findOne({email: email});
+    if (isExistEmail) {
+        let newPassword = Password();
+        let token = Token();
+        
+        const updatePassword = await User.findOneAndUpdate({email}, {
+            $set: {
+                password: newPassword,
+                forgotPasswordToken:token
+            }
+        }
+            , {
+                new: true
+            });
+        if (updatePassword) {
+            res.status(200).send({Message: "Password sent to email id"});
+            const transporter = Transporter();
+            const emailContent = `<div  style="background-color: #f9f9f9; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+      <h1 class="heading" style="color: #333; text-align: center; font:bold; font-size: 30px;"><strong><span style="color:rgb(126, 25, 25);">𝐐𝐮𝐞𝐫𝐲𝐐𝐮𝐞𝐬𝐭</span></strong></h1>
+      <h3 style="color:rgb(126, 25, 25); text-align: center; font-family: sans-serif; margin-bottom: 20px;">Forgot Password</h3>
+      <hr>
+      <p style="font-size: 18px; margin-top: 30px;">Dear <span style="color:rgb(126, 25, 25); font-weight: bold;"> ${isExistEmail.userName}</span>,</p>
+      <p style="font-size: 16px;margin-top: 5px;">Forgot your password?</p>
+      <p style="font-size: 16px;">If yes, use below password to login or click on Reset password to reset the password your own.</p>
+      <h2 style="color: black; margin-top: 30px;margin-bottom: 10px; font-weight: bold;">Account Details:</h2>
+      <ul style="list-style-type: none; padding-left: 0;">
+        <li style="font-size: 16px; margin-bottom: 2px;"><strong>Email address:</strong> ${email}</li>
+        <li style="font-size: 16px; margin-bottom: 10px;"><strong>New Password:</strong> ${newPassword}</li>
+      </ul>
+      <a href = http://localhost:3001/newPassword/${token}>
+      <button style="color: white;padding: 10px; background-color: rgb(126, 25, 25); margin-left: 200px;  border-radius: 5px; margin-top: 10px;">Reset Password</button></a>
+      <p style="font-size: 16px; margin-top: 30px;">Thank you for choosing <a href="http://localhost:3001/"><strong style="color:rgb(126, 25, 25);">𝐐𝐮𝐞𝐫𝐲𝐐𝐮𝐞𝐬𝐭</strong></a> . We look forward to serving you!</p>
+      <p  style="font-size: 16px; margin-top: 10px; text-align: center; color: #555;">Best regards,</p>
+      <p  style="font-size: 16px; margin-top: 5px; text-align: center; color: #555;">The <strong style="color:rgb(126, 25, 25);">𝐐𝐮𝐞𝐫𝐲𝐐𝐮𝐞𝐬𝐭</strong> Team</p>
+</div>`;
+            const mailOptions = {
+                from: 'queryquest750@gmail.com',
+                to: email,
+                subject: 'Forgot Password',
+                html: emailContent,
+            };
+            await transporter.sendMail(mailOptions);
+        }
+    }
+    else {
+        return res.status(300).send({Error: "Email not found"});
+    }
+};
+
+const changePassword = async(req,res)=>{
+    const {email,pwd,token}  = req.body;
+    const isExistEmail = await User.findOne({email});
+    if(!isExistEmail){
+        return res.status(300).send({Error:"Email doesn't Exist"});
+    }
+    if(isExistEmail.forgotPasswordToken!==token){
+        return res.status(300).send({Error:"Link Expired"})
+    }
+        const updatePassword = await User.findOneAndUpdate({email}, {
+            $set: {
+                password: pwd,
+                forgotPasswordToken:token
+            }
+        }
+            , {
+                new: true
+            });
+    
+    if(updatePassword){
+        return res.status(200).send({Message:"Password Set Successfully"})
+    }
+}
 module.exports = {
     user,
     data,
+    changePassword,
     TimeAdd,
     payment,
     generateOtp,
+    ForgotPassword,
     signIn,
     commentUpdate,
     deleteCommentLike,

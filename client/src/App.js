@@ -22,6 +22,7 @@ import SinghalAnalytics from './Pages/SinghalAnalytics';
 import UserSessions from './Component/UserSessions';
 import Services from './Pages/Services';
 import AboutUs from './Pages/AboutUs';
+import NewPassword from './Pages/NewPassword'
 function App() {
   const [loading, setLoading]= useState(false);
 
@@ -58,6 +59,7 @@ function App() {
           <Route path='/myAnalytic/:id' element={<SinghalAnalytics />} />
           <Route path='/queryAnalytic/:id' element={<QueryAnalytics />} />
           <Route path='/sessions/:id/:user' element={<UserSessions />} />
+          <Route path='/newPassword/:token' element={<NewPassword/>}/> 
         </Routes>
         <Footer />
       </BrowserRouter>

@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Transporter = require('../controllers/TransporterFun');
-const {signIn, signUp, user, data, commentLike,TimeAdd, payment, generateOtp, commentUpdate, answerUpdate, deleteCommentLike, CommentDelete, deleteLike, updateLiked, IndividualData, GetAllComment, AnswerDelete, GetUserQuery, CommentAdd, updateQueryNum, AnswerAdd, Home, IndividualUser} = require("../controllers/Path");
+const {signIn, signUp, user, data,changePassword, commentLike,ForgotPassword, TimeAdd, payment, generateOtp, commentUpdate, answerUpdate, deleteCommentLike, CommentDelete, deleteLike, updateLiked, IndividualData, GetAllComment, AnswerDelete, GetUserQuery, CommentAdd, updateQueryNum, AnswerAdd, Home, IndividualUser} = require("../controllers/Path");
 const auth = require("../Authentication/auth");
 const Query = require("../model/Query");
 const User = require("../model/User");
@@ -27,7 +27,9 @@ router.route("/Answers/update").put(answerUpdate);
 router.route("/Answers/Comment/update").put(commentUpdate);
 router.route("/verify").post(generateOtp);
 router.route("/payment").post(payment);
-router.route("/add/time").post(TimeAdd)
+router.route("/add/time").post(TimeAdd);
+router.route("/forgotpassword").post(ForgotPassword);
+router.route("/changePassword").post(changePassword);
 router.post("/new", auth, async (req, res) => {
   try {
     const {Question, Answer, postedBy} = req.body;
@@ -65,9 +67,9 @@ router.post("/new", auth, async (req, res) => {
   }
 });
 router.post("/Answers/comment", async (req, res) => {
-  const { AnswerId, comment, QuesId, postedBy, ansPostedBy, ans } = req.body;
-  const Question = await Query.findOne({ _id: QuesId });
-  const AnswerUser = await User.findOne({ userName: ansPostedBy });
+  const {AnswerId, comment, QuesId, postedBy, ansPostedBy, ans} = req.body;
+  const Question = await Query.findOne({_id: QuesId});
+  const AnswerUser = await User.findOne({userName: ansPostedBy});
   const newComment = new Comment({
     AnsId: AnswerId,
     comment: comment,
@@ -77,7 +79,7 @@ router.post("/Answers/comment", async (req, res) => {
   });
   const newcomment = await newComment.save();
   if (newcomment) {
-    res.status(200).send({ message: "Commented" });
+    res.status(200).send({message: "Commented"});
     const transporter = Transporter();
     const emailContent = `
     <html>
@@ -115,17 +117,17 @@ router.post("/Answers/comment", async (req, res) => {
     await transporter.sendMail(mailOptions);
   }
   else {
-    return res.status(400).send({ message: "Something wrong" });
+    return res.status(400).send({message: "Something wrong"});
   }
 });
 router.delete("/delete/:id", async (req, res) => {
   const id = req.params.id;
   try {
-    const user = await User.findOne({ _id: id });
-    const deletes = await User.findByIdAndDelete({ _id: id });
-    const answerDelete = await Query.deleteOne({ identification: user.identification });
+    const user = await User.findOne({_id: id});
+    const deletes = await User.findByIdAndDelete({_id: id});
+    const answerDelete = await Query.deleteOne({identification: user.identification});
     if (deletes && answerDelete) {
-      res.status(200).send({ message: "Account Successfully deleted" });
+      res.status(200).send({message: "Account Successfully deleted"});
       const transporter = Transporter();
       const emailContent = `
     <html>
