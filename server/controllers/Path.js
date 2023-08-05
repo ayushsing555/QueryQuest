@@ -685,10 +685,10 @@ const changePassword = async(req,res)=>{
     const {email,pwd,token}  = req.body;
     const isExistEmail = await User.findOne({email});
     if(!isExistEmail){
-        return res.status(300).send({Error:"Email doesn't Exist"});
+        return res.status(300).send({Error:"Email doesn't exist..."});
     }
     if(isExistEmail.forgotPasswordToken!==token){
-        return res.status(300).send({Error:"Link Expired"})
+        return res.status(300).send({Error:"Link for reset password has been expired..."})
     }
         const updatePassword = await User.findOneAndUpdate({email}, {
             $set: {
@@ -701,7 +701,7 @@ const changePassword = async(req,res)=>{
             });
     
     if(updatePassword){
-        return res.status(200).send({Message:"Password Set Successfully"})
+        return res.status(200).send({Message:"Password set Successfully"})
     }
 }
 module.exports = {
