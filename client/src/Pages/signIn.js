@@ -48,6 +48,34 @@ const SignIn = () => {
             navigator("/");
         }
     };
+
+    const ForgotPassword = async(e) =>{
+        e.preventDefault();
+        if(UserDetail.email===""){
+           return window.alert("Please enter email ")
+        }
+        let headersList = {
+            "Accept": "*/*",
+            "Content-Type": "application/json"
+        };
+        let bodyContent = JSON.stringify({
+            "email": UserDetail.email,
+        });
+        let response = await fetch("http://localhost:8000/forgotpassword", {
+            method: "POST",
+            body: bodyContent,
+            headers: headersList
+        });
+
+        let data = await response.json();
+        if (response.status !== 200) {
+            window.alert(data.Error);
+        }
+        else{
+            window.alert("new password sent on your entered email id")
+        }
+    }
+
     return (
         <>
             <section class="vh-90  ">
@@ -69,7 +97,7 @@ const SignIn = () => {
                                     <div class="pt-1 mb-2">
                                         <button onClick={handleSubmit} className="btn btn-lg hover:bg-green-800 bg-red-900 text-white font-bold" >Login</button>
                                     </div>
-                                    <p class="small mb-3 pb-lg-2"><a class="text-red-600" href="#!">Forgot password?</a></p>
+                                    <p class="small mb-3 pb-lg-2"><a class="text-red-600" href =" " onClick={ForgotPassword}>Forgot password?</a></p>
                                     <p className='text-md  font-semibold'>Don't have an account? <NavLink to="/signup" className="text-blue-700 hover:underline">Register here</NavLink></p>
                                 </form>
                             </div>
