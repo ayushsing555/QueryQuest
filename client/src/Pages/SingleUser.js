@@ -32,7 +32,7 @@ const SingleUser = () => {
                                             <div class="leading-relaxed">{elem.detail}</div>
                                             
                                             {
-                                                elem.userName != userDetail.UserName ? <button className='bg-blue-500 p-2 mt-5 rounded-lg text-white font-bold'><span className='-ml-6 p-1'>Follow</span>
+                                                elem.userName != userDetail.UserName ? <button className='bg-blue-500 p-2 mt-5 rounded-lg text-white font-bold hover:bg-blue-700'><span className='-ml-6 p-1'>Follow</span>
                                             <svg className=' ml-16 -mt-5' viewBox="0 0 512 512" fill="currentColor" height="20px">
                                             <path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={32} d="M256 112v288M400 256H112"/>
                                             </svg></button>
