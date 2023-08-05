@@ -136,7 +136,7 @@ router.delete("/delete/:id", async (req, res) => {
       <body>
       <div style="background-color: #f9f9f9; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
         <h1 style="color:rgb(126, 25, 25); text-align: center; margin-bottom: 30px; font-weight: bold; font-size: larger;">Account Deletion Confirmation</h1>
-        <p>Dear <span style="color:rgb(126, 25, 25);font-weight: bold;">${user.name},</span></p>
+        <p>Dear <span style="color:rgb(126, 25, 25);font-weight: bold;">${user.userName},</span></p>
         <br>
         <p style="font-size: 16px; margin-left: 10px;">We want to inform you that your account has been <span style="color: red;">successfully deleted.</span> </p>
         <p style="font-size: 16px;margin-left: 10px;">We appreciate the time you spent with us, and we're sorry to see you go. If you have any feedback or suggestions regarding our services, please feel free to share them with us.</p>
