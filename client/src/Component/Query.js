@@ -2,7 +2,8 @@ import React from 'react';
 import {NavLink} from 'react-router-dom';
 import {TimeChange} from '../Component/TimeSettings';
 import {ActiveUser} from './ActiveUser';
-const Query = ({elem, ActiveUser}) => {
+import Tooltip from '@mui/material/Tooltip';
+const Query = ({elem, ActiveUser, analyticDisplay, dltquery, queryanalysisLink}) => {
     return (
         <>
             <div class="p-3 hover:bg-red-800  bg-red-900 shadow-lg text-black body-font rounded-lg">
@@ -24,14 +25,34 @@ const Query = ({elem, ActiveUser}) => {
                         On <br /> {TimeChange(elem.postedOn)} </b>
                     <br />
                     <br />
-                    <NavLink to={`/query/${elem._id}`} class="text-indigo-500 inline-flex items-center">
-                        <button class="bg-red-900 hover:bg-green-800 text-white font-bold py-2 px-4 rounded">Solutions
-                            <svg class="w-4 h-4 ml-6" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M5 12h14"></path>
-                                <path d="M12 5l7 7-7 7"></path>
-                            </svg>
+                    
+                        <button class="bg-red-900 hover:bg-green-800 text-white text-lg font-bold py-2.5 px-3 rounded"><NavLink to={`/query/${elem._id}`} class="text-white hover:text-white inline-flex items-center">
+                        <Tooltip title="See Solutions"><svg viewBox="0 0 24 24" fill="currentColor" height="25px">
+                        <path fill="none" d="M0 0h24v24H0z" />
+                        <path d="M5.455 15L1 18.5V3a1 1 0 011-1h15a1 1 0 011 1v12H5.455zm-.692-2H16V4H3v10.385L4.763 13zM8 17h10.237L20 18.385V8h1a1 1 0 011 1v13.5L17.545 19H9a1 1 0 01-1-1v-1z" />
+                        </svg></Tooltip></NavLink>
                         </button>
-                    </NavLink>
+                    
+                        {
+                            analyticDisplay === true ? <button class="bg-red-900 hover:bg-green-800 text-white text-lg font-bold py-2.5 px-3 rounded mt-1 ml-2"><NavLink to={`/queryAnalytic/${queryanalysisLink}`} class="text-white hover:text-white inline-flex items-center">
+                        <Tooltip title="See Query Analytics"><svg viewBox="0 0 24 24" fill="currentColor" height="25px">
+                        <path d="M5 12a1 1 0 00-1 1v8a1 1 0 002 0v-8a1 1 0 00-1-1zm5-10a1 1 0 00-1 1v18a1 1 0 002 0V3a1 1 0 00-1-1zm10 14a1 1 0 00-1 1v4a1 1 0 002 0v-4a1 1 0 00-1-1zm-5-8a1 1 0 00-1 1v12a1 1 0 002 0V9a1 1 0 00-1-1z" />
+                        </svg></Tooltip></NavLink>
+                        </button> : ``
+                        }
+                        
+
+                        {
+                            dltquery===true ? <button class="bg-red-900 hover:bg-green-800 text-white text-lg font-bold py-2.5 px-3 rounded mt-1 ml-2"><NavLink to={`/query/${elem._id}`} class="text-white hover:text-white inline-flex items-center">
+                        <Tooltip title="Delete Query"><svg viewBox="0 0 24 24" fill="currentColor" height="25px">
+                        <path fill="none" d="M0 0h24v24H0z" />
+                        <path d="M17 6h5v2h-2v13a1 1 0 01-1 1H5a1 1 0 01-1-1V8H2V6h5V3a1 1 0 011-1h8a1 1 0 011 1v3zm1 2H6v12h12V8zm-4.586 6l1.768 1.768-1.414 1.414L12 15.414l-1.768 1.768-1.414-1.414L10.586 14l-1.768-1.768 1.414-1.414L12 12.586l1.768-1.768 1.414 1.414L13.414 14zM9 4v2h6V4H9z" />
+                        </svg></Tooltip></NavLink>
+                        </button> : ``
+                        }
+                        
+
+                        
                     <div class="text-black text-center mt-2 leading-none flex justify-center  absolute bottom-0 left-0 w-full py-4 font-bold">
                         <span class=" mr-3 inline-flex items-center leading-none text-sm pr-3 py-1 border-r-2 border-gray-800">
                             <svg class="w-4 h-4 mr-1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">

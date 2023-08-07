@@ -48,16 +48,8 @@ const MyQuery = () => {
                     return (
                     <>
                     <div className='flex-col lg:w-1/3 '>
-                      <Query elem={ele}ActiveUser={AllActiveUsers} />
-  
-                        <button class="bg-green-900 hover:bg-green-800 text-white font-bold  rounded-lg p-2 w-48 mb-3 ml-24 mt-1"><NavLink to={`/queryAnalytic/${ele._id}`} class="text-white inline-flex items-center ml-2px">Go to Query Analytics 
-                            <svg class="w-4 h-4 ml-20" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M5 12h14"></path>
-                                <path d="M12 5l7 7-7 7"></path>
-                            </svg>
-                            </NavLink>
-                        </button>
-                    
+                      <Query elem={ele} ActiveUser={AllActiveUsers} analyticDisplay={true} dltquery={true} queryanalysisLink={ele._id}/>
+           
                     </div>
                     </>
                       

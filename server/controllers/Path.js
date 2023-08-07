@@ -684,10 +684,10 @@ const changePassword = async(req,res)=>{
     const {email,pwd,token}  = req.body;
     const isExistEmail = await User.findOne({email});
     if(!isExistEmail){
-        return res.status(300).send({Error:"Email doesn't Exist"});
+        return res.status(300).send({Error:"Email doesn't exist..."});
     }
     if(isExistEmail.forgotPasswordToken!==token){
-        return res.status(300).send({Error:"Link Expired for this Account, Please Again forgot password for this Account"})
+        return res.status(300).send({Error:"Link has been expired for this account... Click on Forgot Password to generate new link for this account.."})
     }
         const updatePassword = await User.findOneAndUpdate({email}, {
             $set: {
