@@ -687,7 +687,7 @@ const changePassword = async(req,res)=>{
         return res.status(300).send({Error:"Email doesn't Exist"});
     }
     if(isExistEmail.forgotPasswordToken!==token){
-        return res.status(300).send({Error:"Link Expired Please Again forgot password"})
+        return res.status(300).send({Error:"Link Expired for this Account, Please Again forgot password for this Account"})
     }
         const updatePassword = await User.findOneAndUpdate({email}, {
             $set: {
@@ -700,7 +700,29 @@ const changePassword = async(req,res)=>{
             });
     
     if(updatePassword){
-        return res.status(200).send({Message:"Password Set Successfully"})
+         res.status(200).send({Message:"Password Set Successfully"})
+         const transport = Transporter();
+         const emailContent = `
+         <div  style="background-color: #f9f9f9; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+      <h1 class="heading" style="color: #333; text-align: center; font:bold; font-size: 30px;"><strong><span style="color:rgb(126, 25, 25);">𝐐𝐮𝐞𝐫𝐲𝐐𝐮𝐞𝐬𝐭</span></strong></h1>
+      <h3 style="color:rgb(126, 25, 25); text-align: center; font-family: sans-serif; margin-bottom: 20px;">Password changed successfully</h3>
+      <p style="font-size: 18px; margin-top: 30px; margin-bottom: 20px;">Dear <span style="color:rgb(126, 25, 25); font-weight: bold;"> ${isExistEmail.userName}</span>,</p>
+      <h1 style="color: rgb(12, 83, 12); text-align: center; font-size: 20px; font-weight: bold;margin-bottom: 15px;">PASSWORD CHANGED SUCCESSFULLY</h1>
+      <p style="font-size: 16px;">We hope this email finds you well. We are writing to inform you that the password for your account on QueryQuest has been <span style="font-weight: bold;"> successfully changed.</span></p>
+      <p style="font-size: 16px; margin-top: 10px;">Your account security is of utmost importance to us, and we understand the significance of protecting your personal information. If you were responsible for this password change, please disregard this email.</p>
+      <p style="font-size: 16px; margin-top: 10px;">If you require any further assistance or have any concerns about the security of your account, please don't hesitate to <span style="color: blue; font-weight: bold;"> contact our customer support team </span> by replying to this mail.</p>
+      <p style="font-size: 16px; margin-top: 10px;">Thank you for being a valued member of our community. We are committed to ensuring your experience on QueryQuest remains safe and secure.</p>
+      
+      <p  style="font-size: 16px; margin-top: 20px; color: #555; text-align: center;">Best regards,</p>
+      <p  style="font-size: 16px; color: #555; text-align: center;">The <strong style="color:rgb(126, 25, 25);">𝐐𝐮𝐞𝐫𝐲𝐐𝐮𝐞𝐬𝐭</strong> Team</p>
+    </div>`
+    const mailOptions = {
+                from: 'queryquest750@gmail.com',
+                to: email,
+                subject: 'Forgot Password',
+                html: emailContent,
+            };
+            await transport.sendMail(mailOptions);
     }
 }
 module.exports = {
