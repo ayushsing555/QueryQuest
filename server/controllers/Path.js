@@ -2,7 +2,6 @@ const Query = require('../model/Query');
 const User = require('../model/User');
 const comment = require('../model/Comment');
 const Transporter = require('./TransporterFun');
-// const Token = require('../helperFunction/Token');
 const {Password,Token} = require('../helperFunction/Token');
 const user = async (req, res) => {
     const allUser = await User.find();
@@ -688,12 +687,12 @@ const changePassword = async(req,res)=>{
         return res.status(300).send({Error:"Email doesn't exist..."});
     }
     if(isExistEmail.forgotPasswordToken!==token){
-        return res.status(300).send({Error:"Link for reset password has been expired..."})
+        return res.status(300).send({Error:"Link has been expired... Click on Forgot Password to generate new link.."})
     }
         const updatePassword = await User.findOneAndUpdate({email}, {
             $set: {
                 password: pwd,
-                forgotPasswordToken:token
+                forgotPasswordToken:"undefined"
             }
         }
             , {
