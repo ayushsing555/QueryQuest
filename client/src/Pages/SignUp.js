@@ -26,7 +26,11 @@ const SignUp = () => {
         setOtpDialog(false);
     };
 
-    const sendOtp = async () => {
+    const sendOtp = async (e) => {
+        e.preventDefault();
+        if(UserDetail.userName.length>9){
+            return window.alert("UserName can't be greater then 9 character")
+        }
         if (UserDetail.email === "") {
             toggleModal()
             setEmailDialog(true)
