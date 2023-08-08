@@ -34,7 +34,7 @@ const Query = ({elem, ActiveUser, analyticDisplay, dltquery, queryanalysisLink,g
                                     {" " + elem.postedBy + " "}
                                 </NavLink>
                             </> : <>
-                                <b className='text-gray-500'>{" " + elem.postedBy + " (deleted)"}</b>
+                            <Tooltip title="User deleted"><b className='text-gray-500'>{" " + elem.postedBy + " "}</b></Tooltip>
                             </>
 
 
