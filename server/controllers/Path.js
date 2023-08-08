@@ -725,11 +725,24 @@ const changePassword = async(req,res)=>{
             await transport.sendMail(mailOptions);
     }
 }
+
+const QueryDelete = async(req,res)=>{
+    const id = req.params.id;
+    console.log(id);
+    const deleteQuery = await Query.findByIdAndDelete({_id:id},{
+        new:true
+    })
+    console.log(deleteQuery);
+    if(deleteQuery)
+       return res.status(200).send({Message:"Succesfully deleted"});
+    return res.status(300).send({Error:"something went wrong"})
+}
 module.exports = {
     user,
     data,
     changePassword,
     TimeAdd,
+    QueryDelete,
     payment,
     generateOtp,
     ForgotPassword,

@@ -111,7 +111,7 @@ const AllQuery = () => {
                       <>
                         <div className='flex-col lg:w-1/3'>
                         {
-                          userDetail.UserName === ele.postedBy ? <Query elem={ele} ActiveUser = {AllActiveUsers} analyticDisplay={true} dltquery={true} queryanalysisLink={ele._id}/>
+                          userDetail.UserName === ele.postedBy ? <Query elem={ele} ActiveUser = {AllActiveUsers} analyticDisplay={true} dltquery={true} queryanalysisLink={ele._id} getData={getData}/>
                           : <Query elem={ele} ActiveUser = {AllActiveUsers} analyticDisplay={false} dltquery={false} queryanalysisLink={``}/>
                         }
                           

@@ -48,7 +48,7 @@ const MyQuery = () => {
                     return (
                     <>
                     <div className='flex-col lg:w-1/3 '>
-                      <Query elem={ele} ActiveUser={AllActiveUsers} analyticDisplay={true} dltquery={true} queryanalysisLink={ele._id}/>
+                      <Query elem={ele} ActiveUser={AllActiveUsers} analyticDisplay={true} dltquery={true} queryanalysisLink={ele._id} getData={getData}/>
            
                     </div>
                     </>
