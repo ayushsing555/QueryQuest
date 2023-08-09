@@ -3,24 +3,28 @@ import {NavLink} from 'react-router-dom';
 import {TimeChange} from '../Component/TimeSettings';
 import {ActiveUser} from './ActiveUser';
 import Tooltip from '@mui/material/Tooltip';
-const Query = ({elem, ActiveUser, analyticDisplay, dltquery, queryanalysisLink,getData}) => {
+import {GetProfileData} from './GetProfileData';
+const Query = ({elem, ActiveUser, analyticDisplay, dltquery, queryanalysisLink, getData}) => {
     const deleteQuery = async (_id) => {
-    let headersList = {
-        "Accept": "*/*"
+        const user = GetProfileData();
+        let headersList = {
+            "Accept": "*/*"
+        };
+        console.log(`http://localhost:8000/${user.username}/Query/delete/${_id}`)
+        let response = await fetch(`http://localhost:8000/${user.username}/Query/delete/${_id}`, {
+            method: "DELETE",
+            headers: headersList
+        });
+
+        const data = await response.json();
+        if (response.status === 200) {
+            getData();
+            return window.alert("successfully Query Removed");
+        }
+        else {
+            window.alert("something went wrong");
+        }
     };
-    let response = await fetch(`http://localhost:8000/Query/delete/${_id}`, {
-        method: "DELETE",
-        headers: headersList
-    });
-    const data = await response.json();
-    if (response.status === 200) {
-        getData();
-        return window.alert("successfully Query Removed");
-    }
-    else {
-        window.alert("something went wrong");
-    }
-};
     return (
         <>
             <div class="p-3 hover:bg-red-800  bg-red-900 shadow-lg text-black body-font rounded-lg">
@@ -34,7 +38,7 @@ const Query = ({elem, ActiveUser, analyticDisplay, dltquery, queryanalysisLink,g
                                     {" " + elem.postedBy + " "}
                                 </NavLink>
                             </> : <>
-                            <Tooltip title="User deleted"><b className='text-gray-500'>{" " + elem.postedBy + " "}</b></Tooltip>
+                                <Tooltip title="User deleted"><b className='text-gray-500'>{" " + elem.postedBy + " "}</b></Tooltip>
                             </>
 
 

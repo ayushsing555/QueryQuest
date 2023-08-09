@@ -30,7 +30,7 @@ router.route("/payment").post(payment);
 router.route("/add/time").post(TimeAdd);
 router.route("/forgotpassword").post(ForgotPassword);
 router.route("/changePassword").post(changePassword);
-router.route("/Query/delete/:id").delete(QueryDelete);
+router.route("/:user/Query/delete/:id").delete(QueryDelete);
 router.post("/new", auth, async (req, res) => {
   try {
     const {Question, Answer, postedBy} = req.body;

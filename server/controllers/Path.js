@@ -2,7 +2,8 @@ const Query = require('../model/Query');
 const User = require('../model/User');
 const comment = require('../model/Comment');
 const Transporter = require('./TransporterFun');
-const {Password,Token} = require('../helperFunction/Token');
+const {Password, Token} = require('../helperFunction/Token');
+const EmailContent = require("../EmailTemplate/EmailContent");
 const user = async (req, res) => {
     const allUser = await User.find();
     res.send(allUser);
@@ -635,11 +636,11 @@ const ForgotPassword = async (req, res) => {
     if (isExistEmail) {
         let newPassword = Password();
         let token = Token();
-        
+
         const updatePassword = await User.findOneAndUpdate({email}, {
             $set: {
                 password: newPassword,
-                forgotPasswordToken:token
+                forgotPasswordToken: token
             }
         }
             , {
@@ -680,29 +681,29 @@ const ForgotPassword = async (req, res) => {
     }
 };
 
-const changePassword = async(req,res)=>{
-    const {email,pwd,token}  = req.body;
+const changePassword = async (req, res) => {
+    const {email, pwd, token} = req.body;
     const isExistEmail = await User.findOne({email});
-    if(!isExistEmail){
-        return res.status(300).send({Error:"Email doesn't exist..."});
+    if (!isExistEmail) {
+        return res.status(300).send({Error: "Email doesn't exist..."});
     }
-    if(isExistEmail.forgotPasswordToken!==token){
-        return res.status(300).send({Error:"Link has been expired for this account... Click on Forgot Password to generate new link for this account.."})
+    if (isExistEmail.forgotPasswordToken !== token) {
+        return res.status(300).send({Error: "Link has been expired for this account... Click on Forgot Password to generate new link for this account.."});
     }
-        const updatePassword = await User.findOneAndUpdate({email}, {
-            $set: {
-                password: pwd,
-                forgotPasswordToken:"undefined"
-            }
+    const updatePassword = await User.findOneAndUpdate({email}, {
+        $set: {
+            password: pwd,
+            forgotPasswordToken: "undefined"
         }
-            , {
-                new: true
-            });
-    
-    if(updatePassword){
-         res.status(200).send({Message:"Password Set Successfully"})
-         const transport = Transporter();
-         const emailContent = `
+    }
+        , {
+            new: true
+        });
+
+    if (updatePassword) {
+        res.status(200).send({Message: "Password Set Successfully"});
+        const transport = Transporter();
+        const emailContent = `
          <div  style="background-color: #f9f9f9; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
       <h1 class="heading" style="color: #333; text-align: center; font:bold; font-size: 30px;"><strong><span style="color:rgb(126, 25, 25);">𝐐𝐮𝐞𝐫𝐲𝐐𝐮𝐞𝐬𝐭</span></strong></h1>
       <h3 style="color:rgb(126, 25, 25); text-align: center; font-family: sans-serif; margin-bottom: 20px;">Password changed successfully</h3>
@@ -715,28 +716,42 @@ const changePassword = async(req,res)=>{
       
       <p  style="font-size: 16px; margin-top: 20px; color: #555; text-align: center;">Best regards,</p>
       <p  style="font-size: 16px; color: #555; text-align: center;">The <strong style="color:rgb(126, 25, 25);">𝐐𝐮𝐞𝐫𝐲𝐐𝐮𝐞𝐬𝐭</strong> Team</p>
-    </div>`
-    const mailOptions = {
-                from: 'queryquest750@gmail.com',
-                to: email,
-                subject: 'Forgot Password',
-                html: emailContent,
-            };
-            await transport.sendMail(mailOptions);
+    </div>`;
+        const mailOptions = {
+            from: 'queryquest750@gmail.com',
+            to: email,
+            subject: 'Forgot Password',
+            html: emailContent,
+        };
+        await transport.sendMail(mailOptions);
     }
-}
+};
 
-const QueryDelete = async(req,res)=>{
+const QueryDelete = async (req, res) => {
     const id = req.params.id;
-    console.log(id);
-    const deleteQuery = await Query.findByIdAndDelete({_id:id},{
-        new:true
-    })
-    console.log(deleteQuery);
-    if(deleteQuery)
-       return res.status(200).send({Message:"Succesfully deleted"});
-    return res.status(300).send({Error:"something went wrong"})
-}
+    const user = req.params.user;
+    const query = await Query.findOne({_id: id});
+    let Title = query.Question;
+    const userDetail = await User.findOne({userName: user});
+    const deleteQuery = await Query.findByIdAndDelete({_id:id}, {
+        new: true
+    });
+    if (deleteQuery) {
+        res.status(200).send({Message: "Succesfully deleted"});
+        const transport = Transporter();
+        const emailContent = EmailContent(Title, user);
+        const mailOptions = {
+            from: 'queryquest750@gmail.com',
+            to: userDetail.email,
+            subject: 'Query Deletion',
+            html: emailContent,
+        };
+        await transport.sendMail(mailOptions);
+    }
+    else {
+        res.status(300).send({Error: "something went wrong"});
+    }
+};
 module.exports = {
     user,
     data,
