@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
-import DialogBox from '../Component/DialogBox';
 
 const NewQuery = () => {
   const navigators = useNavigate();
@@ -69,20 +68,20 @@ const NewQuery = () => {
   };
   return (
     <>
-      <div className=' shadow-2xl border-2 border-dotted  border-red-800 m-3'>
+      <div className=' shadow-2xl border-2 border-dotted text-white border-red-800 m-3'>
         <div class="m-6 p-4">
-          <label for="exampleFormControlInput1 " class="form-label text-base">Query</label>
-          <input type="email" class="form-control" name='Query' value={QueryDetail.Query} onChange={handleChange} id="exampleFormControlInput1" placeholder="Enter Your Query" />
+          <label for="exampleFormControlInput1 " class="form-label text-base font-bold text-black">Query</label>
+          <input type="email" class="form-control border-2 border-red-900 hover:border-4 hover:border-red-900 focus:border-4 text-black font-bold focus:border-red-900 form-control-lg" name='Query' value={QueryDetail.Query} onChange={handleChange} id="exampleFormControlInput1" placeholder="Enter Your Query" />
         </div>
-        <button className='btn bg-red-400  ml-12 mb-3' onClick={checkAvailable}>{QueryStatus}</button>
+        <button className='btn bg-red-900 text-white hover:bg-slate-500 ml-12 mb-3' onClick={checkAvailable}>{QueryStatus}</button>
         <hr />
         {
           haveAns ? <div class="m-6 p-4 ">
-            <label for="exampleFormControlTextarea1" class="form-label">Example textarea</label>
-            <textarea class="form-control" id="exampleFormControlTextarea1" name='QueryAns' value={QueryDetail.QueryAns} onChange={handleChange} rows="3"></textarea>
+            <label for="exampleFormControlTextarea1" class="form-label font-bold text-black">Example textarea</label>
+            <textarea class="form-control border-2 border-red-900 hover:border-4 hover:border-red-900 focus:border-4 text-black font-bold focus:border-red-900 form-control-lg" id="exampleFormControlTextarea1" name='QueryAns' value={QueryDetail.QueryAns} onChange={handleChange} rows="3"></textarea>
           </div> : ""
         }
-        <button className='btn bg-red-400  ml-12 mb-3 mt-3' onClick={handleSubmit} >Post Query</button>
+        <button className='btn bg-red-900 text-white hover:bg-green-900  ml-12 mb-3 mt-3' onClick={handleSubmit} >Post Query</button>
       </div>
     </>
   );
