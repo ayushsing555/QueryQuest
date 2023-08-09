@@ -3,7 +3,7 @@ const User = require('../model/User');
 const comment = require('../model/Comment');
 const Transporter = require('./TransporterFun');
 const {Password, Token} = require('../helperFunction/Token');
-const EmailContent = require("../EmailTemplate/EmailContent");
+const {EmailContent,followEmail} = require("../EmailTemplate/EmailContent");
 const user = async (req, res) => {
     const allUser = await User.find();
     res.send(allUser);
@@ -324,8 +324,8 @@ const deleteLike = async (req, res) => {
         const AnsId = req.params.AnsId;
         console.log(name);
         const result = await Query.updateOne(
-            {_id: QuesId, 'answers._id': AnsId}, // Filter to match the document and specific answer
-            {$pull: {'answers.$[elem].likedBy': name}}, // Update operation
+            {_id: QuesId, 'answers._id': AnsId}, 
+            {$pull: {'answers.$[elem].likedBy': name}}, 
             {arrayFilters: [{'elem._id': AnsId}], upsert: true}
         );
         await Query.updateOne({_id: QuesId}, {$inc: {likes: -1}}, {new: true});
@@ -752,6 +752,40 @@ const QueryDelete = async (req, res) => {
         res.status(300).send({Error: "something went wrong"});
     }
 };
+
+const addFollow = async(req,res)=>{
+    const {followed,user} = req.body;
+    const userDetail = await User.findOne({userName:user})
+    const followingUser = await User.findOne({userName:followed}) 
+    const addFollowed = await User.findOneAndUpdate({userName:followed},{
+        $push:{
+            "followedBy":user,
+            "followedEmail":userDetail.email
+        }
+    });
+    const addFollowing = await User.findOneAndUpdate({userName:user},{
+        $push:{
+            "follwing":followed,
+            "followingEmail":followingUser.email
+        }
+    })
+    if(addFollowed&&addFollowing){
+        res.status(200).send({Mesage:"Successfully connected"});
+        const transport = Transporter();
+        const emailContent = followEmail(followed,user);
+        const mailOptions = {
+            from: 'queryquest750@gmail.com',
+            to: userDetail.email,
+            subject: 'Account Following Info',
+            html: emailContent,
+        };
+        await transport.sendMail(mailOptions);
+    }
+    else{
+        return res.status(200).send({Error:"something went wrong"});
+    }
+    
+}
 module.exports = {
     user,
     data,
@@ -778,4 +812,5 @@ module.exports = {
     IndividualData,
     Home,
     IndividualUser,
+    addFollow
 };
