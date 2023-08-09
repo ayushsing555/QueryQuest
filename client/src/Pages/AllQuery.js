@@ -76,14 +76,14 @@ const AllQuery = () => {
             data-testid="loader"/> </div>
           : <section class="text-black body-font">
             <div className='flex justify-center'>
-              <div className='mt-3'>
-                <input id="bordered-checkbox-1" onClick={dateChange} type="checkbox" value="" name="bordered-checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                <label for="bordered-checkbox-1" class="w-full py-4 ml-2 text-sm font-medium dark:text-gray-900">Filter By Date</label>
+              <div className='mt-5 mb-5 font-semibold'>
+                <input id="bordered-checkbox-1" onClick={dateChange} type="checkbox" value="" name="bordered-checkbox" class="w-4 h-4 text-red-900 bg-gray-100 border-red-900 rounded focus:ring-red-900 dark:focus:ring-red-900 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 mt-2" />
+                <label for="bordered-checkbox-1" class=" ml-1 -mt-12 text-sm font-medium dark:text-gray-900">Filter By Date</label>
               </div>
               {
                 DateStatus ? <>
                   <div className=''>
-                    <button onClick={filterData} className='btn bg-red-800 text-white hover:bg-green-800'>Apply</button>
+                    <button onClick={filterData} className='btn bg-red-800 text-white hover:bg-green-800 ml-12 mt-5'>Apply</button>
                   </div>
                 </> : ""
               }
@@ -91,12 +91,12 @@ const AllQuery = () => {
             </div>
             {
               DateStatus ? <>
-                <div class="flex justify-center">
-                  <div>
-                    From <input value={startDate} class='bg-red-300' onChange={(e) => setStartDate(e.target.value)} type='date' placeholder='Enter first Date'>
+                <div class="flex justify-center mt-1 mb-3">
+                  <div className='font-semibold'>
+                    From <input value={startDate} class='bg-red-300 p-2 rounded-lg font-bold' onChange={(e) => setStartDate(e.target.value)} type='date' placeholder='Enter first Date'>
                     </input></div>
-                  <div>
-                    To <input value={endDate} onChange={(e) => setEndDate(e.target.value)} class='ml-2 bg-red-300' type='date' placeholder='Enter last Date'>
+                  <div className='font-semibold ml-10'>
+                    To <input value={endDate} onChange={(e) => setEndDate(e.target.value)} class=' bg-red-300 p-2 rounded-lg font-bold' type='date' placeholder='Enter last Date'>
                     </input></div>
                 </div>
               </> : ""
