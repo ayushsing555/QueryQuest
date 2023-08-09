@@ -35,11 +35,11 @@ const Navbar = () => {
                     Details !== null && data[0] !== undefined ? <>
                         <b>
                             <NavLink to="/pricing" className="block text-white-200 border-2  shadow-xl shadow-red-500 rounded md:bg-transparent text-xl  md:text-slate-700 md:p-0 md:dark:text-slate-300 px-2 py-2 mr-2" aria-current="page">
-                                {data[0].ticket !== "monthly" ? <h2 class="text-sm tracking-widest title-font mb-3  text-gray-700 font-bold">BASIC</h2> : <h2 class=" text-sm tracking-widest mb-2  text-white font-bold">PRO
+                                {data[0].ticket === "monthly" ? <h2 class=" text-sm tracking-widest mb-2  text-white font-bold">PRO
                                     <svg viewBox="0 0 16 16" fill="currentColor" height="10px" className='ml-8 -mt-4 text-yellow-600'>
                                         <path fillRule="evenodd" d="M8 16A8 8 0 108 0a8 8 0 000 16zm.252-12.932a.478.478 0 00-.682.195l-1.2 2.432-2.684.39a.478.478 0 00-.266.816l1.944 1.892-.46 2.674a.478.478 0 00.694.504L8 10.709l2.4 1.261a.478.478 0 00.694-.504l-.458-2.673L12.578 6.9a.479.479 0 00-.265-.815l-2.685-.39-1.2-2.432a.478.478 0 00-.176-.195z" />
                                     </svg>
-                                </h2>}
+                                </h2> : <h2 class="text-sm tracking-widest mb-2   text-white font-bold">BASIC</h2>}
                             </NavLink>
                         </b>
                     </> : ""
