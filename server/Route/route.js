@@ -1,7 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const Transporter = require('../controllers/TransporterFun');
-const {signIn, signUp, user, data, changePassword, QueryDelete, commentLike, ForgotPassword, TimeAdd, payment, generateOtp, commentUpdate, answerUpdate, deleteCommentLike, CommentDelete, deleteLike, updateLiked, IndividualData, GetAllComment, AnswerDelete, GetUserQuery, CommentAdd, updateQueryNum, AnswerAdd, Home, IndividualUser, addFollow} = require("../controllers/Path");
+const {signIn, signUp, user, data,removeFollower, changePassword, QueryDelete, commentLike, ForgotPassword, TimeAdd, payment, generateOtp, commentUpdate, answerUpdate, deleteCommentLike, CommentDelete, deleteLike, updateLiked, IndividualData, GetAllComment, AnswerDelete, GetUserQuery, CommentAdd, updateQueryNum, AnswerAdd, Home, IndividualUser, addFollow} = require("../controllers/Path");
+const {QueryPostEmail} = require("../EmailTemplate/EmailContent");
+const transport = require("../controllers/TransporterFun");
 const auth = require("../Authentication/auth");
 const Query = require("../model/Query");
 const User = require("../model/User");
@@ -32,9 +34,11 @@ router.route("/forgotpassword").post(ForgotPassword);
 router.route("/changePassword").post(changePassword);
 router.route("/:user/Query/delete/:id").delete(QueryDelete);
 router.route("/follow").post(addFollow);
+router.route("/unfollow").post(removeFollower);
 router.post("/new", auth, async (req, res) => {
   try {
     const {Question, Answer, postedBy} = req.body;
+    const followed = await User.findOne({userName:postedBy});
     const identification = req.identification;
     console.log(Answer + " sinh");
     let a = "";
@@ -54,13 +58,28 @@ router.post("/new", auth, async (req, res) => {
       if (QueryAns && newQuery) {
         const updation = await User.updateOne({_id: req.id},
           {$inc: {CurrentQueryPosted: 1, TotalQueryPosted: 1}});
-        return res.status(200).send({message: "Query posted Successfully"});
+         res.status(200).send({message: "Query posted Successfully"});
       }
     } else {
       if (newQuery) {
         await User.updateOne({_id: req.id},
           {$inc: {CurrentQueryPosted: 1, TotalQueryPosted: 1}});
-        return res.status(200).send({message: "Query posted successfully"});
+         res.status(200).send({message: "Query posted successfully"});
+      }
+    }
+    if(newQuery){
+      const transporter = transport();
+      const email = followed.followedEmail;
+      const userNames = followed.followedBy;
+      for(let i = 0;i<email.length;i++){
+         let emailContent = QueryPostEmail(userNames[i],postedBy,Question);
+         let  mailOptions = {
+            from: 'queryquest750@gmail.com',
+            to: email[i],
+            subject: 'New Query Notification from User You Follow',
+            html: emailContent,
+        };
+        await transporter.sendMail(mailOptions);
       }
     }
   }
@@ -130,7 +149,7 @@ router.delete("/delete/:id", async (req, res) => {
     const answerDelete = await Query.deleteOne({identification: user.identification});
     const removeFollowed = await User.updateMany(
       {followedBy: user.userName},
-      {$pull: {followedBy: user.userName}},
+      {$pull: {followedBy: user.userName,followedEmail:user.email,following:user.userName,followingEmail:user.email}},
     );
     if (deletes && answerDelete) {
       res.status(200).send({message: "Account Successfully deleted"});

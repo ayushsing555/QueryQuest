@@ -44,7 +44,28 @@ const SingleUser = () => {
     }
     }
     const Unfollow = async(followed,user)=>{
+        let headersList = {
+        "Accept": "*/*",
+        "Content-Type": "application/json"
+    };
+    let bodyContent = JSON.stringify({
+        "user": userDetail.UserName,
+        "followed":followed
+    });
 
+    let response = await fetch(`http://localhost:8000/unfollow`, {
+        method: "post",
+        body: bodyContent,
+        headers: headersList
+    });
+    const data = await response.json();
+    if (response.status === 200) {
+        window.alert("unfollowed");
+        getSingleData();
+    }
+    else {
+        window.alert(data.error);
+    }
     }
     return (
         <>
