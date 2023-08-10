@@ -11,7 +11,10 @@ const userstructure = new mongoose.Schema({
         required: true,
         unique: true
     },
-
+    followedBy:[String],
+    followedEmail:[String],
+    following:[String],
+    followingEmail:[String],
     detail: {
         type: String,
         require: true,

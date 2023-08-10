@@ -3,7 +3,8 @@ const User = require('../model/User');
 const comment = require('../model/Comment');
 const Transporter = require('./TransporterFun');
 const {Password, Token} = require('../helperFunction/Token');
-const EmailContent = require("../EmailTemplate/EmailContent");
+const {EmailContent,followEmail,followedEmail,unfollowedEmail,unfollowEmail} = require("../EmailTemplate/EmailContent");
+const TransporterFun = require('./TransporterFun');
 const user = async (req, res) => {
     const allUser = await User.find();
     res.send(allUser);
@@ -324,8 +325,8 @@ const deleteLike = async (req, res) => {
         const AnsId = req.params.AnsId;
         console.log(name);
         const result = await Query.updateOne(
-            {_id: QuesId, 'answers._id': AnsId}, // Filter to match the document and specific answer
-            {$pull: {'answers.$[elem].likedBy': name}}, // Update operation
+            {_id: QuesId, 'answers._id': AnsId}, 
+            {$pull: {'answers.$[elem].likedBy': name}}, 
             {arrayFilters: [{'elem._id': AnsId}], upsert: true}
         );
         await Query.updateOne({_id: QuesId}, {$inc: {likes: -1}}, {new: true});
@@ -752,6 +753,98 @@ const QueryDelete = async (req, res) => {
         res.status(300).send({Error: "something went wrong"});
     }
 };
+
+const addFollow = async(req,res)=>{
+    const {followed,user} = req.body;
+    const userDetail = await User.findOne({userName:user})
+    const followingUser = await User.findOne({userName:followed}) 
+    const addFollowed = await User.findOneAndUpdate({userName:followed},{
+        $addToSet:{
+            "followedBy":user,
+            "followedEmail":userDetail.email
+        }
+    });
+    const addFollowing = await User.findOneAndUpdate({userName:user},{
+        $addToSet:{
+            "following":followed,
+            "followingEmail":followingUser.email
+        }
+    })
+    if(addFollowed&&addFollowing){
+        res.status(200).send({Mesage:"Successfully connected"});
+        const transport = Transporter();
+        const emailContent = followEmail(followed,user);
+        const emailContent2 = followedEmail(followed,user);
+        const mailOptions = {
+            from: 'queryquest750@gmail.com',
+            to: userDetail.email,
+            subject: 'Account Following Info',
+            html: emailContent,
+        };
+        const mailOptions1 = {
+            from: 'queryquest750@gmail.com',
+            to: followingUser.email,
+            subject: 'Account Following Info',
+            html: emailContent2,
+        };
+        await transport.sendMail(mailOptions);
+        await transport.sendMail(mailOptions1);
+        
+    }
+    else{
+        return res.status(200).send({Error:"something went wrong"});
+    }
+    
+}
+
+const removeFollower = async(req,res) =>{
+    try{
+        const {user,followed} = req.body;
+        console.log(user);
+        console.log(followed);
+    const following = await User.findOne({userName:followed});
+    const userDetail = await User.findOne({userName:user});
+    const updateFollowing = await User.findOneAndUpdate({userName:user},{
+        $pull:{
+            "following":followed,
+            "followingEmail":following.email
+        }
+    });
+    const updateFollowed = await User.findOneAndUpdate({userName:followed},{
+        $pull:{
+            "followedBy":user,
+            "followedEmail":userDetail.email
+        }
+    });
+    if(updateFollowed||updateFollowing){
+        res.status(200).send({message:"unfollowed"});
+        const transport = TransporterFun();
+        const emailContent = unfollowEmail(followed,user);
+        const emailContent2 = unfollowedEmail(user,followed);
+        const mailOptions = {
+            from: 'queryquest750@gmail.com',
+            to: userDetail.email,
+            subject: 'Unfollow Confirmation on our website',
+            html: emailContent,
+        };
+        const mailOptions1 = {
+            from: 'queryquest750@gmail.com',
+            to: following.email,
+            subject: 'Unfollow Notification from our website',
+            html: emailContent2,
+        };
+        await transport.sendMail(mailOptions);
+        await transport.sendMail(mailOptions1);
+    }
+    
+    }
+     catch(e){
+        
+    }
+    
+    
+
+}
 module.exports = {
     user,
     data,
@@ -765,6 +858,7 @@ module.exports = {
     commentUpdate,
     deleteCommentLike,
     answerUpdate,
+    removeFollower,
     commentLike,
     deleteLike,
     updateLiked,
@@ -778,4 +872,5 @@ module.exports = {
     IndividualData,
     Home,
     IndividualUser,
+    addFollow
 };

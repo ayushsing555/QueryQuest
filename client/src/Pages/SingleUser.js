@@ -18,6 +18,55 @@ const SingleUser = () => {
     useEffect(() => {
         getSingleData();
     }, [1]);
+    const follow = async(followed,user)=>{
+        let headersList = {
+        "Accept": "*/*",
+        "Content-Type": "application/json"
+    };
+    let bodyContent = JSON.stringify({
+        "user": userDetail.UserName,
+        "followed":followed
+    });
+
+    let response = await fetch(`http://localhost:8000/follow`, {
+        method: "post",
+        body: bodyContent,
+        headers: headersList
+    });
+    const data = await response.json();
+    if (response.status === 200) {
+        window.alert("followed");
+
+        getSingleData();
+    }
+    else {
+        window.alert(data.error);
+    }
+    }
+    const Unfollow = async(followed,user)=>{
+        let headersList = {
+        "Accept": "*/*",
+        "Content-Type": "application/json"
+    };
+    let bodyContent = JSON.stringify({
+        "user": userDetail.UserName,
+        "followed":followed
+    });
+
+    let response = await fetch(`http://localhost:8000/unfollow`, {
+        method: "post",
+        body: bodyContent,
+        headers: headersList
+    });
+    const data = await response.json();
+    if (response.status === 200) {
+        window.alert("unfollowed");
+        getSingleData();
+    }
+    else {
+        window.alert(data.error);
+    }
+    }
     return (
         <>
             {
@@ -32,11 +81,18 @@ const SingleUser = () => {
                                             <div class="leading-relaxed">{elem.detail}</div>
                                             
                                             {
-                                                elem.userName != userDetail.UserName ? <button className='bg-blue-500 p-2 mt-5 rounded-lg text-white font-bold hover:bg-blue-700'><span className='-ml-6 p-1'>Follow</span>
+                                                elem.userName !== userDetail.UserName && !elem.followedBy.includes(userDetail.UserName) ? <button className='bg-blue-500 p-2 mt-5 rounded-lg text-white font-bold hover:bg-blue-700' onClick={()=>follow(elem.userName,userDetail.UserName)}><span className='-ml-6 p-1'>Follow</span>
                                             <svg className=' ml-16 -mt-5' viewBox="0 0 512 512" fill="currentColor" height="20px">
                                             <path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={32} d="M256 112v288M400 256H112"/>
                                             </svg></button>
-                                            : ``
+                                            : elem.followedBy.includes(userDetail.UserName)?<>
+                                                <button className='bg-blue-500 p-2 mt-5 rounded-lg text-white font-bold hover:bg-blue-700' onClick={()=>Unfollow(elem.userName,userDetail.UserName)}><span className='-ml-6 p-1'>Unfollow</span>
+                                            <svg className=' ml-16 -mt-5' viewBox="0 0 512 512" fill="currentColor" height="20px">
+                                            {/* <path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={32} d="M256 112v288M400 256H112"/> */}
+                                            </svg>
+                                            </button>
+                                            
+                                            </>:""
                                             }
                                             
                                         </div>
