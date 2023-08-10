@@ -23,6 +23,8 @@ import UserSessions from './Component/UserSessions';
 import Services from './Pages/Services';
 import AboutUs from './Pages/AboutUs';
 import NewPassword from './Pages/NewPassword'
+import MyFollowers from './Pages/MyFollowers';
+import MyFollowing from './Pages/MyFollowing';
 function App() {
   const [loading, setLoading]= useState(false);
 
@@ -60,6 +62,8 @@ function App() {
           <Route path='/queryAnalytic/:id' element={<QueryAnalytics />} />
           <Route path='/sessions/:id/:user' element={<UserSessions />} />
           <Route path='/newPassword/:token' element={<NewPassword/>}/> 
+          <Route path='/myfollowers' element={<MyFollowers/>}/> 
+          <Route path='/myfollowing' element={<MyFollowing/>}/> 
         </Routes>
         <Footer />
       </BrowserRouter>

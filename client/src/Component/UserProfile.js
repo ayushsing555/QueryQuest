@@ -79,22 +79,32 @@ const UserProfile = () => {
             <ul class="dropdown-menu text-center py-2 text-white hover:text-black font-bold bg-red-900" aria-labelledby="dropdownMenuButton">
                 <li>
                     <NavLink to="/profile" class="dropdown-item" href="a">
-                        <button className='py-2'>Profile</button>
+                        <button className='hover:bg-white p-2 rounded-lg'>Profile</button>
                     </NavLink>
                 </li>
                 <li>
                     <NavLink to="/profile/edit" class="dropdown-item" href="a">
-                        <button className='py-2'>Edit Profile</button>
+                        <button className='hover:bg-white p-2 rounded-lg'>Edit Profile</button>
                     </NavLink>
                 </li>
                 <li>
                     <NavLink to="/signin" class="dropdown-item" href="a">
-                        <button className='py-2' onClick={Logout}>Logout</button>
+                        <button className='hover:bg-white p-2 rounded-lg' onClick={Logout}>Logout</button>
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink to="/myfollowers" class="dropdown-item" href="a">
+                        <button className='hover:bg-white p-2 rounded-lg'>My Followers</button>
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink to="/myfollowing" class="dropdown-item" href="a">
+                        <button className='hover:bg-white p-2 rounded-lg'>My Following</button>
                     </NavLink>
                 </li>
                 <li>
                     <NavLink class="dropdown-item" href="a">
-                        <button className='py-2 hover:text-red-600' onClick={DltAccDialogBox}>Delete Account</button>
+                        <button className=' hover:text-red-600 hover:bg-white p-2 rounded-lg' onClick={DltAccDialogBox}>Delete Account</button>
                     </NavLink>
                 </li>
             </ul>
