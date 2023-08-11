@@ -77,13 +77,19 @@ const AllQuery = () => {
           : <section class="text-black body-font">
             <div className='flex justify-center'>
               <div className='mt-5 mb-5 font-semibold'>
-                <input id="bordered-checkbox-1" onClick={dateChange} type="checkbox" value="" name="bordered-checkbox" class="w-4 h-4 text-red-900 bg-gray-100 border-red-900 rounded focus:ring-red-900 dark:focus:ring-red-900 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 mt-2" />
-                <label for="bordered-checkbox-1" class=" ml-1 -mt-12 text-sm font-medium dark:text-gray-900">Filter By Date</label>
+              
+              <input type='text' placeholder='Search' className='border-2 border-red-900 hover:border-4 hover:border-red-900 focus:border-4 rounded-lg p-2 font-bold focus:border-red-900'/>
+              <svg viewBox="0 0 24 24" fill="currentColor" height="30px" className=' ml-48 -mt-9 text-red-900 hover:cursor-pointer'>
+              <path d="M10 18a7.952 7.952 0 004.897-1.688l4.396 4.396 1.414-1.414-4.396-4.396A7.952 7.952 0 0018 10c0-4.411-3.589-8-8-8s-8 3.589-8 8 3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6-6-2.691-6-6 2.691-6 6-6z" />
+            </svg>
+              
+                <input id="bordered-checkbox-1" onClick={dateChange} type="checkbox" value="" name="bordered-checkbox" class="w-4 h-4 text-red-900 bg-gray-100 border-red-900 rounded focus:ring-red-900 dark:focus:ring-red-900 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 mt-4 ml-10" />
+                <label for="bordered-checkbox-1" class=" ml-1 mt-3 text-sm font-medium dark:text-gray-900">Filter By Date</label>
               </div>
               {
                 DateStatus ? <>
-                  <div className=''>
-                    <button onClick={filterData} className='btn bg-red-800 text-white hover:bg-green-800 ml-12 mt-5'>Apply</button>
+                  <div className=' mt-5'>
+                    <button onClick={filterData} className='btn bg-red-800 text-white hover:bg-green-800 ml-7 mt-5'>Apply</button>
                   </div>
                 </> : ""
               }
