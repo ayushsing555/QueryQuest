@@ -3,51 +3,21 @@ import {NavLink} from 'react-router-dom';
 import {BsInstagram} from 'react-icons/bs';
 import {BsLinkedin} from 'react-icons/bs';
 import {BsGithub} from 'react-icons/bs';
-import {ValidDate} from '../Component/ValidDate';
 
 const Users = () => {
     // const [Users, setUsers] = useState([]);
     const [AllUsers, setAllUsers] = useState([]);
-    const [AllGlobalQuery, setAllGlobalQuery] = useState([]);
-  const [startDate, setStartDate] = useState();
-  const [endDate, setEndDate] = useState();
-  const [DateStatus, setDateStatus] = useState(false);
   const [search,setSearch] = useState("");
     const getUsers = async () => {
         const res = await fetch("http://localhost:8000/user");
         const data = await res.json();
         // setUsers(data);
-        setAllGlobalQuery([...data].reverse());
     setAllUsers([...data].reverse());
     };
     useEffect(() => {
         getUsers();
     }, [1]);
 
-    const dateChange = () => {
-        if(DateStatus===true){
-          setAllUsers(AllGlobalQuery);
-        }
-        setDateStatus(!DateStatus);
-      };
-    
-      const filterData = () => {
-        const Fromdate = new Date(startDate);
-        const ToDate = new Date(endDate);
-        if(Fromdate>ToDate){
-          window.alert("Please Enter Date Correctly");
-        }
-        if(ValidDate(Fromdate)&&ValidDate(ToDate)){
-           let FilterData = [...AllGlobalQuery].filter((elem)=>{
-             var postedOn = new Date(elem.postedOn);
-             if(postedOn>=Fromdate&&postedOn<=ToDate){
-               return elem;
-             }
-           })
-           setAllUsers(FilterData)
-        }
-      };
-      console.log(AllUsers)
     return (
         <>
             <section class="text-gray-600 body-font">
@@ -60,18 +30,6 @@ const Users = () => {
             </svg>
             </div>
             </div>
-            {
-              DateStatus ? <>
-                <div class="flex justify-center mt-1 mb-3 text-black">
-                  <div className='font-semibold'>
-                    From <input value={startDate} class='bg-red-300 p-2 rounded-lg font-bold' onChange={(e) => setStartDate(e.target.value)} type='date' placeholder='Enter first Date'>
-                    </input></div>
-                  <div className='font-semibold ml-10'>
-                    To <input value={endDate} onChange={(e) => setEndDate(e.target.value)} class=' bg-red-300 p-2 rounded-lg font-bold' type='date' placeholder='Enter last Date'>
-                    </input></div>
-                </div>
-              </> : ""
-            }
             <hr />
                 <div class="container px-5 py-12 mx-auto">
                 <div class="flex flex-col text-center w-full mb-20">
