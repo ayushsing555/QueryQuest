@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Transporter = require('../controllers/TransporterFun');
-const {signIn, signUp, user, data,removeFollower, changePassword, QueryDelete, commentLike, ForgotPassword, TimeAdd, payment, generateOtp, commentUpdate, answerUpdate, deleteCommentLike, CommentDelete, deleteLike, updateLiked, IndividualData, GetAllComment, AnswerDelete, GetUserQuery, CommentAdd, updateQueryNum, AnswerAdd, Home, IndividualUser, addFollow} = require("../controllers/Path");
+const {signIn, signUp, user, data,removeFollower, changePassword,updateUser, QueryDelete, commentLike, ForgotPassword, TimeAdd, payment, generateOtp, commentUpdate, answerUpdate, deleteCommentLike, CommentDelete, deleteLike, updateLiked, IndividualData, GetAllComment, AnswerDelete, GetUserQuery, CommentAdd, updateQueryNum, AnswerAdd, Home, IndividualUser, addFollow} = require("../controllers/Path");
 const {QueryPostEmail} = require("../EmailTemplate/EmailContent");
 const transport = require("../controllers/TransporterFun");
 const auth = require("../Authentication/auth");
@@ -35,6 +35,7 @@ router.route("/changePassword").post(changePassword);
 router.route("/:user/Query/delete/:id").delete(QueryDelete);
 router.route("/follow").post(addFollow);
 router.route("/unfollow").post(removeFollower);
+router.route("/:id/update").put(updateUser);
 router.post("/new", auth, async (req, res) => {
   try {
     const {Question, Answer, postedBy} = req.body;
