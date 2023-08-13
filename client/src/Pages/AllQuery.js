@@ -13,6 +13,7 @@ const AllQuery = () => {
   const [endDate, setEndDate] = useState();
   const [loading, setLoading] = useState(false);
   const [DateStatus, setDateStatus] = useState(false);
+  const [search,setSearch]  = useState("");
   const navigator = useNavigate();
   const getUserDetail = () => {
     const UserDetail = localStorage.getItem("Details");
@@ -65,7 +66,6 @@ const AllQuery = () => {
        setAllQuery(FilterData)
     }
   };
-  console.log(AllQuery)
 
   return (
     <>
@@ -78,7 +78,7 @@ const AllQuery = () => {
             <div className='flex justify-center'>
               <div className='mt-5 mb-5 font-semibold'>
               
-              <input type='text' placeholder='Search' className='border-2 border-red-900 hover:border-4 hover:border-red-900 focus:border-4 rounded-lg p-2 font-bold focus:border-red-900'/>
+              <input type='text' value={search} placeholder='Search' className='border-2 border-red-900 hover:border-4 hover:border-red-900 focus:border-4 rounded-lg p-2 font-bold focus:border-red-900' onChange={(e)=>setSearch(e.target.value)}/>
               <svg viewBox="0 0 24 24" fill="currentColor" height="30px" className=' ml-48 -mt-9 text-red-900 hover:cursor-pointer'>
               <path d="M10 18a7.952 7.952 0 004.897-1.688l4.396 4.396 1.414-1.414-4.396-4.396A7.952 7.952 0 0018 10c0-4.411-3.589-8-8-8s-8 3.589-8 8 3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6-6-2.691-6-6 2.691-6 6-6z" />
             </svg>
@@ -112,7 +112,7 @@ const AllQuery = () => {
               <div class="flex flex-wrap w-full">
                 {AllQuery.length !== null ?
                   AllQuery.map((ele) => {
-                    {/* console.log(ele) */}
+                    if(ele.Question.indexOf(search)!==-1)
                     return (
                       <>
                         <div className='flex-col lg:w-1/3'>

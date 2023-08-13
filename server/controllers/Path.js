@@ -845,12 +845,35 @@ const removeFollower = async(req,res) =>{
     
 
 }
+const updateUser = async(req,res)=>{
+    const id = req.params.id;
+    console.log(id);
+    const {userName,linkdin,instagram,fullName,detail,github} = req.body;
+    const Update  = await User.findOneAndUpdate({_id:id},{
+      $set:  {
+        userName:userName,
+        linkdin:linkdin,
+        instagram:instagram,
+        fullName:fullName,
+        detail:detail,
+        githug:github
+    }
+    })
+    if(Update){
+        return res.status(200).send({message:"ok successfully updated"});
+    }
+    else{
+        return res.status(300).send({Error:"somthing went wrong"})
+        }
+
+}
 module.exports = {
     user,
     data,
     changePassword,
     TimeAdd,
     QueryDelete,
+    updateUser,
     payment,
     generateOtp,
     ForgotPassword,
