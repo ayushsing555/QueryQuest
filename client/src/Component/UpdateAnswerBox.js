@@ -80,8 +80,8 @@ const UpdateAnswerBox = ({answer,QuesId,getAllData}) => {
             {
                 haveAns ? <>
                     <textarea col={35} rows={3} value={ans} onChange={(e) => setAns(e.target.value)} placeholder='Enter your thoughts here' ></textarea>
-                    <button className='btn text-center m-2 text-white  bg-red-900' onClick={update}>Update</button>
-                    <button className='btn text-center m-2 text-white  bg-red-900' onClick={checkAvailable}>Cancel</button>
+                    <button className='btn text-center m-2 text-white  bg-red-900 hover:bg-green-900' onClick={update}>Update</button>
+                    <button className='btn text-center m-2 text-white  bg-red-900 hover:bg-red-600' onClick={checkAvailable}>Cancel</button>
                 </> :
                     <button className='btn text-center m-2 text-white  bg-red-900' onClick={checkAvailable}><RxUpdate fontSize={18}/></button>
             }
