@@ -35,7 +35,7 @@ const SingleUser = () => {
     });
     const data = await response.json();
     if (response.status === 200) {
-        window.alert("followed");
+        window.alert("Followed");
 
         getSingleData();
     }
@@ -60,7 +60,7 @@ const SingleUser = () => {
     });
     const data = await response.json();
     if (response.status === 200) {
-        window.alert("unfollowed");
+        window.alert("Unfollowed Successfully");
         getSingleData();
     }
     else {
@@ -86,9 +86,8 @@ const SingleUser = () => {
                                             <path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={32} d="M256 112v288M400 256H112"/>
                                             </svg></button>
                                             : elem.followedBy.includes(userDetail.UserName)?<>
-                                                <button className='bg-blue-500 p-2 mt-5 rounded-lg text-white font-bold hover:bg-blue-700' onClick={()=>Unfollow(elem.userName,userDetail.UserName)}><span className='-ml-6 p-1'>Unfollow</span>
+                                                <button className=' bg-red-600 p-2 mt-5 rounded-lg text-white font-bold hover:bg-red-400' onClick={()=>Unfollow(elem.userName,userDetail.UserName)}><span className=' p-1'>Unfollow</span>
                                             <svg className=' ml-16 -mt-5' viewBox="0 0 512 512" fill="currentColor" height="20px">
-                                            {/* <path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={32} d="M256 112v288M400 256H112"/> */}
                                             </svg>
                                             </button>
                                             
