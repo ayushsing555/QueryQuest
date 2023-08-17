@@ -1,6 +1,5 @@
 import {React, useState, useEffect} from "react";
 import {GetProfileData} from "../Component/GetProfileData";
-import {ActiveUser} from "../Component/ActiveUser";
 const EditProfile = () => {
     const [singleUserDetail, setSingleUserDetail] = useState({});
     const [EditUserDetail, setEditUserDetail] = useState({});
