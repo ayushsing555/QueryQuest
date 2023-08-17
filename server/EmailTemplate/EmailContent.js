@@ -99,4 +99,21 @@ const unfollowedEmail = (followed,user) =>{
     `
     return content;
 }
-module.exports = {deleteQuery, followEmail,unfollowedEmail,unfollowEmail,followedEmail,QueryPostEmail};
+
+const UpdateProfileMail = (user) =>{
+  const content = `<div  style="background-color: #f9f9f9; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+      <h1 class="heading" style="color: #333; text-align: center; font:bold; font-size: 30px;"><strong><span style="color:rgb(126, 25, 25);">𝐐𝐮𝐞𝐫𝐲𝐐𝐮𝐞𝐬𝐭</span></strong></h1>
+      <h3 style="color:rgb(126, 25, 25); text-align: center; font-family: sans-serif; margin-bottom: 20px;">Profile Updated Successfully</h3>
+
+      <p style="font-size: 18px; margin-top: 30px; margin-bottom: 20px;">Dear <span style="color:rgb(126, 25, 25); font-weight: bold;"> ${user}</span>,</p>
+      <p style="font-size: 16px;">We hope this email finds you well. We wanted to inform you that your profile update has been successfully processed. Your changes have been implemented and are now reflected in your profile.</p>
+      <p style="font-size: 16px; margin-top: 10px;">We understand how important it is to have accurate and up-to-date information on your profile, and we're pleased to confirm that your changes have been saved.</p>
+      <p style="font-size: 16px; margin-top: 10px;">If you have any further questions or require assistance, please don't hesitate to  contact<span style="color: blue; font-weight: bold;"> our customer support team </span> by replying to this mail. We're here to help!</p>
+      <p style="font-size: 16px; margin-top: 10px;">Thank you for using our platform and keeping your profile information current. We appreciate your commitment to maintaining accurate records.</p>
+      <p  style="font-size: 16px; margin-top: 20px; color: #555; text-align: center;">Best regards,</p>
+      <p  style="font-size: 16px; color: #555; text-align: center;">The <strong style="color:rgb(126, 25, 25);">𝐐𝐮𝐞𝐫𝐲𝐐𝐮𝐞𝐬𝐭</strong> Team</p>
+    </div>
+    `
+    return content;
+}
+module.exports = {deleteQuery, followEmail,unfollowedEmail,unfollowEmail,followedEmail,QueryPostEmail,UpdateProfileMail};

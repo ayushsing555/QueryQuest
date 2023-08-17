@@ -4,9 +4,7 @@ import {ActiveUser} from "../Component/ActiveUser";
 const EditProfile = () => {
     const [singleUserDetail, setSingleUserDetail] = useState({});
     const [EditUserDetail, setEditUserDetail] = useState({});
-    const ActiveUsers = ActiveUser();
     const [UserDetail, setUserDetail] = useState({
-        userName: "",
         instagram: "",
         linkdin: "",
         github: "",
@@ -29,7 +27,6 @@ const EditProfile = () => {
     }, [singleUserDetail]);
     useEffect(() => {
         setUserDetail({
-            userName: EditUserDetail.userName,
             instagram: EditUserDetail.instagram,
             linkdin: EditUserDetail.linkdin,
             github: EditUserDetail.github,
@@ -45,18 +42,11 @@ const EditProfile = () => {
     }
 
     const handleSubmit = async() =>{
-        if(UserDetail.userName.length>9){
-            return window.alert("username can't be greater than 9 character")
-        }
-        if(ActiveUsers.includes(UserDetail.userName)){
-            return window.alert("Not Available:")
-        }
         let headersList = {
             "Accept": "*/*",
             "Content-Type": "application/json"
         };
         let bodyContent = JSON.stringify({
-            userName: UserDetail.userName,
             instagram: UserDetail.instagram,
             linkdin: UserDetail.linkdin,
             github: UserDetail.github,
@@ -74,10 +64,6 @@ const EditProfile = () => {
         }
         else {
             window.alert("successfully updated");
-            let details = localStorage.getItem("Details");
-            details = JSON.parse(details);
-            details.UserName = UserDetail.userName;
-            localStorage.setItem("Details",JSON.stringify(details));
         }
     }
 
@@ -108,16 +94,6 @@ const EditProfile = () => {
 
                         <div class="border-t border-gray-400 px-4 sm:p-0 w-full -mt-8 -ml-40">
                             <dl class="sm:divide-y sm:divide-gray-400 border-2 ml-40 mt-10 rounded-lg">
-                                <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                    <dt class="text-md font-lg text-gray-500 py-2">
-                                        Username:
-                                    </dt>
-                                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                        <input type="text" name="userName" className="border-lg border-2 rounded-md
-                                                     px-2 py-1 border-slate-600 w-full" value={UserDetail.userName} onChange={handleChange} />
-                                                    <p className="text-red-400 mt-1" > !Sug:- first 3 letter of your name+your birthDay(DDMMYY)</p>
-                                    </dd>
-                                </div>
                                 <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                     <dt class="text-md font-lg text-gray-500 py-2">
                                         Fullname:

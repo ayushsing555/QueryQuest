@@ -3,7 +3,7 @@ const User = require('../model/User');
 const comment = require('../model/Comment');
 const Transporter = require('./TransporterFun');
 const {Password, Token} = require('../helperFunction/Token');
-const {EmailContent,followEmail,followedEmail,unfollowedEmail,unfollowEmail} = require("../EmailTemplate/EmailContent");
+const {EmailContent,followEmail,followedEmail,unfollowedEmail,unfollowEmail,UpdateProfileMail} = require("../EmailTemplate/EmailContent");
 const TransporterFun = require('./TransporterFun');
 const user = async (req, res) => {
     const allUser = await User.find();
@@ -847,20 +847,28 @@ const removeFollower = async(req,res) =>{
 }
 const updateUser = async(req,res)=>{
     const id = req.params.id;
-    console.log(id);
-    const {userName,linkdin,instagram,fullName,detail,github} = req.body;
+    const {linkdin,instagram,fullName,detail,github} = req.body;
+    const user = await User.findOne({_id:id});
     const Update  = await User.findOneAndUpdate({_id:id},{
       $set:  {
-        userName:userName,
         linkdin:linkdin,
         instagram:instagram,
         fullName:fullName,
         detail:detail,
-        githug:github
+        github:github
     }
     })
+    res.status(200).send({message:"ok successfully updated"});
     if(Update){
-        return res.status(200).send({message:"ok successfully updated"});
+         const transport = Transporter();
+         const emailContent = UpdateProfileMail(user.userName);
+         const mailOptions = {
+            from: 'queryquest750@gmail.com',
+            to: user.email,
+            subject: 'Unfollow Confirmation on our website',
+            html: emailContent,
+        };
+        await transport.sendMail(mailOptions);
     }
     else{
         return res.status(300).send({Error:"somthing went wrong"})
