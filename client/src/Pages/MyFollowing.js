@@ -41,8 +41,8 @@ const MyFollowing = () => {
             <hr />
                 <div class="container px-5 py-12 mx-auto">
                 <div class="flex flex-col text-center w-full mb-20">
-                        <h1 class="sm:text-3xl text-2xl font-bold title-font  text-gray-900">OUR USERS</h1>
-                        <p class="lg:w-2/3 mx-auto leading-relaxed text-base text-red-800 font-bold font-serif">Where Questions Find Answers: Meet Our Users</p>
+                        <h1 class="sm:text-3xl text-2xl font-bold title-font  text-gray-900">MY FOLLOWING</h1>
+                        <p class="lg:w-2/3 mx-auto leading-relaxed text-base text-red-800 font-bold font-serif">Stay in the Loop: Following the Quest for Answers!!</p>
                     </div>
                     <div class="flex flex-wrap -m-4">
                         {

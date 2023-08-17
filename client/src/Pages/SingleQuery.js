@@ -214,8 +214,8 @@ return (
                             <div class="h-full bg-red-100 bg-opacity-75 px-8 pt-16 pb-24 m-2 rounded-lg overflow-hidden text-center relative text-black">
                                 <b className='text-bold'>Query posted By <NavLink style={{color: "blue"}} to="/Users/:id" >{elem.postedBy}</NavLink> On {} </b>
                                 <h1 class="title-font sm:text-2xl text-xl text-gray-900 mb-3 font-bold mt-4 font-sans">{elem.Question}</h1>
-                                <textarea rows={10} cols={100} value={ans} onChange={(e) => setAns(e.target.value)} className=' bg-opacity-30 rounded  border-2 border-red-900 hover:border-4 hover:border-red-900 focus:border-4  font-bold focus:border-red-900 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out h-36 ml-7' placeholder='Enter your solution here...' />
-                                <button className='btn text-center m-2 text-white bg-red-900 hover:bg-green-900' onClick={() => AnswerAdd(elem._id)}> Add Answer</button>
+                                <textarea rows={10} cols={100} value={ans} onChange={(e) => setAns(e.target.value)} className=' bg-opacity-30 rounded  border-2 border-red-900 hover:border-4 hover:border-red-900 focus:border-4  font-bold focus:border-red-900 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out h-36 -ml-24 w-fit' placeholder='Enter your solution here...' />
+                                <button className='btn text-center ml-5 -mt-1  text-white bg-red-900 hover:bg-green-900 -px-5' onClick={() => AnswerAdd(elem._id)}> Add Answer</button>
                                 <div className='border-red-900 border-4 rounded-xl pl-4 pr-4 pb-4 m-3 text-black'>
                                     {
                                         elem.answers.length !== 0 ?
