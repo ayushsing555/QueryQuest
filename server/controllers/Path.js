@@ -215,7 +215,7 @@ const AnswerAdd = async (req, res) => {
         res.status(200).send({message: 'AnswerAdded'});
     }
 
-    if (NewAns) {
+    if (NewAns&&user.ticket!=="FREE") {
         const transporter = Transporter();
         const emailContent = `
         <div  style="background-color: #f9f9f9; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
@@ -865,7 +865,7 @@ const updateUser = async(req,res)=>{
          const mailOptions = {
             from: 'queryquest750@gmail.com',
             to: user.email,
-            subject: 'Unfollow Confirmation on our website',
+            subject: 'Successfully Updated Profile Message',
             html: emailContent,
         };
         await transport.sendMail(mailOptions);

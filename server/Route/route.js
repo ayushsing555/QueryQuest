@@ -100,7 +100,7 @@ router.post("/Answers/comment", async (req, res) => {
     postedOn: Date.now()
   });
   const newcomment = await newComment.save();
-  if (newcomment) {
+  if (newcomment&&AnswerUser.ticket!=="Free") {
     res.status(200).send({message: "Commented"});
     const transporter = Transporter();
     const emailContent = `

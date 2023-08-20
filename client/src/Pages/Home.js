@@ -27,10 +27,10 @@ const Home = () => {
         </div>
       )}
     >
-      <img
-        src="/image/query.png"
-        alt="image 1"
-        className="h-full w-1full object-cover"
+       <img
+        src="/image/1.JPG"
+        alt="image 2"
+        className="h-full w-full object-contain"
       />
       <img
         src="/image/singleQuery.png"

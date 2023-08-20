@@ -1,7 +1,6 @@
 import React from 'react';
 import {NavLink} from 'react-router-dom';
 import {TimeChange} from '../Component/TimeSettings';
-import {ActiveUser} from './ActiveUser';
 import Tooltip from '@mui/material/Tooltip';
 import {GetProfileData} from './GetProfileData';
 const Query = ({elem, ActiveUser, analyticDisplay, dltquery, queryanalysisLink, getData}) => {
@@ -79,7 +78,7 @@ const Query = ({elem, ActiveUser, analyticDisplay, dltquery, queryanalysisLink, 
                             <svg class="w-4 h-4 mr-1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
                                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                                 <circle cx="12" cy="12" r="3"></circle>
-                            </svg>1.2K
+                            </svg>{elem.views.length}
                         </span>
                         <span class=" mr-3 inline-flex items-center leading-none text-sm pr-3 py-1 border-r-2 border-gray-800">
                             <svg class="w-4 h-4 mr-1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
