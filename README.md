@@ -1,5 +1,4 @@
 # QueryQuest
-Great! Here's an updated LinkedIn post that includes the upcoming features for your "Query Quest" application:
 
 ---
 
