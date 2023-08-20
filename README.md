@@ -52,6 +52,6 @@ Our mission has always been to empower you with cutting-edge features, and we're
 
 How to Start:-
    1. clone this reository
-   2. on the clinet side- command-> npm start
+   2. on the client side- command-> npm start
    3. on the server side- commans->  node app.js
       
