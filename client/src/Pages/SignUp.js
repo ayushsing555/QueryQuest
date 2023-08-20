@@ -1,17 +1,20 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import DialogBox from '../Component/DialogBox';
 import Modal from 'react-modal';
+import { ActiveUser } from '../Component/ActiveUser';
 const EmailValidator = require('email-validator');
 
 const SignUp = () => {
+    const ActiveUserList = ActiveUser();
     const navigator = useNavigate();
     const [verified, setVerified] = useState(false);
     const [email, setEmail] = useState(true);
     const [verfiyInput, setVerifyInput] = useState(false);
-    const [EnterOtp, SetEnterOtp] = useState();
+    const [EnterOtp, SetEnterOtp] = useState("");
     const [getOtp, setOtp] = useState();
+    const [userNameFeedBack,setUserNameFeedBack] = useState("");
     const [UserDetail, setUserDetail] = useState({
 
         userName: "", fullName: "", email: "", InstagramLink: "", LinkdinLink: "",
@@ -70,8 +73,6 @@ const SignUp = () => {
 
     const verify = (e) => {
         e.preventDefault();
-        console.log(EnterOtp);
-        console.log(getOtp);
         if (EnterOtp === getOtp) {
             setVerified(true);
             setVerifyInput(false);
@@ -82,11 +83,22 @@ const SignUp = () => {
         }
     };
     const handleChange = (e) => {
-        console.log(e.target.name);
         let name = e.target.name;
         let value = e.target.value;
         setUserDetail({...UserDetail, [name]: value});
     };
+
+    useEffect(()=>{
+        if(UserDetail.userName===""){
+            setUserNameFeedBack("sug:- first 3 letter of your name+birthdate ddmmyy")
+        }
+        else if(ActiveUserList.includes(UserDetail.userName)){
+             setUserNameFeedBack(false);
+        }
+        else{
+            setUserNameFeedBack(true);
+        }
+    },[UserDetail.userName])
 
     const [isOpen, setIsOpen] = useState(false);
 
@@ -95,6 +107,9 @@ const SignUp = () => {
     }
 
     const handleSubmit = async (e) => {
+        if(userNameFeedBack===false){
+            return window.alert("Please user another userName")
+        }
         e.preventDefault();
         let headersList = {
             "Accept": "*/*",
@@ -164,6 +179,9 @@ const SignUp = () => {
                                     <div class="mt-4 font-bold mb-4">
                                         <label class="form-label text-black" for="form2Example18">User Name</label>
                                         <input value={UserDetail.userName} name='userName' onChange={handleChange} type="name" id="form2Example18" class="form-control border-2 border-red-900 hover:border-4 hover:border-red-900 focus:border-4  font-bold focus:border-red-900 form-control-lg" required />
+                                        {
+                                            userNameFeedBack===false?<p className='text-red-500'>This userName already used.</p>:userNameFeedBack===true?<p>Username is availble</p>:<p className='text-blue-700'>{userNameFeedBack}</p>
+                                        }
                                     </div>
                                     <div class="mt-4 font-bold mb-4">
                                         <label class="form-label text-black" for="form2Example18">Full Name</label>
